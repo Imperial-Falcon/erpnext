@@ -2,10 +2,13 @@
 # GPL v3 License. See license.txt
 
 import click
+from .seed_dev import seed_dev
 
 
 def call_command(cmd, context):
 	return click.Context(cmd, obj=context).forward(cmd)
 
 
-commands = []
+commands = [
+	seed_dev
+]

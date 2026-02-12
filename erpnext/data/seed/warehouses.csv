@@ -1,0 +1,6 @@
+warehouse_name,parent_warehouse,company,is_group
+Quality Inspection - DV-B2B,All Warehouses - DV-B2B,Doctoverse B2B,0
+Reserved Stock - DV-B2B,All Warehouses - DV-B2B,Doctoverse B2B,0
+Damage - DV-B2B,All Warehouses - DV-B2B,Doctoverse B2B,1
+Expired - DV-B2B,Damage - DV-B2B,Doctoverse B2B,0
+Broken - DV-B2B,Damage - DV-B2B,Doctoverse B2B,0

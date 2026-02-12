@@ -1,0 +1,7 @@
+item_group,parent_item_group,is_group
+Medicines,All Item Groups,1
+Tablets,Medicines,0
+Capsules,Medicines,0
+Syrups & Suspensions,Medicines,0
+Injectables,Medicines,0
+Ointments & Creams,Medicines,0
