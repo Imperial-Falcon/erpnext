@@ -9,10 +9,10 @@ from erpnext.setup.seed.manufacturers import seed_manufacturers
 
 @click.command("seed:dev")
 @click.option("--site", required=False)
-@click.option("--seeder", required=False, default="all", help="Specific seeder to run")
+@click.option("--doctype", required=False, default="all", help="Specific doctype to run")
 @click.option("--force", is_flag=True, default=False, help="Force re-seeding existing data")
 @click.pass_context
-def seed_dev(ctx, site, seeder, force):
+def seed_dev(ctx, site, doctype, force):
     """Seed development-only data"""
     if not site:
         root = ctx.find_root()
@@ -21,7 +21,7 @@ def seed_dev(ctx, site, seeder, force):
     # 🔧 Initialize frappe manually
     frappe.init(site=site)
     frappe.connect()
-    seeder = seeder.lower()
+    doctype = doctype.lower()
 
     try:
         # 🛑 DEV-ONLY SAFETY
@@ -33,19 +33,19 @@ def seed_dev(ctx, site, seeder, force):
         # -----------------------------
         # REAL SEED LOGIC
         # -----------------------------
-        if seeder == "all" or seeder == "users":
+        if doctype == "all" or doctype == "users":
             seed_users(force=force)
             click.echo("✅ Users seed completed successfully")
-        if seeder == "all" or seeder == "warehouses":
+        if doctype == "all" or doctype == "warehouses":
             seed_warehouses(force=force)
             click.echo("✅ Warehouses seed completed successfully")
-        if seeder == "all" or seeder == "item_groups":
+        if doctype == "all" or doctype == "item_groups":
             seed_item_groups(force=force)
             click.echo("✅ Item groups seed completed successfully")
-        if seeder == "all" or seeder == "manufacturers":
+        if doctype == "all" or doctype == "manufacturers":
             seed_manufacturers(force=force)
             click.echo("✅ Manufacturers seed completed successfully")
-        if seeder == "all" or seeder == "items":
+        if doctype == "all" or doctype == "items":
             # seed_items(force=force)
             pass
 
