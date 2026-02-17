@@ -1,13 +1,2 @@
-item_code
-item_name
-item_group
-stock_uom
-brand
-manufacturer
-weight_per_unit
-weight_uom
-sales_uom
-max_discount
-dosage_form
-generic_name
-mrp
+manufacturer,brand,item_group,dosage_form,generic_name,mrp,stock_uom,sales_uom,weight_per_unit,max_discount
+

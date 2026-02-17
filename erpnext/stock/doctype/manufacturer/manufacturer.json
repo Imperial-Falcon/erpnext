@@ -4,6 +4,7 @@
  "allow_rename": 1,
  "autoname": "field:short_name",
  "creation": "2016-01-17 11:04:52.761731",
+ "default_view": "List",
  "description": "Manufacturers used in Items",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -87,7 +88,7 @@
  ],
  "icon": "fa fa-certificate",
  "links": [],
- "modified": "2024-03-27 13:10:04.558108",
+ "modified": "2026-02-15 16:45:47.004162",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Manufacturer",
@@ -115,10 +116,11 @@
    "share": 1
   }
  ],
+ "row_format": "Dynamic",
  "search_fields": "short_name, full_name",
  "show_name_in_global_search": 1,
- "sort_field": "creation",
- "sort_order": "DESC",
+ "sort_field": "short_name",
+ "sort_order": "ASC",
  "states": [],
  "title_field": "short_name"
 }
