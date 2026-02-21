@@ -5,7 +5,7 @@ from erpnext.setup.seed.users import seed_users
 from erpnext.setup.seed.items import seed_warehouses
 from erpnext.setup.seed.items import seed_item_groups
 from erpnext.setup.seed.manufacturers import seed_manufacturers
-# from erpnext.setup.seed.items import seed_items
+from erpnext.setup.seed.items import seed_items
 
 @click.command("seed:dev")
 @click.option("--site", required=False)
@@ -46,8 +46,8 @@ def seed_dev(ctx, site, doctype, force):
             seed_manufacturers(force=force)
             click.echo("✅ Manufacturers seed completed successfully")
         if doctype == "all" or doctype == "items":
-            # seed_items(force=force)
-            pass
+            seed_items(force=force)
+            click.echo("✅ Items seed completed successfully")
 
         frappe.db.commit()
         click.echo("✅ All seed completed successfully")

@@ -88,7 +88,7 @@
  ],
  "fields": [
   {
-   "default": "Item Code",
+   "default": "Naming Series",
    "fieldname": "item_naming_by",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -126,6 +126,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "default": "Moving Average",
    "documentation_url": "https://docs.erpnext.com/docs/v14/user/manual/en/stock/articles/calculation-of-valuation-rate-in-fifo-and-moving-average",
    "fieldname": "valuation_method",
    "fieldtype": "Select",
@@ -562,7 +563,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-02-09 15:01:12.466175",
+ "modified": "2026-02-21 17:25:20.823236",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Settings",

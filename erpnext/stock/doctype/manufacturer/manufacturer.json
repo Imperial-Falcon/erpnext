@@ -35,7 +35,8 @@
    "fieldname": "full_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Full Name"
+   "label": "Full Name",
+   "reqd": 1
   },
   {
    "fieldname": "website",
@@ -88,7 +89,7 @@
  ],
  "icon": "fa fa-certificate",
  "links": [],
- "modified": "2026-02-15 16:45:47.004162",
+ "modified": "2026-02-21 00:39:01.791736",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Manufacturer",

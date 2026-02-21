@@ -14,8 +14,7 @@ class DosageForm(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		code_name: DF.Data
-		display_name: DF.Data
+		full_name: DF.Data
 		is_group: DF.Check
 		lft: DF.Int
 		old_parent: DF.Link | None

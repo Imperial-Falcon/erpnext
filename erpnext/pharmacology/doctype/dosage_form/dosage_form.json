@@ -1,14 +1,13 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:code_name",
+ "autoname": "DF-.#####",
  "creation": "2026-02-14 00:37:17.440301",
  "default_view": "Tree",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "code_name",
-  "display_name",
+  "full_name",
   "short_name",
   "lft",
   "rgt",
@@ -17,21 +16,6 @@
   "parent_dosage_form"
  ],
  "fields": [
-  {
-   "fieldname": "code_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Code Name",
-   "reqd": 1,
-   "unique": 1
-  },
-  {
-   "fieldname": "display_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Display Name",
-   "reqd": 1
-  },
   {
    "fieldname": "short_name",
    "fieldtype": "Data",
@@ -56,6 +40,7 @@
    "read_only": 1
   },
   {
+   "default": "0",
    "fieldname": "is_group",
    "fieldtype": "Check",
    "label": "Is Group"
@@ -72,17 +57,25 @@
    "ignore_user_permissions": 1,
    "label": "Parent Dosage Form",
    "options": "Dosage Form"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Full Name",
+   "reqd": 1,
+   "unique": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2026-02-14 00:46:53.915804",
+ "modified": "2026-02-22 00:37:38.176225",
  "modified_by": "Administrator",
  "module": "Pharmacology",
  "name": "Dosage Form",
- "naming_rule": "By fieldname",
+ "naming_rule": "Expression",
  "nsm_parent_field": "parent_dosage_form",
  "owner": "Administrator",
  "permissions": [
@@ -102,7 +95,10 @@
  "quick_entry": 1,
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
- "sort_field": "creation",
- "sort_order": "DESC",
- "states": []
+ "search_fields": "full_name",
+ "show_title_field_in_link": 1,
+ "sort_field": "full_name",
+ "sort_order": "ASC",
+ "states": [],
+ "title_field": "full_name"
 }
