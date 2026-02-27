@@ -1,9 +1,15 @@
 <template>
 	<BaseLayout>
 		<template #body>
-			<div class="">
+			<div class="page-content">
+				<!-- Header massage bar -->
+				<div class="w-full p-2">
+					<div class="text-white text-center py-2 text-sm font-medium rounded-sm bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+						Free delivery on orders above ৳500!
+					</div>
+				</div>
 				<!-- <ion-searchbar placeholder="Search Product or Brand.."></ion-searchbar> -->
-				 <!--product thumb  -->
+				<!--product thumb  -->
 				<div class="bg-gray-100 flex items-center justify-center min-h-screen">
 					<!-- Card -->
 					<div class="relative w-64 bg-white rounded shadow-sm border border-gray-200 p-4">
@@ -35,8 +41,8 @@
 
 						<!-- Price -->
 						<div>
-							<p class="text-lg font-semibold text-gray-900">₹101</p>
-							<p class="text-sm text-gray-400 line-through">₹110</p>
+							<p class="text-lg font-semibold text-gray-900">৳101</p>
+							<p class="text-sm text-gray-400 line-through">৳110</p>
 						</div>
 
 						<!-- Add Button -->
