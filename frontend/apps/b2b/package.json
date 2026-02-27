@@ -4,8 +4,11 @@
     "version": "0.0.1",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
-        "preview": "vite preview"
+        "serve": "vite preview",
+        "build": "vite build --base=/assets/erpnext/frontend/apps/b2b/ && yarn copy-html-entry",
+        "ionic:build": "npm run build",
+        "ionic:serve": "vite dev --host",
+        "copy-html-entry": "cp ../../../erpnext/public/frontend/apps/b2b/index.html ../../../erpnext/www/b2b.html"
     },
     "dependencies": {
         "@ionic/vue": "^7.4.3",

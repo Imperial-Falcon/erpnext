@@ -26,7 +26,7 @@ export default defineConfig({
 		},
 	},
 	build: {
-		outDir: '../../doctoverse/public/frontend/office',
+		outDir: '../../../erpnext/public/frontend/apps/b2b',
 		emptyOutDir: true,
 		target: 'es2015',
 		commonjsOptions: {
