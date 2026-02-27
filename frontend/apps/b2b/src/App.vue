@@ -1,5 +1,9 @@
 <template>
-  <div>
-    <router-view />
-  </div>
+	<ion-app>
+		<ion-router-outlet id="main-content" />
+	</ion-app>
 </template>
+
+<script setup>
+import { IonApp, IonRouterOutlet } from "@ionic/vue"
+</script>

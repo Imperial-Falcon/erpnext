@@ -1,17 +1,21 @@
-import './main.css'
+import { createApp } from "vue"
+import App from "./App.vue"
+import router from "./router"
 
-import { Button, frappeRequest, resourcesPlugin, setConfig } from 'frappe-ui'
+import { IonicVue } from "@ionic/vue"
 
-import App from './App.vue'
-import { createApp } from 'vue'
-import router from './router'
+/* Core CSS required for Ionic components to work properly */
+import "@ionic/vue/css/core.css"
 
-let app = createApp(App)
+/* Theme variables */
+import "./theme/variables.css"
 
-setConfig('resourceFetcher', frappeRequest)
+import "./main.css"
 
+const app = createApp(App)
+app.use(IonicVue)
 app.use(router)
-app.use(resourcesPlugin)
 
-app.component('Button', Button)
-app.mount('#app')
+router.isReady().then(() => {
+    app.mount('#app')
+})

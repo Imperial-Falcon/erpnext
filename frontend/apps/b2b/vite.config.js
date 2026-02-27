@@ -18,49 +18,7 @@ export default defineConfig({
 	},
 	plugins: [
 		vue(),
-		frappeui(),
-		VitePWA({
-			registerType: 'autoUpdate',
-			strategies: 'injectManifest',
-			injectRegister: null,
-			devOptions: {
-				enabled: true,
-			},
-			manifest: {
-				display: 'standalone',
-				name: 'Doctoverse Office',
-				short_name: 'Doctoverse',
-				start_url: '/office',
-				description: 'Doctoverse Office Application',
-				theme_color: '#ffffff',
-				icons: [
-					{
-						src: '/assets/doctoverse/manifest/manifest-icon-192.maskable.png',
-						sizes: '192x192',
-						type: 'image/png',
-						purpose: 'any',
-					},
-					{
-						src: '/assets/doctoverse/manifest/manifest-icon-192.maskable.png',
-						sizes: '192x192',
-						type: 'image/png',
-						purpose: 'maskable',
-					},
-					{
-						src: '/assets/doctoverse/manifest/manifest-icon-512.maskable.png',
-						sizes: '512x512',
-						type: 'image/png',
-						purpose: 'any',
-					},
-					{
-						src: '/assets/doctoverse/manifest/manifest-icon-512.maskable.png',
-						sizes: '512x512',
-						type: 'image/png',
-						purpose: 'maskable',
-					},
-				],
-			},
-		}),
+		frappeui()
 	],
 	resolve: {
 		alias: {
