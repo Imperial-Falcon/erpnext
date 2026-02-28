@@ -3,9 +3,15 @@
 		<template #body>
 			<div class="page-content">
 				<!-- Header massage bar -->
-				<div class="w-full p-2">
-					<div class="text-white text-center py-2 text-sm font-medium rounded-sm bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+				<div class="w-full p-2 flex flex-col gap-2">
+					<div class="text-white text-center py-2 text-sm font-medium rounded-sm bg-gradient-to-r from-cyan-500 to-blue-500">
 						Free delivery on orders above ৳500!
+					</div>
+					<div class="text-sm text-gray-500 flex items-center gap-4 justify-center">
+						<a href="#" class="hover:underline underline-offset-4 decoration-blue-500 decoration-2">Today's</a>
+						<a href="#" class="hover:underline underline-offset-4 decoration-blue-500 decoration-2">Categories</a>
+						<a href="#" class="hover:underline underline-offset-4 decoration-blue-500 decoration-2">Menufacturers</a>
+						<a href="#" class="hover:underline underline-offset-4 decoration-blue-500 decoration-2">Top Offers</a>
 					</div>
 				</div>
 				<!-- <ion-searchbar placeholder="Search Product or Brand.."></ion-searchbar> -->
