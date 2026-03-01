@@ -2,19 +2,84 @@
 	<BaseLayout>
 		<template #body>
 			<div class="page-content">
-				<!-- Header massage bar -->
-				<div class="w-full p-2 flex flex-col gap-2">
+				<!-- Hero banner -->
+				<section class="hero-banner">
+					<img
+						src="https://picsum.photos/320/180"
+						alt="Hero Banner"
+						class="w-full h-auto object-cover"
+					/>
+				</section>
+				<section class="w-full p-2 flex flex-col gap-4">
+					<!-- Header massage bar -->
 					<div class="text-white text-center py-2 text-sm font-medium rounded-sm bg-gradient-to-r from-cyan-500 to-blue-500">
-						Free delivery on orders above ৳500!
+						1$ off for all products
 					</div>
-					<div class="text-sm text-gray-500 flex items-center gap-4 justify-center">
-						<a href="#" class="hover:underline underline-offset-4 decoration-blue-500 decoration-2">Today's</a>
-						<a href="#" class="hover:underline underline-offset-4 decoration-blue-500 decoration-2">Categories</a>
-						<a href="#" class="hover:underline underline-offset-4 decoration-blue-500 decoration-2">Menufacturers</a>
-						<a href="#" class="hover:underline underline-offset-4 decoration-blue-500 decoration-2">Top Offers</a>
+					<!-- Main nav bar -->
+					<nav class="text-sm text-gray-500 flex items-center gap-4 justify-center">
+						<a href="#" class="hover:underline underline-offset-8 decoration-blue-500 decoration-2">Today's</a>
+						<a href="#" class="hover:underline underline-offset-8 decoration-blue-500 decoration-2">Categories</a>
+						<a href="#" class="hover:underline underline-offset-8 decoration-blue-500 decoration-2">Menufacturers</a>
+						<a href="#" class="hover:underline underline-offset-8 decoration-blue-500 decoration-2">Top Offers</a>
+					</nav>
+					<!-- Search bar -->
+					<div class="font-medium rounded-sm border-2 border-blue-500 flex justify-between py-2 px-3 text-gray-500 items-center">
+						<h4 class="text-sm">Search products</h4>
+						<button class="text-sm">
+							<Search size="18"/>
+						</button>
 					</div>
-				</div>
-				<!-- <ion-searchbar placeholder="Search Product or Brand.."></ion-searchbar> -->
+					<!-- Features section -->
+					<div class="flex flex-row gap-1">
+						<div class="flex items-center gap-3 bg-white py-3 px-4 rounded-sm">
+							<div>
+								<ScrollText size="30"/>
+							</div>
+							<div class="text-wrap w-20">
+								<h3 class="text-xs text-gray-600">Request for Products</h3>
+							</div>
+						</div>
+						<div class="flex items-center gap-3 bg-white py-3 px-4 rounded-sm">
+							<div>
+								<Trophy size="30"/>
+							</div>
+							<div class="text-wrap w-20">
+								<h3 class="text-xs text-gray-600">Top Ranking</h3>
+							</div>
+						</div>
+						<div class="flex items-center gap-3 bg-white py-3 px-4 rounded-sm">
+							<div>
+								<ScrollText size="30"/>
+							</div>
+							<div class="text-wrap w-20">
+								<h3 class="text-xs text-gray-600">Request for Quotation</h3>
+							</div>
+						</div>
+					</div>
+					<!-- Top customers section -->
+					<div class="grid grid-cols-2 divide-x justify-stretch">
+						<div>
+							<div class="flex items-center gap-3 flex-1">
+								<div>
+									<ScrollText size="30"/>
+								</div>
+								<div class="">
+									<h3 class="text-xs text-gray-600">Request for Products</h3>
+								</div>
+							</div>
+						</div>
+						<div>
+							<div class="flex items-center gap-3 flex-1">
+								<div>
+									<Trophy size="30"/>
+								</div>
+								<div class="">
+									<h3 class="text-xs text-gray-600">Top Ranking</h3>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
 				<!--product thumb  -->
 				<div class="bg-gray-100 flex items-center justify-center min-h-screen">
 					<!-- Card -->
@@ -69,4 +134,5 @@
 
 <script setup>
 import BaseLayout from "@/components/layouts/BaseLayout.vue"
+import { Search, ScrollText, Trophy } from 'lucide-vue-next';
 </script>
