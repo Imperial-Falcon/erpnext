@@ -3,147 +3,30 @@
 		<template #body>
 			<div class="page-content">
 				<!-- Hero banner -->
-				<section class="hero-banner">
-					<img
-						src="https://picsum.photos/320/180"
-						alt="Hero Banner"
-						class="w-full h-auto object-cover"
-					/>
-				</section>
+				<HeroBanner />
 				<section class="w-full p-2 flex flex-col gap-4">
-					<!-- Header massage bar -->
-					<div class="text-white text-center py-2 text-sm font-medium rounded-sm bg-gradient-to-r from-cyan-500 to-blue-500">
-						1$ off for all products
-					</div>
-					<!-- Main nav bar -->
-					<nav class="text-sm font-semibold text-gray-800 flex items-center gap-4 justify-center">
-						<a href="#" class="hover:underline underline-offset-8 decoration-blue-500 decoration-2">Medicines</a>
-						<a href="#" class="hover:underline underline-offset-8 decoration-blue-500 decoration-2">Surgical Products</a>
-						<a href="#" class="hover:underline underline-offset-8 decoration-blue-500 decoration-2">Medical Devices</a>
-						<a href="#" class="hover:underline underline-offset-8 decoration-blue-500 decoration-2">Health Care</a>
-					</nav>
 					<!-- Search bar -->
-					<div class="font-medium rounded-sm border-2 border-blue-500 flex justify-between py-2 px-3 text-gray-500 items-center">
-						<h4 class="text-sm">Search products</h4>
-						<button class="text-sm">
-							<Search size="18"/>
-						</button>
-					</div>
+					<SearchBar />
+					<!-- Feature massage bar -->
+					<FeatureMessageBar />
+					<!-- Feature nav bar -->
+					<FeatureNavBar />
 					<!-- Features section -->
-					<div class="flex flex-row gap-1">
-						<div class="flex items-center gap-3 bg-white py-3 px-4 rounded-sm">
-							<div>
-								<PackageSearch size="30" color="#0FA5E9"/>
-							</div>
-							<div class="text-wrap w-20">
-								<h3 class="text-xs font-semibold text-gray-800">Source by Category</h3>
-							</div>
-						</div>
-						<div class="flex items-center gap-3 bg-white py-3 px-4 rounded-sm">
-							<div>
-								<ScrollText size="30" color="#0FA5E9"/>
-							</div>
-							<div class="text-wrap w-20">
-								<h3 class="text-xs font-semibold text-gray-800">Request for Products</h3>
-							</div>
-						</div>
-						<div class="flex items-center gap-3 bg-white py-3 px-4 rounded-sm">
-							<div>
-								<Trophy size="30" color="#0FA5E9"/>
-							</div>
-							<div class="text-wrap w-20">
-								<h3 class="text-xs font-semibold text-gray-800">Top Ranking</h3>
-							</div>
-						</div>
-						<div class="flex items-center gap-3 bg-white py-3 px-4 rounded-sm">
-							<div>
-								<ScrollText size="30" color="#0FA5E9"/>
-							</div>
-							<div class="text-wrap w-20">
-								<h3 class="text-xs font-semibold text-gray-800">Request for Quotation</h3>
-							</div>
-						</div>
-					</div>
-					<!-- Top customers section -->
-					<div class="grid grid-cols-2 divide-x justify-stretch bg-gradient-to-r from-red-500 to-orange-500 rounded-sm py-4">
-						<div class="flex justify-center items-center">
-							<div class="flex items-center gap-3 max-w-40">
-								<div>
-									<TruckElectric size="30" color="#ffffff"/>
-								</div>
-								<div class="text-wrap">
-									<h3 class="text-sm font-semibold text-white">Superfast!</h3>
-									<h6 class="text-xs font-light text-white/70">Same day delivery</h6>
-								</div>
-							</div>
-						</div>
-						<div class="flex justify-center items-center">
-							<div class="flex items-center gap-3 max-w-40">
-								<div>
-									<DiamondPercent size="30" color="#ffffff"/>
-								</div>
-								<div class="text-wrap">
-									<h3 class="text-sm font-semibold text-white">More Discount!</h3>
-									<h6 class="text-xs font-light text-white/70">Buy more get more</h6>
-								</div>
-							</div>
-						</div>
-					</div>
+					<FeatureSection />
 				</section>
 				<!-- Product section -->
-				<!--product thumb  -->
-				<div class="bg-gray-100 flex items-center justify-center min-h-screen">
-					<!-- Card -->
-					<div class="relative w-64 bg-white rounded shadow-sm border border-gray-200 p-4">
-
-						<!-- Discount Badge -->
-						<div class="absolute top-0 left-4 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-b-sm z-10">
-						8%<br>OFF
-						</div>
-
-						<!-- Product Image -->
-						<div class="flex justify-center mt-2 mb-2 aspect-h-1 aspect-w-1">
-							<img
-								src="https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=70,metadata=none,w=270/da/cms-assets/cms/product/669a9b3f-7d5e-434e-bec2-f976bc976916.png"
-								alt="Pringles"
-								class="h-full w-full object-contain"
-							/>
-						</div>
-
-						<!-- Product Name -->
-						<h3 class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">
-							Coconut Hookah Coal Cubes by Stash Pro
-						</h3>
-
-						<!-- Weight -->
-						<p class="text-sm text-gray-500 mt-1">Popular pharmaceuticals Ltd.</p>
-
-						<!-- Price + Button -->
-						<div class="flex items-center justify-between mt-3">
-
-						<!-- Price -->
-						<div>
-							<p class="text-lg font-semibold text-gray-900">৳101</p>
-							<p class="text-sm text-gray-400 line-through">৳110</p>
-						</div>
-
-						<!-- Add Button -->
-						<button
-							class="border border-green-600 text-green-600 font-semibold text-sm px-4 py-1.5 rounded-sm hover:bg-green-50 transition"
-						>
-							ADD
-						</button>
-
-						</div>
-
-					</div>
-				</div>
+				<ProductSection />
 			</div>
 		</template>
 	</BaseLayout>
 </template>
 
 <script setup>
+import HeroBanner from "@/components/HeroBanner.vue"
 import BaseLayout from "@/components/layouts/BaseLayout.vue"
-import { Search, ScrollText, Trophy, TruckElectric, PackageSearch, DiamondPercent } from 'lucide-vue-next';
+import FeatureMessageBar from "@/components/FeatureMessageBar.vue";
+import FeatureNavBar from "@/components/FeatureNavBar.vue";
+import SearchBar from "@/components/SearchBar.vue";
+import FeatureSection from "@/components/FeatureSection.vue";
+import ProductSection from "@/components/ProductSection.vue";
 </script>
