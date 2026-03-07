@@ -127,6 +127,9 @@ def seed_items(force=False):
     - generic_name
     - strength
     - stock_uom
+    - mrp
+    - sale_price
+    - purchase_price
     """
 
     app_name = "erpnext"
@@ -152,6 +155,9 @@ def seed_items(force=False):
         generic_name = (row.get("generic_name") or "").strip()
         strength = (row.get("strength") or "").strip()
         variant = (row.get("variant") or "").strip()
+        # sale_price = (row.get("sale_price") or "").strip()
+        mrp = parse_price(row["mrp"])
+        purchase_price = parse_price(row["purchase_price"])
 
         # --------------------------------------------------
         # GENERATE ITEM NAME + CODE
@@ -235,6 +241,24 @@ def seed_items(force=False):
             item.insert(ignore_permissions=True)
 
             frappe.logger().info(f"📦 Created Item: {item_code}")
+
+        # --------------------------------------------------
+		# CREATE ITEM PRICES
+		# --------------------------------------------------
+
+        create_or_update_item_price(
+			item_code=item_code,
+			uom=uom,
+			price_list="Standard Selling",
+			price=mrp
+		)
+
+        create_or_update_item_price(
+			item_code=item_code,
+			uom=uom,
+			price_list="Standard Buying",
+			price=purchase_price
+		)
 
 # ----------------------------------------------------------
 # HELPER FUNCTION
@@ -399,3 +423,57 @@ def get_or_create_generic(doctype, display_name):
     frappe.logger().info(f"✨ Created {doctype}: {display_name}")
 
     return doc.name
+
+def create_or_update_item_price(item_code, uom, price_list, price):
+    """
+    Create or update Item Price safely
+    """
+
+    if not price:
+        return
+
+    doctype = "Item Price"
+
+    docname = frappe.db.exists(
+        doctype,
+        {
+            "item_code": item_code,
+            "price_list": price_list
+        }
+    )
+
+    if docname:
+
+        doc = frappe.get_doc(doctype, docname)
+
+        if doc.price_list_rate != price:
+            doc.price_list_rate = price
+            doc.save(ignore_permissions=True)
+
+            frappe.logger().info(
+                f"💲 Updated {price_list} price for {item_code}: {price}"
+            )
+
+        return
+
+    doc = frappe.get_doc({
+        "doctype": doctype,
+        "item_code": item_code,
+        "uom": uom,
+        "price_list": price_list,
+        "price_list_rate": price,
+        "currency": "BDT",
+        "selling": 1 if price_list == "Standard Selling" else 0,
+        "buying": 1 if price_list == "Standard Buying" else 0
+    })
+
+    doc.insert(ignore_permissions=True)
+
+    frappe.logger().info(
+        f"💲 Created {price_list} price for {item_code}: {price}"
+    )
+
+def parse_price(value):
+    if not value:
+        return 0
+    return float(str(value).replace(",", "").strip())

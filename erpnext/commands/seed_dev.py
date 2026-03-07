@@ -33,19 +33,19 @@ def seed_dev(ctx, site, doctype, force):
         # -----------------------------
         # REAL SEED LOGIC
         # -----------------------------
-        if doctype == "all" or doctype == "users":
+        if doctype == "all" or doctype == "user":
             seed_users(force=force)
             click.echo("✅ Users seed completed successfully")
-        if doctype == "all" or doctype == "warehouses":
+        if doctype == "all" or doctype == "warehouse":
             seed_warehouses(force=force)
             click.echo("✅ Warehouses seed completed successfully")
-        if doctype == "all" or doctype == "item_groups":
+        if doctype == "all" or doctype == "item_group":
             seed_item_groups(force=force)
             click.echo("✅ Item groups seed completed successfully")
-        if doctype == "all" or doctype == "manufacturers":
+        if doctype == "all" or doctype == "manufacturer":
             seed_manufacturers(force=force)
             click.echo("✅ Manufacturers seed completed successfully")
-        if doctype == "all" or doctype == "items":
+        if doctype == "all" or doctype == "item":
             seed_items(force=force)
             click.echo("✅ Items seed completed successfully")
 
