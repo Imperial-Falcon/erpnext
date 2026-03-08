@@ -155,6 +155,10 @@ def seed_items(force=False):
         generic_name = (row.get("generic_name") or "").strip()
         strength = (row.get("strength") or "").strip()
         variant = (row.get("variant") or "").strip()
+        disabled = int(row.get("disabled", 0))
+        is_sales_item = int(row.get("is_sales_item", 1))
+        is_purchase_item = int(row.get("is_purchase_item", 1))
+        manufacturer_part_no = row.get("manufacturer_code")
         # sale_price = (row.get("sale_price") or "").strip()
         mrp = parse_price(row["mrp"])
         purchase_price = parse_price(row["purchase_price"])
@@ -202,11 +206,9 @@ def seed_items(force=False):
 
             item.update({
                 "item_name": item_name,
-                "disabled": int(row.get("disabled", 0)),
-                "is_sales_item": int(row.get("is_sales_item", 1)),
-                "is_purchase_item": int(row.get("is_purchase_item", 1)),
-                "manufacturer": manufacturer,
-                "manufacturer_part_no": row.get("manufacturer_code"),
+                "disabled": disabled,
+                "is_sales_item": is_sales_item,
+                "is_purchase_item": is_purchase_item,
                 "brand": brand,
                 "item_group": item_group,
                 "stock_uom": uom,
@@ -225,11 +227,9 @@ def seed_items(force=False):
                 "doctype": doctype,
                 "item_code": item_code,
                 "item_name": item_name,
-                "disabled": int(row.get("disabled", 0)),
-                "is_sales_item": int(row.get("is_sales_item", 1)),
-                "is_purchase_item": int(row.get("is_purchase_item", 1)),
-                "manufacturer": manufacturer,
-                "manufacturer_part_no": row.get("manufacturer_code"),
+                "disabled": disabled,
+                "is_sales_item": is_sales_item,
+                "is_purchase_item": is_purchase_item,
                 "brand": brand,
                 "item_group": item_group,
                 "stock_uom": uom,
@@ -242,19 +242,21 @@ def seed_items(force=False):
 
             frappe.logger().info(f"📦 Created Item: {item_code}")
 
+        # capture generated name
+        item_name_doc = item.name
         # --------------------------------------------------
 		# CREATE ITEM PRICES
 		# --------------------------------------------------
 
         create_or_update_item_price(
-			item_code=item_code,
+			item_code=item_name_doc,
 			uom=uom,
 			price_list="Standard Selling",
 			price=mrp
 		)
 
         create_or_update_item_price(
-			item_code=item_code,
+			item_code=item_name_doc,
 			uom=uom,
 			price_list="Standard Buying",
 			price=purchase_price
@@ -303,9 +305,6 @@ def get_or_create_brand(doctype, manufacturer, brand):
 
     if not brand:
         return None
-
-    manufacturer = manufacturer.strip()
-    brand = brand.strip()
 
     docname = frappe.db.exists(
         doctype,
