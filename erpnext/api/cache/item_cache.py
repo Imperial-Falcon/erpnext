@@ -1,11 +1,13 @@
 import frappe
 
-TTL = 60
+CACHE_KEY = "homepage_items"
 
 
-def get_cache(key):
-    return frappe.cache().get_value(key)
+def get():
+
+    return frappe.cache().get_value(CACHE_KEY)
 
 
-def set_cache(key, value):
-    frappe.cache().set_value(key, value, expires_in_sec=TTL)
+def set(data):
+
+    frappe.cache().set_value(CACHE_KEY, data, expires_in_sec=300)

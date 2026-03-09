@@ -1,18 +1,25 @@
 import frappe
 
-def get_active_pricing_rules():
 
-    return frappe.db.sql("""
+def get_pricing_rules():
+
+    return frappe.db.sql(
+        """
         SELECT
-            name,
-            item_code,
-            brand,
-            item_group,
-            min_qty,
-            discount_percentage,
-            price_list_rate
-        FROM `tabPricing Rule`
+            pr.name AS rule_name,
+            pri.item_code,
+            pr.min_qty,
+            pr.discount_percentage,
+            pr.rate
+
+        FROM `tabPricing Rule` pr
+
+        LEFT JOIN `tabPricing Rule Item Code` pri
+            ON pri.parent = pr.name
+
         WHERE
-            selling = 1
-            AND disabled = 0
-    """, as_dict=True)
+            pr.selling = 1
+            AND pr.docstatus < 2
+        """,
+        as_dict=True,
+    )

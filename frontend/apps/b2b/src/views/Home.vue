@@ -39,7 +39,7 @@ import ProductThumb from '@/components/ProductThumb.vue'
 import { createResource } from 'frappe-ui'
 
 const products = createResource({
-    url: 'erpnext.api.item_api.home_items',
+    url: 'erpnext.api.item_api.get_items',
     params: {
         limit: 5
     },

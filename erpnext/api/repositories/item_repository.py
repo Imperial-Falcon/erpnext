@@ -1,46 +1,53 @@
 import frappe
+from ..constants.price_lists import STANDARD_SELLING
 
 
-def fetch_home_items(limit, offset):
+def get_items(limit=20, offset=0, item_group=None, search=None):
 
-    query = """
+    conditions = ["i.disabled = 0", "i.is_sales_item = 1"]
+
+    if item_group:
+        conditions.append("i.item_group = %(item_group)s")
+
+    if search:
+        conditions.append("(i.item_name LIKE %(search)s OR i.name LIKE %(search)s)")
+
+    where = " AND ".join(conditions)
+
+    return frappe.db.sql(
+        f"""
         SELECT
             i.name,
             i.item_name,
             i.image,
+            i.item_group,
             i.brand,
 
-            mrp.price_list_rate AS mrp,
-            sell.price_list_rate AS price,
+            b.manufacturer AS manufacturer,
 
-            ROUND(
-                ((mrp.price_list_rate - sell.price_list_rate) /
-                mrp.price_list_rate) * 100
-            ) AS discount_percent
+            COALESCE(p.price_list_rate, 0) AS price
 
         FROM `tabItem` i
 
-        INNER JOIN `tabItem Price` mrp
-            ON mrp.item_code = i.name
-            AND mrp.price_list = 'Maximum Retail Price'
+        LEFT JOIN `tabBrand` b
+            ON b.name = i.brand
 
-        INNER JOIN `tabItem Price` sell
-            ON sell.item_code = i.name
-            AND sell.price_list = 'Standard Selling'
+        LEFT JOIN `tabItem Price` p
+            ON p.item_code = i.name
+            AND p.price_list = %(price_list)s
 
-        WHERE
-            i.disabled = 0
-            AND i.is_sales_item = 1
-            AND i.has_variants = 0
+        WHERE {where}
 
         ORDER BY i.creation DESC
 
-        LIMIT %(limit)s
-        OFFSET %(offset)s
-    """
-
-    return frappe.db.sql(
-        query,
-        {"limit": limit, "offset": offset},
-        as_dict=True
+        LIMIT %(limit)s OFFSET %(offset)s
+        """,
+        {
+            "price_list": STANDARD_SELLING,
+            "limit": limit,
+            "offset": offset,
+            "item_group": item_group,
+            "search": f"%{search}%" if search else None,
+        },
+        as_dict=True,
     )

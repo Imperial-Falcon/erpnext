@@ -1,11 +1,14 @@
-def item_card(row):
+def format_item(item, stock):
 
     return {
-        "id": row["name"],
-        "name": row["item_name"],
-        "brand": row["brand"],
-        "image": row["image"],
-        "price": row["price"],
-        "mrp": row["mrp"],
-        "discount": row["discount_percent"]
+        "name": item["name"],
+        "item_name": item["item_name"],
+        "image": item["image"],
+        "brand": item["brand"],
+        "manufacturer": item.get("manufacturer") or "",
+        "item_group": item["item_group"],
+        "price": item["price"],
+        "final_price": item["final_price"],
+        "discount_percent": item["discount_percent"],
+        "stock_qty": stock,
     }

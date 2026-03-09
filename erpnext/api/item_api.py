@@ -1,11 +1,17 @@
 import frappe
-from erpnext.api.services.item_service import get_home_items
+
+from .services import item_service
 
 
 @frappe.whitelist(allow_guest=False)
-def home_items(limit=20, offset=0):
+def get_items(page=1, page_size=20, item_group=None, search=None):
 
-	return get_home_items(
-		limit=int(limit),
-		offset=int(offset)
-	)
+    page = int(page)
+    page_size = int(page_size)
+
+    return item_service.get_items(
+        page=page,
+        page_size=page_size,
+        item_group=item_group,
+        search=search,
+    )

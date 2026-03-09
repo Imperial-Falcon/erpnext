@@ -1,3 +1,2 @@
-MRP = "Maximum Retail Price"
-SELLING = "Standard Selling"
-BUYING = "Standard Buying"
+STANDARD_SELLING = "Standard Selling"
+STANDARD_BUYING = "Standard Buying"

@@ -21,7 +21,7 @@
 			{{ product.item_name }}
 		</h3>
 		<!-- Weight -->
-		<h6 class="text-xs font-light text-gray-500 mt-1 line-clamp-2">Popular pharmaceuticals Ltd.</h6>
+		<h6 class="text-xs font-light text-gray-500 mt-1 line-clamp-2">{{ product.manufacturer }}</h6>
 		<!-- Price + Button -->
 		<div class="flex items-end justify-between mt-3 ">
 			<!-- Price -->

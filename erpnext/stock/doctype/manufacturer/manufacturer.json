@@ -89,10 +89,11 @@
  ],
  "icon": "fa fa-certificate",
  "links": [],
- "modified": "2026-02-21 00:39:01.791736",
+ "modified": "2026-03-10 02:04:59.825363",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Manufacturer",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -120,6 +121,7 @@
  "row_format": "Dynamic",
  "search_fields": "short_name, full_name",
  "show_name_in_global_search": 1,
+ "show_title_field_in_link": 1,
  "sort_field": "short_name",
  "sort_order": "ASC",
  "states": [],

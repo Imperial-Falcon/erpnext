@@ -1,7 +1,8 @@
 import frappe
 from ..repositories import pricing_rule_repository
 
-CACHE_KEY = "pricing_rules"
+CACHE_KEY = "item_pricing_rules"
+
 
 def get_pricing_rules():
 
@@ -10,7 +11,7 @@ def get_pricing_rules():
     rules = cache.get_value(CACHE_KEY)
 
     if not rules:
-        rules = pricing_rule_repository.get_active_pricing_rules()
+        rules = pricing_rule_repository.get_pricing_rules()
         cache.set_value(CACHE_KEY, rules, expires_in_sec=3600)
 
     return rules
