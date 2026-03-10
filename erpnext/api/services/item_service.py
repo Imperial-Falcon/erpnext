@@ -5,7 +5,7 @@ from ..dto.item_dto import format_item
 from ..utils.pagination import get_offset
 
 
-def get_items(page=1, page_size=20, item_group=None, search=None):
+def get_items(page=1, page_size=30, item_group=None, search=None):
 
     offset = get_offset(page, page_size)
 

@@ -4,7 +4,7 @@ from .services import item_service
 
 
 @frappe.whitelist(allow_guest=False)
-def get_items(page=1, page_size=20, item_group=None, search=None):
+def get_items(page=1, page_size=30, item_group=None, search=None):
 
     page = int(page)
     page_size = int(page_size)

@@ -1,8 +1,9 @@
 import frappe
+
 from ..constants.price_lists import STANDARD_SELLING
 
 
-def get_items(limit=20, offset=0, item_group=None, search=None):
+def get_items(limit=30, offset=0, item_group=None, search=None):
 
     conditions = ["i.disabled = 0", "i.is_sales_item = 1"]
 
@@ -17,26 +18,51 @@ def get_items(limit=20, offset=0, item_group=None, search=None):
     return frappe.db.sql(
         f"""
         SELECT
+
             i.name,
             i.item_name,
             i.image,
             i.item_group,
             i.brand,
 
-            b.manufacturer AS manufacturer,
+            b.manufacturer,
 
-            COALESCE(p.price_list_rate, 0) AS price
+            COALESCE(p.price_list_rate,0) AS price,
+
+            COALESCE(pr.discount_percentage,0) AS discount_percent,
+
+            ROUND(
+                COALESCE(p.price_list_rate,0)
+                -
+                (COALESCE(p.price_list_rate,0) * COALESCE(pr.discount_percentage,0) / 100)
+            ,2) AS final_price,
+
+            COALESCE(SUM(bin.actual_qty),0) AS stock_qty
+
 
         FROM `tabItem` i
 
         LEFT JOIN `tabBrand` b
             ON b.name = i.brand
 
-        LEFT JOIN `tabItem Price` p
+        INNER JOIN `tabItem Price` p
             ON p.item_code = i.name
             AND p.price_list = %(price_list)s
 
+        LEFT JOIN `tabPricing Rule Item Code` pri
+            ON pri.item_code = i.name
+
+        LEFT JOIN `tabPricing Rule` pr
+            ON pr.name = pri.parent
+            AND pr.selling = 1
+            AND pr.disable = 0
+
+        LEFT JOIN `tabBin` bin
+            ON bin.item_code = i.name
+
         WHERE {where}
+
+        GROUP BY i.name
 
         ORDER BY i.creation DESC
 

@@ -8,11 +8,11 @@
 					<!-- Search bar -->
 					<SearchBar />
 					<!-- Feature massage bar -->
-					<FeatureMessageBar />
+					<!-- <FeatureMessageBar /> -->
 					<!-- Feature nav bar -->
-					<FeatureNavBar />
+					<!-- <FeatureNavBar /> -->
 					<!-- Features section -->
-					<FeatureSection />
+					<!-- <FeatureSection /> -->
 				</section>
 				<!-- Product section -->
 				<section class="grid grid-cols-3 gap-2 px-2">
@@ -41,7 +41,7 @@ import { createResource } from 'frappe-ui'
 const products = createResource({
     url: 'erpnext.api.item_api.get_items',
     params: {
-        limit: 5
+        limit: 30
     },
     auto: true
 })
