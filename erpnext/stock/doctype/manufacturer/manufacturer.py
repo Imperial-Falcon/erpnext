@@ -16,7 +16,7 @@ class Manufacturer(Document):
 		from frappe.types import DF
 
 		country: DF.Link | None
-		full_name: DF.Data | None
+		full_name: DF.Data
 		logo: DF.AttachImage | None
 		notes: DF.SmallText | None
 		short_name: DF.Data

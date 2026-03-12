@@ -132,7 +132,13 @@
   "customer_code",
   "column_break_vipt",
   "default_manufacturer_part_no",
-  "default_item_manufacturer"
+  "default_item_manufacturer",
+  "capacity_in_days_section",
+  "production_capacity",
+  "pharmacology_tab",
+  "dosage_form",
+  "generic_name",
+  "strength"
  ],
  "fields": [
   {
@@ -174,6 +180,7 @@
    "label": "Item Name",
    "oldfieldname": "item_name",
    "oldfieldtype": "Data",
+   "reqd": 1,
    "search_index": 1
   },
   {
@@ -980,6 +987,28 @@
   {
    "fieldname": "column_break_vipt",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pharmacology_tab",
+   "fieldtype": "Tab Break",
+   "label": "Pharmacology"
+  },
+  {
+   "fieldname": "dosage_form",
+   "fieldtype": "Link",
+   "label": "Dosage Form",
+   "options": "Dosage Form"
+  },
+  {
+   "fieldname": "generic_name",
+   "fieldtype": "Link",
+   "label": "Generic Name",
+   "options": "Generic Name"
+  },
+  {
+   "fieldname": "strength",
+   "fieldtype": "Data",
+   "label": "Strength"
   }
  ],
  "icon": "fa fa-tag",
@@ -1053,9 +1082,10 @@
  ],
  "quick_entry": 1,
  "row_format": "Dynamic",
- "search_fields": "item_name,description,item_group,customer_code",
+ "search_fields": "item_name",
  "show_name_in_global_search": 1,
  "show_preview_popup": 1,
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],

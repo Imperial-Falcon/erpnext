@@ -1,0 +1,2 @@
+import{_ as t}from"./BaseLayout-L0ESZg1_.js";import{A as a,l as r,f as o,x as s}from"./frappe-ui-k2jwhJLy.js";import"./index-BTKvHQNp.js";const l={__name:"Cart",setup(p){return(c,e)=>(o(),a(t,{pageTitle:"Cart"},{body:r(()=>[...e[0]||(e[0]=[s("div",{class:"flex flex-col items-center my-7 p-4 gap-7"}," cart page working ",-1)])]),_:1}))}};export{l as default};
+//# sourceMappingURL=Cart-pl8tp_kT.js.map

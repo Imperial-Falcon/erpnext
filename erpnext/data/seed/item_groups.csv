@@ -1,0 +1,24 @@
+item_group,parent_item_group,is_group
+Medicines,All Item Groups,1
+Others,All Item Groups,1
+Devices,All Item Groups,1
+Allopathic,Medicines,0
+Tablets,Allopathic,0
+Suppositories,Allopathic,0
+Capsules,Allopathic,0
+Suspensions,Allopathic,0
+Syrups,Allopathic,0
+Injectables,Allopathic,0
+Creams,Allopathic,0
+Ointments,Allopathic,0
+Lotions,Allopathic,0
+Gels,Allopathic,0
+Drops,Allopathic,0
+Solutions,Allopathic,0
+Strips,Allopathic,0
+Shampoos,Allopathic,0
+Sprays,Allopathic,0
+Inhalers,Allopathic,0
+Powders,Allopathic,0
+Hand Rubs,Allopathic,0
+Liquids,Allopathic,0

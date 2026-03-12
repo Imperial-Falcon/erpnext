@@ -1,0 +1,8 @@
+{
+    "name": "Doctoverse Customer App",
+    "integrations": {},
+    "type": "vue",
+    "server": {
+        "url": "http://localhost:8080/"
+    }
+}
