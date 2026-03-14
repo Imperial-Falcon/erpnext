@@ -1,52 +1,135 @@
 <template>
-	<div class="bg-white relative rounded-sm border-gray-200 p-2 flex flex-col gap-2">
-		<!-- Discount Badge -->
-		<div
-			v-if="product.discount_percent"
-			class="absolute top-0 left-0 right-0 flex justify-center">
-			<div class="bg-red-100 text-red-500 text-2xs text-center font-semibold px-2 py-1 rounded-b-sm z-10">
-				{{ product.discount_percent }}%
+	<!-- 1. VERTICAL VARIANT (Default) -->
+	<div
+		v-if="variant === 'vertical'"
+		@click="$router.push(`/product/${product.id || product.name}`)"
+		class="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 flex flex-col group h-full transition-all active:scale-[0.98] cursor-pointer"
+	>
+		<div class="aspect-square bg-gray-50 rounded-xl mb-3 overflow-hidden p-3 flex items-center justify-center relative">
+			<img :src="product.image" :alt="product.name" class="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300" />
+			<!-- Discount Badge -->
+			<div v-if="discount" class="absolute top-0 left-0 bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-br-xl">
+				{{ discount }}
 			</div>
-		</div>
-		<!-- Product Image -->
-		<div class="flex justify-center aspect-h-1 aspect-w-1">
-			<img
-				:src="product.image"
-				:alt="product.item_name"
-				class="h-full w-full object-contain"
-			/>
-		</div>
-		<!-- Product Name -->
-		<h3 class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2 flex-1">
-			{{ product.item_name }}
-		</h3>
-		<!-- Weight -->
-		<h6 class="text-xs text-gray-600 line-clamp-2">{{ product.manufacturer }}</h6>
-		<!-- Price + Button -->
-		<div class="flex items-end justify-between" v-if="product.stock_qty > 0">
-			<!-- Price -->
-			<div>
-				<p v-if="product.mrp" class="text-xs text-gray-400 line-through">{{ formatCurrency(product.mrp, "BDT") }}</p>
-				<p class="text-sm font-semibold text-gray-900">{{ formatCurrency(product.price, "BDT") }}</p>
-			</div>
-
-			<!-- Add Button -->
-			<button
-				class="p-1 font-semibold text-sm rounded-sm bg-green-500 transition"
-			>
-				<Plus color="#ffffff" />
+			<button class="absolute top-2 right-2 p-1.5 bg-white/80 backdrop-blur-sm rounded-full shadow-sm text-gray-400 hover:text-red-500 transition-colors">
+				<Heart class="w-3.5 h-3.5" />
 			</button>
 		</div>
-		<div
-			v-if="product.stock_qty <= 0"
-			class="text-2xs py-0.5 rounded-sm text-gray-500 bg-gray-50 text-center">Out of Stock</div>
+		
+		<h3 class="text-sm font-bold text-gray-900 line-clamp-2 leading-tight mb-1 min-h-[2.5rem]">
+			{{ product.name || product.item_name }}
+		</h3>
+		<p class="text-[10px] text-gray-400 mb-2">{{ product.manufacturer || product.brand }}</p>
+		
+		<div class="mt-auto flex items-center justify-between">
+			<div class="flex flex-col">
+				<span v-if="product.oldPrice || product.mrp" class="text-[10px] text-gray-400 line-through">
+					{{ formatCurrency(product.oldPrice || product.mrp, "BDT") }}
+				</span>
+				<span class="text-sm font-black text-indigo-600">
+					{{ formatCurrency(product.price, "BDT") }}
+				</span>
+			</div>
+			<button 
+				@click.stop="$emit('add-to-cart', product)"
+				class="p-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all active:scale-90"
+			>
+				<Plus class="w-4 h-4" />
+			</button>
+		</div>
+	</div>
+
+	<!-- 2. HORIZONTAL VARIANT (List Style) -->
+	<div
+		v-else-if="variant === 'horizontal'"
+		@click="$router.push(`/product/${product.id || product.name}`)"
+		class="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 flex gap-4 transition-all active:scale-[0.99] cursor-pointer"
+	>
+		<div class="w-24 h-24 bg-gray-50 rounded-xl flex-shrink-0 flex items-center justify-center p-2 relative overflow-hidden">
+			<img :src="product.image" :alt="product.name" class="max-w-full max-h-full object-contain" />
+			<div v-if="discount" class="absolute top-0 left-0 bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-br-lg">
+				{{ discount }}
+			</div>
+		</div>
+
+		<div class="flex-1 flex flex-col justify-between py-1">
+			<div>
+				<div class="flex justify-between items-start">
+					<h3 class="text-sm font-bold text-gray-900 line-clamp-1 leading-tight">
+						{{ product.name || product.item_name }}
+					</h3>
+					<button class="text-gray-300 hover:text-red-500">
+						<Heart class="w-4 h-4" />
+					</button>
+				</div>
+				<p class="text-[11px] text-gray-500 mt-1">{{ product.manufacturer || product.brand }}</p>
+			</div>
+
+			<div class="flex items-end justify-between">
+				<div class="flex flex-col">
+					<span v-if="product.oldPrice || product.mrp" class="text-[10px] text-gray-400 line-through">
+						{{ formatCurrency(product.oldPrice || product.mrp, "BDT") }}
+					</span>
+					<span class="text-base font-black text-indigo-600">
+						{{ formatCurrency(product.price, "BDT") }}
+					</span>
+				</div>
+				<button 
+					@click.stop="$emit('add-to-cart', product)"
+					class="px-4 py-1.5 bg-indigo-600 text-white text-xs font-bold rounded-lg shadow-md shadow-indigo-100 active:scale-95 transition-transform"
+				>
+					Add
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- 3. MINIMAL VARIANT (Compact) -->
+	<div
+		v-else-if="variant === 'minimal'"
+		@click="$router.push(`/product/${product.id || product.name}`)"
+		class="inline-flex flex-col w-32 bg-white rounded-xl p-2 border border-gray-50 shadow-sm flex-shrink-0 group cursor-pointer active:scale-95 transition-all"
+	>
+		<div class="aspect-square bg-gray-50 rounded-lg mb-2 p-2 flex items-center justify-center relative overflow-hidden">
+			<img :src="product.image" :alt="product.name" class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform" />
+			<span v-if="discount" class="absolute top-0 left-0 bg-orange-500 text-white text-[8px] font-bold px-1 py-0.5 rounded-br-lg">
+				{{ discount }}
+			</span>
+		</div>
+		<h4 class="text-[11px] font-bold text-gray-900 line-clamp-1 mb-1">{{ product.name || product.item_name }}</h4>
+		<p class="text-xs font-black text-indigo-600">{{ formatCurrency(product.price, "BDT") }}</p>
 	</div>
 </template>
-<script setup>
-import { formatCurrency } from '@/utils/formatters'
-import { Plus } from 'lucide-vue-next'
 
-defineProps({
-    product: Object
+<script setup>
+import { computed } from 'vue'
+import { Plus, Heart } from 'lucide-vue-next'
+import { formatCurrency } from '@/utils/formatters'
+
+const props = defineProps({
+	product: {
+		type: Object,
+		required: true
+	},
+	variant: {
+		type: String,
+		default: 'vertical', // 'vertical' | 'horizontal' | 'minimal'
+		validator: (value) => ['vertical', 'horizontal', 'minimal'].includes(value)
+	}
+})
+
+defineEmits(['add-to-cart'])
+
+const discount = computed(() => {
+	if (props.product.discount_percent) return `${props.product.discount_percent}%`
+	if (props.product.discount) return props.product.discount
+	
+	const oldPrice = props.product.oldPrice || props.product.mrp
+	if (oldPrice && oldPrice > props.product.price) {
+		const diff = oldPrice - props.product.price
+		const percent = Math.round((diff / oldPrice) * 100)
+		return `${percent}%`
+	}
+	return null
 })
 </script>

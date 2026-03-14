@@ -1,115 +1,131 @@
 <template>
 	<ion-page>
-		<ion-content class="ion-padding">
-			<div class="flex flex-col h-screen w-screen">
-				<div class="w-full sm:w-96">
-					<header
-						class="flex flex-row bg-white shadow-sm py-4 px-3 items-center justify-between border-b sticky top-0 z-10"
+		<ion-header class="ion-no-border" mode="ios">
+			<ion-toolbar class="px-2">
+				<ion-title class="text-xl font-black">{{ __("My Profile") }}</ion-title>
+				<ion-buttons slot="end">
+					<button 
+						@click="$router.push('/settings')"
+						class="p-2 bg-gray-50 rounded-xl active:scale-90 transition-all mr-2"
 					>
-						<div class="flex flex-row items-center">
-							<Button
-								variant="ghost"
-								class="!pl-0 hover:bg-white"
-								@click="router.back()"
+						<Settings class="w-5 h-5 text-gray-700" />
+					</button>
+				</ion-buttons>
+			</ion-toolbar>
+		</ion-header>
+
+		<ion-content>
+			<div class="flex flex-col bg-gray-50/30 pb-24">
+				<!-- Profile Header Card -->
+				<div class="px-4 pt-6 pb-8">
+					<div class="bg-white rounded-[32px] p-6 shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col items-center text-center relative overflow-hidden">
+						<!-- Background Decoration -->
+						<div class="absolute -top-10 -right-10 w-32 h-32 bg-indigo-50 rounded-full blur-3xl"></div>
+						<div class="absolute -bottom-10 -left-10 w-32 h-32 bg-pink-50 rounded-full blur-3xl"></div>
+
+						<div class="relative mb-4">
+							<img
+								v-if="user.data.user_image"
+								class="h-24 w-24 rounded-3xl object-cover shadow-lg border-4 border-white"
+								:src="user.data.user_image"
+								:alt="user.data.first_name"
+							/>
+							<div
+								v-else
+								class="flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-3xl font-black h-24 w-24 rounded-3xl shadow-lg border-4 border-white uppercase"
 							>
-								<FeatherIcon name="chevron-left" class="h-5 w-5" />
-							</Button>
-							<h2 class="text-xl font-semibold text-gray-900">{{ __("Profile") }}</h2>
-						</div>
-					</header>
-
-					<div class="flex flex-col items-center mt-5 p-4">
-						<!-- Profile Image -->
-						<img
-							v-if="user.data.user_image"
-							class="h-24 w-24 rounded-full object-cover"
-							:src="user.data.user_image"
-							:alt="user.data.first_name"
-						/>
-						<div
-							v-else
-							class="flex items-center justify-center bg-gray-200 uppercase text-gray-600 h-24 w-24 rounded-full object-cover"
-						>
-							{{ user.data.first_name[0] }}
+								{{ user.data.first_name[0] }}
+							</div>
+							<button class="absolute -bottom-1 -right-1 p-2 bg-white rounded-xl shadow-md border border-gray-100 text-indigo-600">
+								<Camera class="w-4 h-4" />
+							</button>
 						</div>
 
-						<div class="flex flex-col gap-1.5 items-center mt-2 mb-5">
-							<span v-if="employee" class="text-lg font-bold text-gray-900">{{
-								employee?.data?.employee_name
-							}}</span>
-							<span v-if="employee" class="font-normal text-sm text-gray-500">{{
-								employee?.data?.designation
-							}}</span>
-						</div>
+						<h2 class="text-xl font-black text-gray-900 leading-tight">
+							{{ employee?.data?.employee_name || user.data.first_name + ' ' + user.data.last_name }}
+						</h2>
+						<p class="text-sm font-bold text-gray-400 mt-1">
+							{{ employee?.data?.designation || user.data.email }}
+						</p>
 
-						<!-- Profile Links -->
-						<div class="flex flex-col gap-5 my-4 w-full">
-							<div class="flex flex-col bg-white rounded">
-								<div
-									class="flex flex-row cursor-pointer flex-start p-4 items-center justify-between border-b"
-									v-for="link in profileLinks"
-									:key="link.title"
-									@click="openInfoModal(link)"
-								>
-									<div class="flex flex-row items-center gap-3 grow">
-										<FeatherIcon
-											:name="link.icon"
-											class="h-5 w-5 text-gray-500"
-										/>
-										<div class="text-base font-normal text-gray-800">
-											{{ link.title }}
-										</div>
+						<!-- Mini Stats -->
+						<div class="grid grid-cols-3 w-full mt-8 pt-6 border-t border-gray-50">
+							<div class="flex flex-col items-center">
+								<span class="text-lg font-black text-gray-900">12</span>
+								<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Orders</span>
+							</div>
+							<div class="flex flex-col items-center border-x border-gray-50 px-2">
+								<span class="text-lg font-black text-gray-900">4</span>
+								<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Offers</span>
+							</div>
+							<div class="flex flex-col items-center">
+								<span class="text-lg font-black text-gray-900">240</span>
+								<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Points</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Menu Sections -->
+				<div class="px-4 space-y-6">
+					<!-- General Section -->
+					<div>
+						<h3 class="px-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3">General</h3>
+						<div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+							<div
+								v-for="(link, index) in generalLinks"
+								:key="link.title"
+								@click="handleLinkClick(link)"
+								class="flex items-center justify-between p-4 active:bg-gray-50 transition-colors cursor-pointer"
+								:class="{ 'border-b border-gray-50': index !== generalLinks.length - 1 }"
+							>
+								<div class="flex items-center gap-4">
+									<div class="w-10 h-10 rounded-2xl flex items-center justify-center bg-gray-50" :class="link.iconColor">
+										<component :is="link.icon" class="w-5 h-5" />
 									</div>
-									<FeatherIcon
-										name="chevron-right"
-										class="h-5 w-5 text-gray-500"
-									/>
+									<span class="text-sm font-bold text-gray-900">{{ link.title }}</span>
 								</div>
+								<ChevronRight class="w-5 h-5 text-gray-300" />
 							</div>
 						</div>
+					</div>
 
-						<!-- Settings -->
-						<div
-							class="flex flex-col gap-5 my-4 w-full"
-							v-if="allowPushNotifications"
-						>
-							<div class="flex flex-col bg-white rounded">
-								<router-link
-									:to="{ name: 'Settings' }"
-									class="flex flex-row cursor-pointer flex-start p-4 items-center justify-between border-b"
-								>
-									<div class="flex flex-row items-center gap-3 grow">
-										<FeatherIcon
-											name="settings"
-											class="h-5 w-5 text-gray-500"
-										/>
-										<div class="text-base font-normal text-gray-800">
-											{{ __("Settings") }}
-										</div>
+					<!-- Support Section -->
+					<div>
+						<h3 class="px-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3">Support & Legal</h3>
+						<div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+							<div
+								v-for="(link, index) in supportLinks"
+								:key="link.title"
+								@click="handleLinkClick(link)"
+								class="flex items-center justify-between p-4 active:bg-gray-50 transition-colors cursor-pointer"
+								:class="{ 'border-b border-gray-50': index !== supportLinks.length - 1 }"
+							>
+								<div class="flex items-center gap-4">
+									<div class="w-10 h-10 rounded-2xl flex items-center justify-center bg-gray-50" :class="link.iconColor">
+										<component :is="link.icon" class="w-5 h-5" />
 									</div>
-									<FeatherIcon
-										name="chevron-right"
-										class="h-5 w-5 text-gray-500"
-									/>
-								</router-link>
+									<span class="text-sm font-bold text-gray-900">{{ link.title }}</span>
+								</div>
+								<ChevronRight class="w-5 h-5 text-gray-300" />
 							</div>
 						</div>
+					</div>
 
-						<Button
+					<!-- Logout -->
+					<div class="pt-4">
+						<button
 							@click="logout"
-							variant="outline"
-							theme="red"
-							class="w-full shadow py-4 mt-5"
+							class="w-full py-5 bg-red-50 text-red-600 font-black rounded-3xl flex items-center justify-center gap-3 active:scale-[0.98] transition-all border border-red-100 mb-10"
 						>
-							<template #prefix>
-								<FeatherIcon name="log-out" class="w-4" />
-							</template>
-							{{ __("Log Out") }}
-						</Button>
+							<LogOut class="w-5 h-5" />
+							<span>Log Out</span>
+						</button>
 					</div>
 				</div>
 			</div>
 
+			<!-- Keep original modal for info -->
 			<ion-modal
 				ref="modal"
 				:is-open="isInfoModalOpen"
@@ -118,9 +134,10 @@
 				:breakpoints="[0, 1]"
 			>
 				<ProfileInfoModal
+					v-if="selectedItem"
 					:title="selectedItem.title"
 					:data="
-						selectedItem.fields.map((field) => {
+						selectedItem.fields?.map((field) => {
 							const [label, fieldtype] = getFieldInfo(field)
 							return {
 								fieldname: field,
@@ -139,15 +156,16 @@
 <script setup>
 import { computed, inject, ref, onMounted, onBeforeUnmount } from "vue"
 import { useRouter } from "vue-router"
-import { IonModal, IonPage, IonContent } from "@ionic/vue"
-import { FeatherIcon, createDocumentResource, createResource } from "frappe-ui"
+import { IonModal, IonPage, IonContent, IonHeader, IonToolbar, IonTitle, IonButtons } from "@ionic/vue"
+import { 
+	Settings, Camera, ChevronRight, ShoppingBag, Box, 
+	MessageSquare, Key, Share2, Star, Headphones, LogOut 
+} from "lucide-vue-next"
+import { createDocumentResource, createResource } from "frappe-ui"
 
 import { showErrorAlert } from "@/utils/dialogs"
 import { formatCurrency } from "@/utils/formatters"
-
 import ProfileInfoModal from "@/components/ProfileInfoModal.vue"
-
-import { arePushNotificationsEnabled } from "@/data/notifications"
 
 const DOCTYPE = "Employee"
 
@@ -159,59 +177,66 @@ const __ = inject("$translate")
 
 const router = useRouter()
 
-const profileLinks = [
+const generalLinks = [
 	{
-		icon: "user",
+		icon: ShoppingBag,
+		iconColor: "text-indigo-600 bg-indigo-50",
 		title: __("My Orders"),
-		fields: [],
+		route: "/orders",
 	},
 	{
-		icon: "user",
+		icon: Box,
+		iconColor: "text-emerald-600 bg-emerald-50",
 		title: __("My Products"),
-		fields: [],
+		route: "/my-products",
 	},
 	{
-		icon: "user",
+		icon: MessageSquare,
+		iconColor: "text-orange-600 bg-orange-50",
 		title: __("Request Medicine"),
-		fields: [],
+		route: "/request-medicine",
 	},
 	{
-		icon: "user",
+		icon: Key,
+		iconColor: "text-purple-600 bg-purple-50",
 		title: __("Change Password"),
-		fields: [],
+		route: "/change-password",
 	},
+]
+
+const supportLinks = [
 	{
-		icon: "user",
+		icon: Share2,
+		iconColor: "text-blue-600 bg-blue-50",
 		title: __("Follow Us"),
-		fields: [],
+		route: "/follow-us",
 	},
 	{
-		icon: "user",
+		icon: Star,
+		iconColor: "text-yellow-600 bg-yellow-50",
 		title: __("Rate Us"),
-		fields: [],
 	},
 	{
-		icon: "user",
+		icon: Headphones,
+		iconColor: "text-pink-600 bg-pink-50",
 		title: __("Contact Support"),
-		fields: [],
+		route: "/contact",
 	},
 ]
 
 const isInfoModalOpen = ref(false)
 const selectedItem = ref(null)
 
-const allowPushNotifications = computed(
-	() =>
-		window.frappe?.boot.push_relay_server_url &&
-		arePushNotificationsEnabled.data
-)
-
-const openInfoModal = async (request) => {
-	selectedItem.value = request
-	isInfoModalOpen.value = true
+const handleLinkClick = (link) => {
+	if (link.route) {
+		router.push(link.route)
+	} else {
+		selectedItem.value = link
+		// isInfoModalOpen.value = true // Only open if fields exist
+	}
 }
 
-const closeInfoModal = async (_request) => {
+const closeInfoModal = () => {
 	isInfoModalOpen.value = false
 	selectedItem.value = null
 }
@@ -264,3 +289,10 @@ onBeforeUnmount(() => {
 	socket.off("list_update")
 })
 </script>
+
+<style scoped>
+ion-toolbar {
+	--background: transparent;
+	--border-width: 0;
+}
+</style>

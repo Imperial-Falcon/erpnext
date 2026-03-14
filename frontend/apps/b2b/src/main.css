@@ -1,45 +1,73 @@
 @import "frappe-ui/src/style.css";
 
+/* Design Tokens & Reusable Styles */
+:root {
+  --app-primary: #4f46e5;
+  --app-bg: #f9fafb;
+  --app-surface: #ffffff;
+}
+
+@layer components {
+  /* Card Style */
+  .app-card {
+    @apply bg-white border border-gray-100 shadow-sm transition-all active:scale-[0.98];
+    border-radius: 1.5rem; /* Equivalent to 24px / 3xl */
+  }
+
+  /* Section Container */
+  .section-container {
+    @apply px-4 py-5;
+  }
+
+  /* Typography */
+  .section-title {
+    @apply text-lg font-black text-gray-900 leading-none;
+  }
+
+  .see-all-btn {
+    @apply text-xs font-bold text-blue-600 active:opacity-60;
+  }
+
+  /* Badge Style */
+  .badge-red {
+    @apply bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full;
+  }
+}
+
+/* Global Utilities */
 .center {
 	@apply flex justify-center items-center;
 }
 
-ion-modal {
-	--height: auto;
-}
-
-input:disabled {
-	--webkit-text-fill-color: var(--tw-text-color);
-	opacity: 0.9; /* required on iOS */
-	color: var(--tw-text-color);
-}
-
-/* For Webkit-based browsers (Chrome, Safari and Opera) */
-input::-webkit-date-and-time-value {
-	text-align: left;
-}
-
-body {
-	-webkit-tap-highlight-color: transparent;
-}
-
-.hide-scrollbar::-webkit-scrollbar {
+.no-scrollbar::-webkit-scrollbar {
 	display: none;
 }
+.no-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
 
-/* For IE, Edge and Firefox */
-.hide-scrollbar {
-	-ms-overflow-style: none; /* IE and Edge */
-	scrollbar-width: none; /* Firefox */
+/* Ionic Overrides */
+ion-content {
+  --background: var(--app-bg);
+}
+
+ion-modal {
+	--height: auto;
+  --border-radius: 24px 24px 0 0;
 }
 
 .lucide {
 	@apply text-gray-500;
-  stroke-width: 1.5;
+  stroke-width: 2;
 }
 
-.tab-selected {
-	.lucide {
-		@apply text-gray-800;
-	}
+.tab-selected .lucide {
+	@apply text-blue-600;
+}
+
+body {
+	-webkit-tap-highlight-color: transparent;
+	font-family: 'Inter', sans-serif;
+	background-color: var(--app-bg);
 }
