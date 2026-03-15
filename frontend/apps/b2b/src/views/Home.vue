@@ -1,20 +1,20 @@
 <template>
-	<BaseLayout>
+	<BaseLayout :showBackButton="false">
 		<template #body>
 			<ion-content>
-				<div class="page-content bg-gray-50/30 pb-24">
+				<div class="page-content bg-gray-50/30 dark:bg-black pb-24">
 					<!-- Custom Header for Home -->
-					<div class="px-5 pt-8 pb-4 flex justify-between items-center sticky top-0 bg-gray-50/80 backdrop-blur-xl z-50">
+					<div class="px-5 pt-8 pb-4 flex justify-between items-center sticky top-0 bg-gray-50/80 dark:bg-black/80 backdrop-blur-xl z-50">
 						<div class="flex flex-col">
 							<span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 leading-none mb-1">Welcome back</span>
-							<h1 class="text-2xl font-black text-gray-900 leading-none">Healthy Living</h1>
+							<h1 class="text-2xl font-black text-gray-900 dark:text-gray-100 leading-none">Healthy Living</h1>
 						</div>
 						<button 
 							@click="$router.push('/notifications')"
-							class="relative p-2.5 bg-white rounded-2xl shadow-xl shadow-gray-200 border border-gray-100 active:scale-90 transition-all"
+							class="relative p-2.5 bg-white dark:bg-gray-800 rounded-2xl shadow-xl shadow-gray-200 dark:shadow-none border border-gray-100 dark:border-gray-700 active:scale-90 transition-all"
 						>
-							<Bell class="w-5 h-5 text-gray-700" />
-							<span class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+							<Bell class="w-5 h-5 text-gray-700 dark:text-gray-300" />
+							<span class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-gray-800"></span>
 						</button>
 					</div>
 
@@ -22,7 +22,7 @@
 					<div class="px-5 mb-6">
 						<div class="relative group" @click="$router.push('/products')">
 							<Search class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-hover:text-indigo-600 transition-colors" />
-							<div class="w-full pl-12 pr-4 py-4 bg-white border border-gray-100 rounded-2xl text-sm font-semibold text-gray-400 shadow-xl shadow-gray-100/50 flex items-center">
+							<div class="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl text-sm font-semibold text-gray-400 shadow-xl shadow-gray-100/50 dark:shadow-none flex items-center">
 								Search for medicines, vitamins...
 							</div>
 						</div>

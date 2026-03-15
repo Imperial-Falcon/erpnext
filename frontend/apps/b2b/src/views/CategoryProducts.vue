@@ -1,19 +1,14 @@
 <template>
 	<BaseLayout :pageTitle="categoryName">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 overflow-hidden">
-				<!-- Header with Back Button and Category Info -->
-				<div class="bg-white p-4 shadow-sm z-10 flex items-center gap-4">
-					<button @click="$router.back()" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
-						<ChevronLeft class="w-6 h-6 text-gray-700" />
-					</button>
-					<div>
-						<h1 class="text-lg font-black text-gray-900 leading-tight">{{ categoryName }}</h1>
-						<p class="text-xs text-gray-400 font-medium">{{ filteredProducts.length }} Products available</p>
-					</div>
-				</div>
-
+			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden">
 				<ion-content>
+					<!-- Category Info Banner -->
+					<div class="bg-white dark:bg-gray-900 p-6 shadow-sm border-b border-gray-50 dark:border-gray-800">
+						<h1 class="text-2xl font-black text-gray-900 dark:text-gray-100 leading-tight">{{ categoryName }}</h1>
+						<p class="text-sm text-gray-400 font-medium mt-1">{{ filteredProducts.length }} Products available in this category</p>
+					</div>
+
 					<!-- Products Grid -->
 					<div v-if="filteredProducts.length > 0" class="p-4 grid grid-cols-2 gap-4 pb-24">
 						<ProductThumb
@@ -26,14 +21,14 @@
 
 					<!-- Empty State -->
 					<div v-else class="flex flex-col items-center justify-center py-20 px-10 text-center">
-						<div class="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mb-4">
+						<div class="w-20 h-20 bg-indigo-50 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4">
 							<PackageSearch class="w-10 h-10 text-indigo-400" />
 						</div>
-						<h3 class="text-lg font-bold text-gray-900 mb-1">No products found</h3>
+						<h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">No products found</h3>
 						<p class="text-sm text-gray-400">There are currently no products available in this category.</p>
 						<button 
 							@click="$router.push('/products')"
-							class="mt-6 px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl shadow-lg shadow-indigo-100 active:scale-95 transition-all"
+							class="mt-6 px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl shadow-lg shadow-indigo-100 dark:shadow-none active:scale-95 transition-all"
 						>
 							Browse All Products
 						</button>

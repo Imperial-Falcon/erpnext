@@ -19,9 +19,12 @@ import router from "./router"
 import { session } from "@/data/session"
 import { translationsPlugin } from "./plugins/translationsPlugin.js"
 import { userResource } from "@/data/user"
+import { useDarkMode } from "@/utils/theme"
 
 const app = createApp(App)
 const socket = initSocket()
+
+useDarkMode()
 
 setConfig("resourceFetcher", frappeRequest)
 app.use(resourcesPlugin)
