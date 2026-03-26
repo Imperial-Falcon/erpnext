@@ -1,2 +1,0 @@
-import{_ as t}from"./BaseLayout-L0ESZg1_.js";import{A as o,l as r,f as s,x as a}from"./frappe-ui-k2jwhJLy.js";import"./index-BTKvHQNp.js";const l={__name:"Products",setup(c){return(p,e)=>(s(),o(t,{pageTitle:"Products"},{body:r(()=>[...e[0]||(e[0]=[a("div",{class:"flex flex-col items-center my-7 p-4 gap-7"}," Product page working ",-1)])]),_:1}))}};export{l as default};
-//# sourceMappingURL=Products-Ds9cB0nm.js.map

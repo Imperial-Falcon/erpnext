@@ -1,28 +1,51 @@
 <template>
-	<BaseLayout :showBackButton="false">
+	<BaseLayout :showBackButton="false" :showHeader="false">
 		<template #body>
-			<ion-content>
-				<div class="page-content bg-gray-50/30 dark:bg-black pb-24">
-					<!-- Custom Header for Home -->
-					<div class="px-5 pt-8 pb-4 flex justify-between items-center sticky top-0 bg-gray-50/80 dark:bg-black/80 backdrop-blur-xl z-50">
-						<div class="flex flex-col">
-							<span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 leading-none mb-1">Welcome back</span>
-							<h1 class="text-2xl font-black text-gray-900 dark:text-gray-100 leading-none">Healthy Living</h1>
-						</div>
-						<button 
-							@click="$router.push('/notifications')"
-							class="relative p-2.5 bg-white dark:bg-gray-800 rounded-2xl shadow-xl shadow-gray-200 dark:shadow-none border border-gray-100 dark:border-gray-700 active:scale-90 transition-all"
-						>
-							<Bell class="w-5 h-5 text-gray-700 dark:text-gray-300" />
-							<span class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-gray-800"></span>
-						</button>
+			<ion-content :scroll-events="true" @ionScroll="onScroll">
+				<div class="page-content bg-transparent pb-24 relative">
+					<!-- Ambient Backdrop Effects Wrapper -->
+					<div class="absolute inset-0 overflow-hidden pointer-events-none z-[-1]">
+						<div class="absolute top-[-100px] left-[-50px] w-[300px] h-[300px] bg-brand-primary/20 blur-[80px] rounded-full"></div>
+						<div class="absolute top-[20%] right-[-100px] w-[250px] h-[250px] bg-brand-secondary/20 blur-[80px] rounded-full"></div>
 					</div>
 
-					<!-- Search bar (Sticky below header if desired) -->
-					<div class="px-5 mb-6">
+					<!-- Custom Header for Home -->
+					<div 
+						class="px-5 flex justify-between items-center sticky top-0 z-50 transition-all duration-500 ease-out"
+						:class="isScrolled ? 'bg-white/70 dark:bg-black/70 backdrop-blur-xl shadow-glass py-4' : 'bg-transparent pt-8 pb-4'"
+					>
+						<div class="flex flex-col animate-fade-in-up">
+							<span class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary leading-none mb-1">Welcome back</span>
+							<h1 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary leading-none">Healthy Living</h1>
+						</div>
+						<div class="flex items-center gap-2">
+							<button 
+								v-if="isScrolled"
+								@click="$router.push('/products')"
+								class="relative p-2.5 app-card active:scale-90 transition-all hover:shadow-neon"
+							>
+								<Search class="w-5 h-5 text-gray-700 dark:text-gray-300" />
+							</button>
+							<button 
+								@click="$router.push('/notifications')"
+								class="relative p-2.5 app-card active:scale-90 transition-all hover:shadow-neon"
+							>
+								<Bell class="w-5 h-5 text-gray-700 dark:text-gray-300" />
+								<span class="absolute top-2 right-2 w-2 h-2 bg-brand-accent rounded-full border-2 border-white dark:border-gray-800 animate-pulse"></span>
+							</button>
+						</div>
+					</div>
+
+					<!-- Search bar (Collapses on Scroll) -->
+					<div 
+						class="px-5 animate-fade-in-up overflow-hidden transition-all duration-500 ease-in-out" 
+						:class="isScrolled ? 'max-h-0 opacity-0 mb-0' : 'max-h-[100px] opacity-100 mb-6'"
+						style="animation-delay: 0.1s"
+					>
 						<div class="relative group" @click="$router.push('/products')">
-							<Search class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-hover:text-indigo-600 transition-colors" />
-							<div class="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl text-sm font-semibold text-gray-400 shadow-xl shadow-gray-100/50 dark:shadow-none flex items-center">
+							<Search class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-hover:text-brand-primary transition-colors z-10" />
+							<div class="w-full pl-12 pr-4 py-4 app-card text-sm font-semibold text-gray-400 flex items-center relative overflow-hidden group-hover:shadow-glass transition-all">
+								<div class="absolute inset-0 bg-gradient-to-r from-brand-primary/5 to-brand-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 								Search for medicines, vitamins...
 							</div>
 						</div>
@@ -95,10 +118,16 @@ import ProductThumb from '@/components/ProductThumb.vue'
 import SectionHeader from '@/components/SectionHeader.vue'
 import CategoryCard from '@/components/CategoryCard.vue'
 
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { createResource } from 'frappe-ui'
 
 const router = useRouter()
+const isScrolled = ref(false)
+
+const onScroll = (ev) => {
+	isScrolled.value = ev.detail.scrollTop > 30
+}
 
 const mockCategories = [
 	{ name: "Medicines", icon: Pill },

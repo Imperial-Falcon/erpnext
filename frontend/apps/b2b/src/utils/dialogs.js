@@ -8,4 +8,14 @@ export const showErrorAlert = async (message) => {
     await alert.present()
 }
 
+export const showSuccessAlert = async (message) => {
+    const alert = await alertController.create({
+        header: "Success",
+        message,
+        buttons: ["OK"],
+    })
+
+    await alert.present()
+}
+
 import { alertController } from "@ionic/vue"

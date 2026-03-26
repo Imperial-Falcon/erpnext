@@ -2,20 +2,28 @@
 
 /* Design Tokens & Reusable Styles */
 :root {
-  --app-primary: #4f46e5;
-  --app-bg: #f9fafb;
+  --app-bg: #f8fafc;
   --app-surface: #ffffff;
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-bg: rgba(255, 255, 255, 0.7);
 }
 
 .dark {
-  --app-bg: #121212;
-  --app-surface: #1e1e1e;
+  --app-bg: #020617; /* Slate 950 */
+  --app-surface: #0f172a; /* Slate 900 */
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-bg: rgba(15, 23, 42, 0.6);
 }
 
 @layer components {
   /* Card Style */
   .app-card {
-    @apply bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm transition-all active:scale-[0.98];
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+    @apply transition-all active:scale-[0.98];
     border-radius: 1.5rem; /* Equivalent to 24px / 3xl */
   }
 

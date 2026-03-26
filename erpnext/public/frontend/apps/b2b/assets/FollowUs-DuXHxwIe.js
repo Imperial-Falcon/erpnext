@@ -1,0 +1,27 @@
+import{c as n,I as m}from"./index-Bc8nutxM.js";import{_ as b}from"./BaseLayout-e-26pqim.js";import{S as _}from"./share-2-Yy0zKcvR.js";import{E as f}from"./external-link-DS7SdcIx.js";import{S as y}from"./star-ICv_nw83.js";import{j as c,k as d,n as t,i as v,f as l,G as e,l as i,v as s,t as h,F as g,E as u,x as p,H as k}from"./frappe-ui-CHDCKZT2.js";/**
+ * @license lucide-vue-next v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const w=n("facebook",[["path",{d:"M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z",key:"1jg4f8"}]]);/**
+ * @license lucide-vue-next v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const j=n("instagram",[["rect",{width:"20",height:"20",x:"2",y:"2",rx:"5",ry:"5",key:"2e1cvw"}],["path",{d:"M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z",key:"9exkf1"}],["line",{x1:"17.5",x2:"17.51",y1:"6.5",y2:"6.5",key:"r4j83e"}]]);/**
+ * @license lucide-vue-next v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const z=n("linkedin",[["path",{d:"M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z",key:"c2jq9f"}],["rect",{width:"4",height:"12",x:"2",y:"9",key:"mk3on5"}],["circle",{cx:"4",cy:"4",r:"2",key:"bt5ra8"}]]);/**
+ * @license lucide-vue-next v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const C=n("twitter",[["path",{d:"M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z",key:"pff0z6"}]]);/**
+ * @license lucide-vue-next v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const F=n("youtube",[["path",{d:"M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17",key:"1q2vi4"}],["path",{d:"m10 15 5-3-5-3z",key:"1jp15x"}]]),L={class:"flex flex-col h-full bg-gray-50 overflow-hidden"},I={class:"p-6 pb-24 text-center"},S={class:"mb-10 pt-4"},M={class:"w-24 h-24 bg-white rounded-[2.5rem] shadow-xl shadow-gray-200/50 border border-gray-50 flex items-center justify-center mx-auto mb-6"},T={class:"text-2xl font-black text-gray-900 mb-2"},B={class:"text-gray-500 text-sm px-10"},E={class:"grid grid-cols-1 gap-4 px-2"},A=["href"],H={class:"flex items-center gap-4"},V={class:"text-left"},Y={class:"font-black text-gray-900 leading-none mb-1"},q={class:"text-[10px] font-black text-gray-400 uppercase tracking-widest"},D={class:"w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-300 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-colors"},N={class:"mt-12 p-8 bg-gradient-to-br from-indigo-600 to-purple-700 rounded-[2.5rem] text-white shadow-xl shadow-indigo-200 relative overflow-hidden text-center"},U={class:"relative z-10"},$={class:"flex justify-center gap-1 mb-4"},G={class:"text-lg font-black mb-1"},R={class:"text-indigo-100 text-xs mb-6 px-4 leading-relaxed"},J={class:"w-full py-4 bg-white text-indigo-600 font-black rounded-2xl text-sm active:scale-95 transition-all shadow-lg"},te={__name:"FollowUs",setup(K){const a=v("$translate"),x=[{name:"Facebook",handle:"@healthyliving",url:"https://facebook.com",icon:w,bg:"bg-blue-50",color:"text-blue-600"},{name:"Instagram",handle:"@healthy_living_app",url:"https://instagram.com",icon:j,bg:"bg-pink-50",color:"text-pink-600"},{name:"Twitter",handle:"@healthyliving",url:"https://twitter.com",icon:C,bg:"bg-sky-50",color:"text-sky-600"},{name:"LinkedIn",handle:"healthy-living-b2b",url:"https://linkedin.com",icon:z,bg:"bg-indigo-50",color:"text-indigo-700"},{name:"YouTube",handle:"Healthy Living Channel",url:"https://youtube.com",icon:F,bg:"bg-red-50",color:"text-red-600"}];return(O,r)=>(l(),c(b,{pageTitle:t(a)("Follow Us")},{body:d(()=>[e("div",L,[i(t(m),null,{default:d(()=>[e("div",I,[e("div",S,[e("div",M,[i(t(_),{class:"w-10 h-10 text-indigo-600"})]),e("h2",T,s(t(a)("Connect with us")),1),e("p",B,s(t(a)("Follow us on social media for latest updates, offers and health tips.")),1)]),e("div",E,[(l(),h(g,null,u(x,o=>e("a",{key:o.name,href:o.url,target:"_blank",class:"bg-white rounded-3xl p-5 border border-gray-100 shadow-sm flex items-center justify-between active:scale-[0.98] transition-all group"},[e("div",H,[e("div",{class:p(["w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner",o.bg])},[(l(),c(k(o.icon),{class:p(["w-6 h-6",o.color])},null,8,["class"]))],2),e("div",V,[e("h3",Y,s(o.name),1),e("p",q,s(o.handle),1)])]),e("div",D,[i(t(f),{class:"w-5 h-5"})])],8,A)),64))]),e("div",N,[r[0]||(r[0]=e("div",{class:"absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"},null,-1)),e("div",U,[e("div",$,[(l(),h(g,null,u(5,o=>i(t(y),{key:o,class:"w-6 h-6 fill-yellow-400 text-yellow-400"})),64))]),e("h3",G,s(t(a)("Love using our app?")),1),e("p",R,s(t(a)("Your feedback helps us improve and serve you better.")),1),e("button",J,s(t(a)("Rate us on Store")),1)])])])]),_:1})])]),_:1},8,["pageTitle"]))}};export{te as default};
+//# sourceMappingURL=FollowUs-DuXHxwIe.js.map

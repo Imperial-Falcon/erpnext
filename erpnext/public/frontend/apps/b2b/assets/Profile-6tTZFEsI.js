@@ -1,2 +1,0 @@
-import{_ as o}from"./BaseLayout-L0ESZg1_.js";import{A as r,l as t,f as a,x as s}from"./frappe-ui-k2jwhJLy.js";import"./index-BTKvHQNp.js";const _={__name:"Profile",setup(i){return(l,e)=>(a(),r(o,{pageTitle:"Profile"},{body:t(()=>[...e[0]||(e[0]=[s("div",{class:"flex flex-col items-center my-7 p-4 gap-7"}," Profile page working ",-1)])]),_:1}))}};export{_ as default};
-//# sourceMappingURL=Profile-6tTZFEsI.js.map

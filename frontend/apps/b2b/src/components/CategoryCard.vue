@@ -1,12 +1,13 @@
 <template>
 	<div 
-		class="flex flex-col items-center gap-3 active:scale-90 transition-all cursor-pointer group"
+		class="flex flex-col items-center gap-3 transition-transform duration-300 cursor-pointer group animate-fade-in-up"
 		@click="$emit('select', category)"
 	>
-		<div class="w-16 h-16 rounded-2xl bg-white shadow-lg shadow-gray-100 flex items-center justify-center p-4 border border-gray-50 group-hover:bg-indigo-50 group-hover:border-indigo-100 transition-colors">
-			<component :is="category.icon" class="w-7 h-7 text-gray-700 group-hover:text-indigo-600 transition-colors" />
+		<div class="w-16 h-16 rounded-[1.25rem] app-card flex items-center justify-center p-4 relative overflow-hidden">
+			<div class="absolute inset-0 bg-gradient-to-br from-brand-primary to-brand-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+			<component :is="category.icon" class="w-7 h-7 text-gray-700 dark:text-gray-300 group-hover:text-white transition-colors duration-300 relative z-10" />
 		</div>
-		<span class="text-[11px] font-black text-gray-900 tracking-tight text-center leading-tight">
+		<span class="text-[11px] font-black text-gray-900 dark:text-gray-100 tracking-tight text-center leading-tight">
 			{{ category.name }}
 		</span>
 	</div>

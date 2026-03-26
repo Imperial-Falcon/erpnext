@@ -1,6 +1,6 @@
 <template>
 	<ion-page>
-		<ion-header class="ion-no-border" :translucent="true">
+		<ion-header v-if="props.showHeader" class="ion-no-border" :translucent="true">
 			<ion-toolbar class="dark:bg-gray-900">
 				<ion-buttons slot="start" v-if="props.showBackButton">
 					<ion-back-button default-href="/home" text="" class="text-gray-900 dark:text-gray-100"></ion-back-button>
@@ -31,6 +31,10 @@ const props = defineProps({
 		default: "",
 	},
 	showBackButton: {
+		type: Boolean,
+		default: true,
+	},
+	showHeader: {
 		type: Boolean,
 		default: true,
 	}

@@ -1,7 +1,7 @@
 <template>
 	<ion-tab-bar
 		slot="bottom"
-		class="bg-white shadow-md sm:w-96 py-2 pb-2 standalone:pb-safe-bottom"
+		class="glass-tab-bar sm:w-96 py-2 pb-2 standalone:pb-safe-bottom"
 	>
 		<ion-tab-button
 			v-for="item in tabItems"
@@ -9,10 +9,10 @@
 			:tab="item.title"
 			:href="item.route"
 			:class="[
-				'bg-white text-xs space-y-1.5 !hover:border-gray-300 !hover:text-gray-700 transition active:scale-95',
+				'text-xs space-y-1.5 transition-all active:scale-90 relative bg-transparent',
 				route.path === item.route
-					? 'border-gray-900 text-gray-800 font-semibold'
-					: 'text-gray-600 font-normal',
+					? 'text-brand-primary font-black drop-shadow-sm'
+					: 'text-gray-400 dark:text-gray-500 font-medium',
 			]"
 		>
 			<component :is="item.icon" class="h-5 w-5" />
@@ -65,3 +65,21 @@ const tabItems = [
 	},
 ]
 </script>
+
+<style scoped>
+ion-tab-bar.glass-tab-bar {
+	--background: rgba(255, 255, 255, 0.7);
+	backdrop-filter: blur(24px);
+	--border: none;
+	border-top: 1px solid rgba(255, 255, 255, 0.3);
+	box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+	ion-tab-bar.glass-tab-bar {
+		--background: rgba(10, 10, 10, 0.7);
+		border-top: 1px solid rgba(255, 255, 255, 0.05);
+		box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.3);
+	}
+}
+</style>

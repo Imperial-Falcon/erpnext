@@ -1,2 +1,0 @@
-import{_ as r}from"./BaseLayout-L0ESZg1_.js";import{A as s,l as t,f as a,x as o}from"./frappe-ui-k2jwhJLy.js";import"./index-BTKvHQNp.js";const c={__name:"Offers",setup(f){return(p,e)=>(a(),s(r,{pageTitle:"Offers"},{body:t(()=>[...e[0]||(e[0]=[o("div",{class:"flex flex-col items-center my-7 p-4 gap-7"}," offer page working ",-1)])]),_:1}))}};export{c as default};
-//# sourceMappingURL=Offers-ts9wRN7e.js.map
