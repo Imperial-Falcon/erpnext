@@ -1,0 +1,2 @@
+var c=(r,e,a)=>new Promise((w,n)=>{var i=t=>{try{s(a.next(t))}catch(o){n(o)}},h=t=>{try{s(a.throw(t))}catch(o){n(o)}},s=t=>t.done?w(t.value):Promise.resolve(t.value).then(i,h);s((a=a.apply(r,e)).next())});import{j as l}from"./index-B5KJ80ik.js";const b=r=>c(void 0,null,function*(){yield(yield l.create({header:"Error",message:r,buttons:["OK"]})).present()}),d=r=>c(void 0,null,function*(){yield(yield l.create({header:"Success",message:r,buttons:["OK"]})).present()});export{d as a,b as s};
+//# sourceMappingURL=dialogs-DYnIvPlF.js.map

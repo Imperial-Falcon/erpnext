@@ -1,19 +1,29 @@
 <template>
-	<BaseLayout :pageTitle="__('My Profile')">
-		<template #actions>
-			<button 
-				@click="$router.push('/settings')"
-				class="p-2 bg-gray-50 dark:bg-gray-800 rounded-xl active:scale-90 transition-all mr-2"
-			>
-				<SettingsIcon class="w-5 h-5 text-gray-700 dark:text-gray-300" />
-			</button>
-		</template>
+	<BaseLayout :pageTitle="__('My Profile')" :showHeader="false">
 		<template #body>
-			<ion-content>
-				<div class="flex flex-col bg-gray-50/30 dark:bg-black pb-24">
-					<!-- Profile Header Card -->
-					<div class="px-4 pt-6 pb-8">
-						<div class="bg-white dark:bg-gray-900 rounded-[32px] p-6 shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-800 flex flex-col items-center text-center relative overflow-hidden">
+			<div class="flex flex-col h-full bg-transparent overflow-hidden relative">
+				<!-- Ambient Backdrop Effects Wrapper -->
+				<div class="absolute inset-0 overflow-hidden pointer-events-none z-[-1]">
+					<div class="absolute top-[-50px] right-[-100px] w-[300px] h-[300px] bg-brand-primary/20 blur-[80px] rounded-full"></div>
+					<div class="absolute bottom-[20%] left-[-100px] w-[250px] h-[250px] bg-brand-secondary/20 blur-[80px] rounded-full"></div>
+				</div>
+
+				<AppHeader title="Profile" :showBack="true">
+					<template #actions>
+						<button 
+							@click="$router.push('/settings')"
+							class="p-2 app-card shadow-sm active:scale-90 transition-all border-none hover:shadow-neon"
+						>
+							<SettingsIcon class="w-5 h-5 text-gray-700 dark:text-gray-300" />
+						</button>
+					</template>
+				</AppHeader>
+
+				<ion-content>
+					<div class="flex flex-col pb-24 animate-fade-in-up" style="animation-delay: 0.1s">
+						<!-- Profile Header Card -->
+						<div class="px-5 pt-8 pb-4">
+							<div class="app-card rounded-[32px] p-6 border-none shadow-glass flex flex-col items-center text-center relative overflow-hidden">
 							<!-- Background Decoration -->
 							<div class="absolute -top-10 -right-10 w-32 h-32 bg-indigo-50 dark:bg-indigo-900/20 rounded-full blur-3xl"></div>
 							<div class="absolute -bottom-10 -left-10 w-32 h-32 bg-pink-50 dark:bg-pink-900/20 rounded-full blur-3xl"></div>
@@ -31,7 +41,7 @@
 								>
 									{{ user.data.first_name[0] }}
 								</div>
-								<button class="absolute -bottom-1 -right-1 p-2 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 text-indigo-600 dark:text-indigo-400">
+								<button class="absolute -bottom-1 -right-1 p-2 app-card !rounded-2xl shadow-md border-none text-brand-primary">
 									<Camera class="w-4 h-4" />
 								</button>
 							</div>
@@ -44,18 +54,18 @@
 							</p>
 
 							<!-- Mini Stats -->
-							<div class="grid grid-cols-3 w-full mt-8 pt-6 border-t border-gray-50 dark:border-gray-800">
+							<div class="grid grid-cols-3 w-full mt-8 pt-6 border-t border-gray-100/30 dark:border-gray-800/50">
 								<div class="flex flex-col items-center">
 									<span class="text-lg font-black text-gray-900 dark:text-gray-100">12</span>
 									<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Orders</span>
 								</div>
-								<div class="flex flex-col items-center border-x border-gray-50 dark:border-gray-800 px-2">
+								<div class="flex flex-col items-center border-x border-gray-100/30 dark:border-gray-800/50 px-2">
 									<span class="text-lg font-black text-gray-900 dark:text-gray-100">4</span>
 									<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Offers</span>
 								</div>
 								<div class="flex flex-col items-center">
 									<span class="text-lg font-black text-gray-900 dark:text-gray-100">240</span>
-									<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Points</span>
+									<span class="text-[10px] font-black text-brand-primary uppercase tracking-widest drop-shadow-sm">Points</span>
 								</div>
 							</div>
 						</div>
@@ -66,21 +76,21 @@
 						<!-- General Section -->
 						<div>
 							<h3 class="px-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3">General</h3>
-							<div class="bg-white dark:bg-gray-900 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+							<div class="app-card rounded-3xl overflow-hidden border-none shadow-glass">
 								<div
 									v-for="(link, index) in generalLinks"
 									:key="link.title"
 									@click="handleLinkClick(link)"
-									class="flex items-center justify-between p-4 active:bg-gray-50 dark:active:bg-gray-800 transition-colors cursor-pointer"
-									:class="{ 'border-b border-gray-50 dark:border-gray-800': index !== generalLinks.length - 1 }"
+									class="flex items-center justify-between p-4 active:bg-gray-50/50 dark:active:bg-gray-800/50 transition-colors cursor-pointer"
+									:class="{ 'border-b border-gray-100/30 dark:border-gray-800/30': index !== generalLinks.length - 1 }"
 								>
 									<div class="flex items-center gap-4">
-										<div class="w-10 h-10 rounded-2xl flex items-center justify-center" :class="link.iconColor">
+										<div class="w-10 h-10 rounded-2xl flex items-center justify-center shadow-inner" :class="link.iconColor">
 											<component :is="link.icon" class="w-5 h-5" />
 										</div>
 										<span class="text-sm font-bold text-gray-900 dark:text-gray-100">{{ link.title }}</span>
 									</div>
-									<ChevronRight class="w-5 h-5 text-gray-300 dark:text-gray-700" />
+									<ChevronRight class="w-5 h-5 text-gray-300 dark:text-gray-600" />
 								</div>
 							</div>
 						</div>
@@ -88,21 +98,21 @@
 						<!-- Support Section -->
 						<div>
 							<h3 class="px-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3">Support & Legal</h3>
-							<div class="bg-white dark:bg-gray-900 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+							<div class="app-card rounded-3xl overflow-hidden border-none shadow-glass">
 								<div
 									v-for="(link, index) in supportLinks"
 									:key="link.title"
 									@click="handleLinkClick(link)"
-									class="flex items-center justify-between p-4 active:bg-gray-50 dark:active:bg-gray-800 transition-colors cursor-pointer"
-									:class="{ 'border-b border-gray-50 dark:border-gray-800': index !== supportLinks.length - 1 }"
+									class="flex items-center justify-between p-4 active:bg-gray-50/50 dark:active:bg-gray-800/50 transition-colors cursor-pointer"
+									:class="{ 'border-b border-gray-100/30 dark:border-gray-800/30': index !== supportLinks.length - 1 }"
 								>
 									<div class="flex items-center gap-4">
-										<div class="w-10 h-10 rounded-2xl flex items-center justify-center" :class="link.iconColor">
+										<div class="w-10 h-10 rounded-2xl flex items-center justify-center shadow-inner" :class="link.iconColor">
 											<component :is="link.icon" class="w-5 h-5" />
 										</div>
 										<span class="text-sm font-bold text-gray-900 dark:text-gray-100">{{ link.title }}</span>
 									</div>
-									<ChevronRight class="w-5 h-5 text-gray-300 dark:text-gray-700" />
+									<ChevronRight class="w-5 h-5 text-gray-300 dark:text-gray-600" />
 								</div>
 							</div>
 						</div>
@@ -111,15 +121,16 @@
 						<div class="pt-4">
 							<button
 								@click="logout"
-								class="w-full py-5 bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 font-black rounded-3xl flex items-center justify-center gap-3 active:scale-[0.98] transition-all border border-red-100 dark:border-red-900/30 mb-10"
+								class="w-full py-5 app-card text-red-500 font-black rounded-3xl flex items-center justify-center gap-3 active:scale-95 hover:shadow-neon transition-all border-none mb-10"
 							>
 								<LogOut class="w-5 h-5" />
 								<span>Log Out</span>
 							</button>
 						</div>
 					</div>
-				</div>
-			</ion-content>
+					</div>
+				</ion-content>
+			</div>
 		</template>
 	</BaseLayout>
 </template>
@@ -138,6 +149,7 @@ import { showErrorAlert } from "@/utils/dialogs"
 import { formatCurrency } from "@/utils/formatters"
 import ProfileInfoModal from "@/components/ProfileInfoModal.vue"
 import BaseLayout from "@/components/layouts/BaseLayout.vue"
+import AppHeader from "@/components/AppHeader.vue"
 
 const DOCTYPE = "Employee"
 

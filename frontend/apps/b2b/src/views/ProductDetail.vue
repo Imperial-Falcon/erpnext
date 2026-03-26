@@ -1,105 +1,108 @@
 <template>
-	<ion-page>
-		<!-- Header with Back Button -->
-		<ion-header class="ion-no-border" mode="ios">
-			<ion-toolbar class="px-2">
-				<ion-buttons slot="start">
-					<ion-back-button default-href="/home" text="" class="text-gray-900"></ion-back-button>
-				</ion-buttons>
-				<ion-title class="text-base font-black">Product Details</ion-title>
-				<ion-buttons slot="end">
-					<button class="p-2 bg-gray-50 rounded-xl active:scale-90 transition-all mr-2">
-						<Share2 class="w-5 h-5 text-gray-700" />
-					</button>
-				</ion-buttons>
-			</ion-toolbar>
-		</ion-header>
+	<BaseLayout :pageTitle="__('Product Details')" :showHeader="false">
+		<template #body>
+			<div class="flex flex-col h-full overflow-hidden relative">
+				<AppHeader :title="__('Product Details')" :showBack="true" customClass="absolute w-full z-50 bg-white/50 dark:bg-black/50 backdrop-blur-md pb-4 pt-12 shadow-[0_4px_30px_rgba(0,0,0,0.05)] border-b border-white/20">
+					<template #actions>
+						<button class="p-2 app-card !rounded-full shadow-[0_4px_30px_rgba(0,0,0,0.05)] active:scale-90 transition-all">
+							<Share2 class="w-5 h-5 text-gray-700 dark:text-gray-300" />
+						</button>
+					</template>
+				</AppHeader>
 
-		<ion-content class="ion-no-padding">
-			<div class="flex flex-col bg-white pb-32">
+				<!-- Ambient Backdrops -->
+				<div class="absolute inset-0 overflow-hidden pointer-events-none -z-10 bg-gray-50 dark:bg-black">
+					<div class="absolute top-0 right-0 w-[400px] h-[400px] bg-brand-primary/10 blur-[100px] rounded-full"></div>
+					<div class="absolute bottom-0 left-[-100px] w-[300px] h-[300px] bg-brand-secondary/10 blur-[100px] rounded-full"></div>
+				</div>
+
+				<ion-content class="ion-no-padding transparent-content px-2 pt-24 pb-32">
 				<!-- Image Section -->
-				<div class="relative w-full aspect-square bg-gray-50 flex items-center justify-center p-10 overflow-hidden">
+				<div class="relative w-full aspect-square mt-20 app-card mx-auto max-w-[95%] bg-white/60 dark:bg-gray-900/40 flex items-center justify-center p-8 overflow-hidden rounded-[2.5rem] shadow-glass mb-8 z-10 animate-fade-in-up">
 					<img 
 						:src="product.image" 
-						class="max-w-full max-h-full object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500" 
+						class="max-w-full max-h-full object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-700 mix-blend-multiply dark:mix-blend-normal" 
 						alt="product image" 
 					/>
 					
 					<!-- Floating Badges -->
-					<div class="absolute top-6 left-6 flex flex-col gap-2">
-						<div v-if="discount" class="bg-red-500 text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-lg shadow-red-200">
+					<div class="absolute top-5 left-5 flex flex-col gap-2">
+						<div v-if="discount" class="bg-gradient-to-r from-red-500 to-orange-500 text-white text-[10px] font-black px-3 py-1.5 rounded-xl shadow-neon">
 							{{ discount }} OFF
 						</div>
-						<div class="bg-indigo-600 text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-lg shadow-indigo-200">
+						<div class="bg-gradient-to-r from-brand-primary to-brand-accent text-white text-[10px] font-black px-3 py-1.5 rounded-xl shadow-neon">
 							FREE DELIVERY
 						</div>
 					</div>
 
-					<button class="absolute bottom-6 right-6 p-3 bg-white rounded-full shadow-xl shadow-gray-200 border border-gray-100 active:scale-90 transition-all">
-						<Heart class="w-5 h-5 text-gray-400" />
+					<button class="absolute bottom-5 right-5 p-3 app-card rounded-2xl shadow-sm border border-white/20 active:scale-90 transition-all hover:shadow-neon hover:text-brand-accent text-gray-400">
+						<Heart class="w-5 h-5" />
 					</button>
 				</div>
 
 				<!-- Info Section -->
-				<div class="px-6 pt-8">
-					<div class="flex flex-col gap-1 mb-4">
-						<span class="text-[11px] font-black text-indigo-600 uppercase tracking-widest">{{ product.category }}</span>
-						<h1 class="text-2xl font-black text-gray-900 leading-tight">{{ product.name }}</h1>
-						<p class="text-sm font-medium text-gray-400">By {{ product.manufacturer }}</p>
-					</div>
-
-					<!-- Pricing -->
-					<div class="flex items-end gap-3 mb-8">
-						<span class="text-3xl font-black text-indigo-600 tracking-tighter">{{ formatCurrency(product.price, "BDT") }}</span>
-						<div v-if="product.oldPrice" class="flex flex-col">
-							<span class="text-sm text-gray-400 line-through font-medium">{{ formatCurrency(product.oldPrice, "BDT") }}</span>
-							<span class="text-[10px] font-black text-red-500 leading-none">Save {{ formatCurrency(product.oldPrice - product.price, "BDT") }}</span>
+				<div class="px-5 mb-10 animate-fade-in-up" style="animation-delay: 50ms;">
+					<div class="app-card p-6 shadow-glass rounded-[2rem] border border-white/40">
+						<div class="flex flex-col gap-1 mb-6">
+							<span class="text-[10px] font-black text-brand-primary uppercase tracking-[0.2em]">{{ product.category }}</span>
+							<h1 class="text-2xl font-black text-gray-900 dark:text-gray-100 leading-tight">{{ product.name }}</h1>
+							<p class="text-xs font-bold text-gray-400">By {{ product.manufacturer }}</p>
 						</div>
-					</div>
 
-					<!-- Selection Chips (Example: Pack Size) -->
-					<div class="mb-8">
-						<h3 class="text-sm font-black text-gray-900 mb-4">Select Pack Size</h3>
-						<div class="flex gap-3 overflow-x-auto no-scrollbar pb-2">
-							<button 
-								v-for="size in ['10 Tablets', '30 Tablets', '50 Tablets']" 
-								:key="size"
-								class="whitespace-nowrap px-6 py-3 rounded-2xl text-xs font-black border transition-all"
-								:class="size === '30 Tablets' ? 'bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-100' : 'bg-white text-gray-500 border-gray-100 hover:border-indigo-200'"
-							>
-								{{ size }}
-							</button>
-						</div>
-					</div>
-
-					<!-- Features Grid -->
-					<div class="grid grid-cols-2 gap-4 mb-10">
-						<div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 flex items-center gap-3">
-							<div class="w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center">
-								<Zap class="w-4 h-4 text-white" />
+						<!-- Pricing -->
+						<div class="flex items-end gap-3 pb-6 border-b border-gray-100 dark:border-gray-800">
+							<span class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-brand-secondary tracking-tighter">{{ formatCurrency(product.price, "BDT") }}</span>
+							<div v-if="product.oldPrice" class="flex flex-col mb-1.5">
+								<span class="text-xs text-gray-400 line-through font-bold">{{ formatCurrency(product.oldPrice, "BDT") }}</span>
+								<span class="text-[9px] font-black text-emerald-500 leading-none bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-sm">Save {{ formatCurrency(product.oldPrice - product.price, "BDT") }}</span>
 							</div>
-							<span class="text-[11px] font-black text-emerald-800 uppercase tracking-tighter">Fast Acting</span>
 						</div>
-						<div class="p-4 bg-orange-50 rounded-2xl border border-orange-100 flex items-center gap-3">
-							<div class="w-8 h-8 rounded-xl bg-orange-500 flex items-center justify-center">
-								<ShieldCheck class="w-4 h-4 text-white" />
+
+						<!-- Selection Chips -->
+						<div class="py-6 border-b border-gray-100 dark:border-gray-800">
+							<h3 class="text-xs font-black text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wider">Select Pack Size</h3>
+							<div class="flex gap-2.5 overflow-x-auto no-scrollbar pb-1">
+								<button 
+									v-for="size in ['10 Tablets', '30 Tablets', '50 Tablets']" 
+									:key="size"
+									class="whitespace-nowrap px-5 py-2.5 rounded-xl text-xs font-bold transition-all border"
+									:class="size === '30 Tablets' ? 'bg-gradient-to-r from-brand-primary to-brand-secondary text-white border-transparent shadow-neon' : 'app-card text-gray-500 border-gray-200 dark:border-gray-700 hover:border-brand-primary/30'"
+								>
+									{{ size }}
+								</button>
 							</div>
-							<span class="text-[11px] font-black text-orange-800 uppercase tracking-tighter">Lab Tested</span>
+						</div>
+
+						<!-- Features Grid -->
+						<div class="grid grid-cols-2 gap-3 py-6">
+							<div class="app-card p-3 rounded-2xl flex items-center gap-3 border shadow-sm">
+								<div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center">
+									<Zap class="w-4 h-4" />
+								</div>
+								<span class="text-[10px] font-black text-gray-700 dark:text-gray-300 uppercase tracking-tight">Fast Acting</span>
+							</div>
+							<div class="app-card p-3 rounded-2xl flex items-center gap-3 border shadow-sm">
+								<div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center">
+									<ShieldCheck class="w-4 h-4" />
+								</div>
+								<span class="text-[10px] font-black text-gray-700 dark:text-gray-300 uppercase tracking-tight">Lab Tested</span>
+							</div>
+						</div>
+
+						<!-- About Product -->
+						<div class="pt-6">
+							<h3 class="text-xs font-black text-gray-900 dark:text-gray-100 mb-2 uppercase tracking-wider">About This Product</h3>
+							<p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
+								{{ product.description || "Comprehensive multi-vitamin formula designed to support your daily energy needs." }}
+							</p>
 						</div>
 					</div>
+				</div>
 
-					<!-- About Product -->
-					<div class="mb-10">
-						<h3 class="text-sm font-black text-gray-900 mb-3">About This Product</h3>
-						<p class="text-sm text-gray-500 leading-relaxed font-medium">
-							{{ product.description || "Comprehensive multi-vitamin formula designed to support your daily energy needs and immune system. Contains high-potency Vitamin C, Vitamin D, and Zinc for maximum protection and vitality." }}
-						</p>
-					</div>
-
-					<!-- Related Products -->
-					<div class="mb-10">
+				<!-- Related Products -->
+					<div class="mb-10 px-5 animate-fade-in-up" style="animation-delay: 100ms;">
 						<SectionHeader title="Frequently Bought Together" :showSeeAll="false" />
-						<div class="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-6 px-6">
+						<div class="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-5 px-5 mt-2">
 							<ProductThumb 
 								v-for="i in 3" 
 								:key="i" 
@@ -108,51 +111,50 @@
 							/>
 						</div>
 					</div>
+				</ion-content>
+
+				<!-- Fixed Bottom Bar -->
+				<div class="app-card fixed bottom-0 left-0 right-0 p-5 rounded-t-[2rem] shadow-[0_-15px_40px_rgba(0,0,0,0.05)] border-t border-white/40 flex items-center gap-4 z-50 standalone:pb-10 transition-all font-sans">
+					<!-- Quantity Controls -->
+					<div class="flex items-center px-2 py-1.5 app-card shadow-inner border border-gray-100 dark:border-gray-800 rounded-[1.2rem]">
+						<button 
+							@click="qty > 1 ? qty-- : null"
+							class="w-8 h-8 flex items-center justify-center app-card rounded-xl shadow-sm active:scale-90 transition-all text-gray-500"
+						>
+							<Minus class="w-4 h-4" />
+						</button>
+						<span class="w-10 text-center text-sm font-black text-brand-primary">{{ qty }}</span>
+						<button 
+							@click="qty++"
+							class="w-8 h-8 flex items-center justify-center app-card rounded-xl shadow-sm active:scale-90 transition-all text-gray-500"
+						>
+							<Plus class="w-4 h-4" />
+						</button>
+					</div>
+
+					<!-- Add to Cart -->
+					<button class="flex-1 h-12 bg-gradient-to-tr from-brand-primary to-brand-secondary text-white rounded-[1.2rem] shadow-neon active:scale-95 transition-all flex items-center justify-center gap-2" @click="addToCart">
+						<ShoppingCart class="w-4 h-4" />
+						<span class="font-black text-sm tracking-wide">Add to Cart</span>
+					</button>
 				</div>
 			</div>
-		</ion-content>
-
-		<!-- Fixed Bottom Bar -->
-		<div class="fixed bottom-0 left-0 right-0 p-6 bg-white/80 backdrop-blur-xl border-t border-gray-100 flex items-center gap-4 z-50 standalone:pb-10">
-			<!-- Quantity Controls -->
-			<div class="flex items-center bg-gray-50 rounded-2xl p-1.5 border border-gray-100 shadow-inner">
-				<button 
-					@click="qty > 1 ? qty-- : null"
-					class="w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-sm active:scale-90 transition-all"
-				>
-					<Minus class="w-4 h-4 text-gray-600" />
-				</button>
-				<span class="w-12 text-center text-sm font-black text-gray-900">{{ qty }}</span>
-				<button 
-					@click="qty++"
-					class="w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-sm active:scale-90 transition-all"
-				>
-					<Plus class="w-4 h-4 text-gray-600" />
-				</button>
-			</div>
-
-			<!-- Add to Cart -->
-			<ion-button expand="block" mode="ios" class="checkout-btn h-14 flex-1 m-0" @click="addToCart">
-				<div class="flex items-center gap-3">
-					<ShoppingCart class="w-5 h-5" />
-					<span class="font-black text-sm">Add to Cart</span>
-				</div>
-			</ion-button>
-		</div>
-	</ion-page>
+		</template>
+	</BaseLayout>
 </template>
 
 <script setup>
-import { ref, computed } from "vue"
+import { ref, computed, inject } from "vue"
 import { useRoute } from "vue-router"
-import { 
-	IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton, 
-	IonTitle, IonContent, IonButton 
-} from "@ionic/vue"
+import { IonContent } from "@ionic/vue"
+import BaseLayout from "@/components/layouts/BaseLayout.vue"
+import AppHeader from "@/components/AppHeader.vue"
 import { Share2, Heart, Plus, Minus, ShoppingCart, Zap, ShieldCheck } from "lucide-vue-next"
 import { formatCurrency } from "@/utils/formatters"
 import ProductThumb from "@/components/ProductThumb.vue"
 import SectionHeader from "@/components/SectionHeader.vue"
+
+const __ = inject("$translate")
 
 const route = useRoute()
 const qty = ref(1)
@@ -189,15 +191,7 @@ const addToCart = () => {
 </script>
 
 <style scoped>
-.checkout-btn {
-	--background: #4f46e5;
-	--background-activated: #4338ca;
-	--border-radius: 20px;
-	--box-shadow: 0 12px 24px -6px rgba(79, 70, 229, 0.4);
-}
-
-ion-toolbar {
+.transparent-content {
 	--background: transparent;
-	--border-width: 0;
 }
 </style>

@@ -1,13 +1,30 @@
 <template>
-	<BaseLayout :pageTitle="categoryName">
+	<BaseLayout :pageTitle="categoryName" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden">
-				<ion-content>
-					<!-- Category Info Banner -->
-					<div class="bg-white dark:bg-gray-900 p-6 shadow-sm border-b border-gray-50 dark:border-gray-800">
-						<h1 class="text-2xl font-black text-gray-900 dark:text-gray-100 leading-tight">{{ categoryName }}</h1>
-						<p class="text-sm text-gray-400 font-medium mt-1">{{ filteredProducts.length }} Products available in this category</p>
-					</div>
+			<div class="flex flex-col h-full overflow-hidden relative">
+				<AppHeader 
+					:title="categoryName" 
+					:showBack="true" 
+					:isScrolled="false" 
+					customClass="bg-white/70 dark:bg-black/70 backdrop-blur-xl shadow-glass z-50 animate-fade-in-up border-b border-white/20"
+				>
+					<template #bottom>
+						<div class="px-5 pb-4 text-center">
+							<span class="inline-flex items-center gap-1.5 px-3 py-1 app-card rounded-full border shadow-sm">
+								<span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
+								<span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">{{ filteredProducts.length }} Products Available</span>
+							</span>
+						</div>
+					</template>
+				</AppHeader>
+
+				<!-- Ambient Backdrops -->
+				<div class="absolute inset-0 overflow-hidden pointer-events-none -z-10 bg-gray-50 dark:bg-black">
+					<div class="absolute top-[20%] right-[-50px] w-[300px] h-[300px] bg-brand-primary/10 blur-[80px] rounded-full"></div>
+					<div class="absolute bottom-[10%] left-[-50px] w-[250px] h-[250px] bg-brand-secondary/15 blur-[80px] rounded-full"></div>
+				</div>
+
+				<ion-content class="transparent-content pt-2 pb-10">
 
 					<!-- Products Grid -->
 					<div v-if="filteredProducts.length > 0" class="p-4 grid grid-cols-2 gap-4 pb-24">
@@ -20,15 +37,16 @@
 					</div>
 
 					<!-- Empty State -->
-					<div v-else class="flex flex-col items-center justify-center py-20 px-10 text-center">
-						<div class="w-20 h-20 bg-indigo-50 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4">
-							<PackageSearch class="w-10 h-10 text-indigo-400" />
+					<div v-else class="flex flex-col items-center justify-center py-20 px-10 text-center animate-fade-in-up" style="animation-delay: 100ms;">
+						<div class="w-24 h-24 app-card rounded-full flex items-center justify-center mb-6 shadow-glass relative">
+							<div class="absolute inset-0 bg-brand-primary/10 rounded-full animate-ping opacity-50"></div>
+							<PackageSearch class="w-10 h-10 text-brand-primary" />
 						</div>
-						<h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">No products found</h3>
-						<p class="text-sm text-gray-400">There are currently no products available in this category.</p>
+						<h3 class="text-xl font-black text-gray-900 dark:text-gray-100 mb-2">No products found</h3>
+						<p class="text-sm text-gray-500">There are currently no products available in this category.</p>
 						<button 
 							@click="$router.push('/products')"
-							class="mt-6 px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl shadow-lg shadow-indigo-100 dark:shadow-none active:scale-95 transition-all"
+							class="mt-8 px-8 py-3.5 bg-gradient-to-tr from-brand-primary to-brand-secondary text-white font-black rounded-2xl shadow-neon active:scale-95 transition-all text-sm tracking-wide"
 						>
 							Browse All Products
 						</button>
@@ -44,8 +62,9 @@ import { ref, computed } from "vue"
 import { useRoute } from "vue-router"
 import { IonContent } from "@ionic/vue"
 import BaseLayout from "@/components/layouts/BaseLayout.vue"
+import AppHeader from "@/components/AppHeader.vue"
 import ProductThumb from "@/components/ProductThumb.vue"
-import { ChevronLeft, PackageSearch } from "lucide-vue-next"
+import { PackageSearch } from "lucide-vue-next"
 
 const route = useRoute()
 const categoryName = computed(() => route.params.name || "Category")
@@ -61,3 +80,9 @@ const filteredProducts = computed(() => {
 	return products.value.filter(p => p.category.toLowerCase() === categoryName.value.toLowerCase())
 })
 </script>
+
+<style scoped>
+.transparent-content {
+	--background: transparent;
+}
+</style>

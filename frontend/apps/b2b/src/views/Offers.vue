@@ -1,10 +1,19 @@
 <template>
-	<BaseLayout pageTitle="Special Offers">
+	<BaseLayout :pageTitle="__('Special Offers')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 overflow-hidden">
-				<ion-content>
+			<div class="flex flex-col h-full bg-transparent overflow-hidden relative">
+				<AppHeader :title="__('Special Offers')" :showBack="true" customClass="z-50 bg-white/70 dark:bg-black/70 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.05)] border-b border-white/20" />
+				
+				<!-- Ambient backdrops -->
+				<div class="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+					<div class="absolute top-[10%] left-[-50px] w-[300px] h-[300px] bg-red-500/10 blur-[80px] rounded-full"></div>
+					<div class="absolute bottom-[30%] right-[-50px] w-[250px] h-[250px] bg-brand-primary/10 blur-[80px] rounded-full"></div>
+				</div>
+
+				<ion-content class="transparent-content pb-10">
 					<!-- Flash Sale Header -->
-					<div class="p-5 bg-gradient-to-r from-red-500 to-pink-600 text-white">
+					<div class="p-5 bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-neon relative overflow-hidden app-card mx-4 mt-6 rounded-[2rem]">
+						<div class="absolute inset-0 bg-white/10 mix-blend-overlay"></div>
 						<div class="flex justify-between items-center mb-4">
 							<div>
 								<h2 class="text-xl font-black uppercase tracking-tighter italic">Flash Sale</h2>
@@ -56,10 +65,12 @@
 					</div>
 
 					<!-- Discounted Grid (Vertical Cards) -->
-					<div class="px-4 pb-24">
-						<div class="flex items-center justify-between mb-4">
-							<h3 class="text-lg font-black text-gray-900">Best Deals for You</h3>
-							<BadgePercent class="w-5 h-5 text-indigo-500" />
+					<div class="px-5 pb-24">
+						<div class="flex items-center justify-between mb-5">
+							<h3 class="text-lg font-black text-gray-900 dark:text-gray-100">Best Deals for You</h3>
+							<div class="w-8 h-8 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center">
+								<BadgePercent class="w-5 h-5" />
+							</div>
 						</div>
 						
 						<div class="grid grid-cols-2 gap-4">
@@ -78,10 +89,14 @@
 </template>
 
 <script setup>
+import { inject } from "vue"
 import { IonContent } from "@ionic/vue"
 import BaseLayout from "@/components/layouts/BaseLayout.vue"
+import AppHeader from "@/components/AppHeader.vue"
 import ProductThumb from "@/components/ProductThumb.vue"
 import { BadgePercent } from "lucide-vue-next"
+
+const __ = inject("$translate")
 
 const mockOffers = [
 	{ id: 1, name: "Omega 3 Capsules", price: 850, oldPrice: 1200, discount: "30%", image: "https://via.placeholder.com/150?text=Omega", manufacturer: "NutriLife" },
@@ -98,5 +113,8 @@ const mockOffers = [
 .no-scrollbar {
 	-ms-overflow-style: none;
 	scrollbar-width: none;
+}
+.transparent-content {
+	--background: transparent;
 }
 </style>

@@ -10,15 +10,13 @@
 					</div>
 
 					<!-- Custom Header for Home -->
-					<div 
-						class="px-5 flex justify-between items-center sticky top-0 z-50 transition-all duration-500 ease-out"
-						:class="isScrolled ? 'bg-white/70 dark:bg-black/70 backdrop-blur-xl shadow-glass py-4' : 'bg-transparent pt-8 pb-4'"
+					<AppHeader 
+						:isScrolled="isScrolled" 
+						subtitle="Welcome back" 
+						title="Healthy Living" 
+						:showBack="false"
 					>
-						<div class="flex flex-col animate-fade-in-up">
-							<span class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary leading-none mb-1">Welcome back</span>
-							<h1 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary leading-none">Healthy Living</h1>
-						</div>
-						<div class="flex items-center gap-2">
+						<template #actions>
 							<button 
 								v-if="isScrolled"
 								@click="$router.push('/products')"
@@ -33,8 +31,8 @@
 								<Bell class="w-5 h-5 text-gray-700 dark:text-gray-300" />
 								<span class="absolute top-2 right-2 w-2 h-2 bg-brand-accent rounded-full border-2 border-white dark:border-gray-800 animate-pulse"></span>
 							</button>
-						</div>
-					</div>
+						</template>
+					</AppHeader>
 
 					<!-- Search bar (Collapses on Scroll) -->
 					<div 
@@ -110,13 +108,14 @@
 </template>
 
 <script setup>
-import { IonContent } from '@ionic/vue'
+import { IonContent, onIonViewWillEnter, onIonViewWillLeave, onIonViewDidEnter } from '@ionic/vue'
 import { Bell, Search, Pill, HeartPulse, Baby, Apple, SprayCan } from 'lucide-vue-next'
 import HeroBanner from '@/components/HeroBanner.vue'
-import BaseLayout from '@/components/layouts/BaseLayout.vue'
-import ProductThumb from '@/components/ProductThumb.vue'
+import BaseLayout from "@/components/layouts/BaseLayout.vue"
+import ProductThumb from "@/components/ProductThumb.vue"
 import SectionHeader from '@/components/SectionHeader.vue'
-import CategoryCard from '@/components/CategoryCard.vue'
+import CategoryCard from "@/components/CategoryCard.vue"
+import AppHeader from "@/components/AppHeader.vue"
 
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'

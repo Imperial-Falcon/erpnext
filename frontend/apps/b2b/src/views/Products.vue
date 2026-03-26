@@ -1,80 +1,88 @@
 <template>
-	<BaseLayout pageTitle="All Products">
+	<BaseLayout :pageTitle="__('All Products')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 overflow-hidden">
-				<!-- Search and Filter Header -->
-				<div class="bg-white p-4 shadow-sm z-10">
-					<div class="flex gap-2">
-						<div class="relative flex-1">
-							<Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-							<input
-								v-model="searchQuery"
-								type="text"
-								placeholder="Search medicine, vitamins..."
-								class="w-full pl-10 pr-4 py-3 bg-gray-100 border-none rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 transition-all"
-								@keyup.enter="handleSearch"
-							/>
-						</div>
-						<button
-							@click="showFilters = true"
-							class="p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors relative"
-						>
-							<SlidersHorizontal class="w-5 h-5 text-gray-600" />
-							<span v-if="activeFiltersCount > 0" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center border-2 border-white">
-								{{ activeFiltersCount }}
-							</span>
-						</button>
-					</div>
+			<div class="flex flex-col h-full bg-transparent overflow-hidden relative">
+				<!-- Ambient Backdrop Effects Wrapper -->
+				<div class="absolute inset-0 overflow-hidden pointer-events-none z-[-1]">
+					<div class="absolute top-[-50px] right-[-100px] w-[300px] h-[300px] bg-brand-primary/20 blur-[80px] rounded-full"></div>
+					<div class="absolute bottom-[10%] left-[-100px] w-[250px] h-[250px] bg-brand-secondary/20 blur-[80px] rounded-full"></div>
+				</div>
 
-					<!-- Recent Searches -->
-					<div v-if="recentSearches.length > 0 && !searchQuery" class="mt-4">
-						<div class="flex justify-between items-center mb-2">
-							<span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Recent Searches</span>
-							<button @click="recentSearches = []" class="text-xs text-indigo-600 font-semibold">Clear</button>
-						</div>
-						<div class="flex flex-wrap gap-2">
+				<!-- Search and Filter Header -->
+				<AppHeader :title="__('All Products')" :showBack="true" :isScrolled="false" customClass="bg-white/70 dark:bg-black/70 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.05)] z-10 animate-fade-in-up">
+					<template #bottom>
+						<div class="flex gap-2">
+							<div class="relative flex-1 group">
+								<Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-hover:text-brand-primary transition-colors z-10" />
+								<input
+									v-model="searchQuery"
+									type="text"
+									placeholder="Search medicine, vitamins..."
+									class="w-full pl-10 pr-4 py-3 app-card border-none text-sm focus:ring-2 focus:ring-brand-primary transition-all bg-transparent group-hover:shadow-glass placeholder-gray-400"
+									@keyup.enter="handleSearch"
+								/>
+							</div>
 							<button
-								v-for="term in recentSearches"
-								:key="term"
-								@click="searchQuery = term; handleSearch()"
-								class="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs rounded-full border border-gray-100 hover:border-indigo-200 transition-colors"
+								@click="showFilters = true"
+								class="p-3 app-card hover:shadow-neon active:scale-95 transition-all relative border-none"
 							>
-								{{ term }}
+								<SlidersHorizontal class="w-5 h-5 text-gray-600 dark:text-gray-300" />
+								<span v-if="activeFiltersCount > 0" class="absolute -top-1 -right-1 w-4 h-4 bg-brand-accent text-white text-[10px] rounded-full flex items-center justify-center border-2 border-white dark:border-gray-800 shadow-md">
+									{{ activeFiltersCount }}
+								</span>
 							</button>
 						</div>
-					</div>
-				</div>
+
+						<!-- Recent Searches -->
+						<div v-if="recentSearches.length > 0 && !searchQuery" class="mt-4">
+							<div class="flex justify-between items-center mb-2">
+								<span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Recent Searches</span>
+								<button @click="recentSearches = []" class="text-xs text-indigo-600 font-semibold">Clear</button>
+							</div>
+							<div class="flex flex-wrap gap-2">
+								<button
+									v-for="term in recentSearches"
+									:key="term"
+									@click="searchQuery = term; handleSearch()"
+									class="px-3 py-1.5 app-card !rounded-full text-gray-600 dark:text-gray-300 text-xs hover:border-brand-primary transition-colors border-none"
+								>
+									{{ term }}
+								</button>
+							</div>
+						</div>
+					</template>
+				</AppHeader>
 
 				<!-- Products Content -->
 				<ion-content>
 					<!-- Categories Horizontal Scroll -->
-					<div class="p-4 overflow-x-auto flex gap-3 no-scrollbar">
+					<div class="p-4 overflow-x-auto flex gap-3 no-scrollbar animate-fade-in-up" style="animation-delay: 0.1s">
 						<button
 							v-for="cat in categories"
 							:key="cat"
 							@click="selectedCategory = cat"
-							class="whitespace-nowrap px-5 py-2 rounded-full text-sm font-semibold transition-all"
-							:class="selectedCategory === cat ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-gray-600 border border-gray-100'"
+							class="whitespace-nowrap px-5 py-2 rounded-full text-sm font-bold transition-all"
+							:class="selectedCategory === cat ? 'bg-gradient-to-r from-brand-primary to-brand-secondary text-white shadow-neon drop-shadow-md' : 'app-card text-gray-600 dark:text-gray-300 border-none'"
 						>
 							{{ cat }}
 						</button>
 					</div>
 
 					<!-- Products Grid/List Toggle Header -->
-					<div class="px-4 mb-3 flex justify-between items-center">
-						<span class="text-xs font-bold text-gray-400">{{ filteredProducts.length }} Products found</span>
-						<div class="flex gap-2 bg-gray-100 p-1 rounded-lg">
+					<div class="px-4 mb-3 flex justify-between items-center animate-fade-in-up" style="animation-delay: 0.2s">
+						<span class="text-xs font-bold text-gray-400 uppercase tracking-widest">{{ filteredProducts.length }} Products found</span>
+						<div class="flex gap-1 app-card p-1">
 							<button 
 								@click="viewMode = 'grid'" 
-								class="p-1 rounded-md transition-all"
-								:class="viewMode === 'grid' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-400'"
+								class="p-1 rounded-md transition-all active:scale-90"
+								:class="viewMode === 'grid' ? 'bg-white dark:bg-gray-800 shadow-sm text-brand-primary' : 'text-gray-400 hover:text-gray-600'"
 							>
 								<LayoutGrid class="w-4 h-4" />
 							</button>
 							<button 
 								@click="viewMode = 'list'" 
-								class="p-1 rounded-md transition-all"
-								:class="viewMode === 'list' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-400'"
+								class="p-1 rounded-md transition-all active:scale-90"
+								:class="viewMode === 'list' ? 'bg-white dark:bg-gray-800 shadow-sm text-brand-primary' : 'text-gray-400 hover:text-gray-600'"
 							>
 								<List class="w-4 h-4" />
 							</button>
@@ -126,11 +134,14 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue"
+import { ref, computed, inject } from "vue"
 import { IonContent, IonModal, IonButton } from "@ionic/vue"
 import BaseLayout from "@/components/layouts/BaseLayout.vue"
 import ProductThumb from "@/components/ProductThumb.vue"
+import AppHeader from "@/components/AppHeader.vue"
 import { Search, SlidersHorizontal, PackageSearch, LayoutGrid, List } from "lucide-vue-next"
+
+const __ = inject("$translate")
 
 const searchQuery = ref("")
 const selectedCategory = ref("All")
