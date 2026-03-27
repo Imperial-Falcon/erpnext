@@ -1,15 +1,25 @@
 <template>
 	<ion-page>
 		<ion-content class="ion-padding">
-			<div class="flex h-screen w-screen flex-col justify-center bg-white">
-				<div class="flex flex-col mx-auto gap-3 items-center">
-					<DoctoverseOfficeLogo class="h-8 w-8" />
-					<div class="text-3xl font-semibold text-gray-900 text-center">
-						{{ __("Login to Doctoverse B2B") }}
-					</div>
+			<div class="flex h-screen w-screen flex-col justify-center bg-gray-50 dark:bg-black relative overflow-hidden">
+				<!-- Ambient Backdrops -->
+				<div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+					<div class="absolute top-[-100px] left-[-80px] w-[350px] h-[350px] bg-brand-primary/20 blur-[100px] rounded-full animate-pulse-subtle"></div>
+					<div class="absolute bottom-[-50px] right-[-50px] w-[300px] h-[300px] bg-brand-secondary/20 blur-[100px] rounded-full"></div>
+					<div class="absolute top-[40%] right-[20%] w-[200px] h-[200px] bg-brand-accent/10 blur-[80px] rounded-full animate-float"></div>
 				</div>
 
-				<div class="mx-auto mt-10 w-full px-8 sm:w-96">
+				<div class="relative z-10 flex flex-col mx-auto gap-4 items-center animate-fade-in-up">
+					<div class="w-16 h-16 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-[1.5rem] flex items-center justify-center shadow-neon">
+						<DoctoverseOfficeLogo class="h-8 w-8 text-white" />
+					</div>
+					<div class="text-2xl font-black text-gray-900 dark:text-gray-100 text-center leading-tight">
+						{{ __("Login to Doctoverse B2B") }}
+					</div>
+					<p class="text-xs font-bold text-gray-400 uppercase tracking-widest">{{ __("Your Health, Our Priority") }}</p>
+				</div>
+
+				<div class="relative z-10 mx-auto mt-10 w-full px-8 sm:w-96 animate-fade-in-up" style="animation-delay: 0.1s">
 					<form class="flex flex-col space-y-4" @submit.prevent="submit">
 						<Input
 							:label="__('Email')"
@@ -29,23 +39,23 @@
 						<Button
 							:loading="session.login.loading"
 							variant="solid"
-							class="disabled:bg-gray-700 disabled:text-white !mt-6"
+							class="disabled:bg-gray-700 disabled:text-white !mt-6 !rounded-[1.2rem] !h-14 !font-black !shadow-neon !bg-gradient-to-tr !from-brand-primary !to-brand-secondary"
 						>
 							{{ __("Login") }}
 						</Button>
 					</form>
 
 					<template v-if="authProviders.data?.length">
-						<div class="text-center text-sm text-gray-600 my-4">or</div>
-						<div class="space-y-4">
+						<div class="text-center text-xs font-bold text-gray-400 my-6 uppercase tracking-widest">{{ __("or") }}</div>
+						<div class="space-y-3">
 							<a
 								v-for="provider in authProviders.data"
 								:key="provider.name"
-								class="flex items-center justify-center gap-2 transition-colors focus:outline-none text-gray-800 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 focus-visible:ring focus-visible:ring-gray-400 h-7 text-base p-2 rounded"
+								class="flex items-center justify-center gap-3 app-card border border-white/40 shadow-glass h-12 text-sm font-bold text-gray-700 dark:text-gray-300 rounded-[1.2rem] active:scale-[0.98] transition-all"
 								:href="provider.auth_url"
 							>
-								<img class="h-4 w-4" :src="provider.icon" :alt="provider.provider_name" />
-								<span>Login with {{ provider.provider_name }}</span>
+								<img class="h-5 w-5" :src="provider.icon" :alt="provider.provider_name" />
+								<span>{{ __("Login with") }} {{ provider.provider_name }}</span>
 							</a>
 						</div>
 					</template>
@@ -54,16 +64,14 @@
 
 			<Dialog v-model="resetPassword.showDialog">
 				<template #body-title>
-					<h2 class="text-lg font-bold">{{ __("Reset Password") }} </h2>
+					<h2 class="text-lg font-black">{{ __("Reset Password") }}</h2>
 				</template>
 				<template #body-content>
-					<p>
-						{{ __("Your password has expired. Please reset your password to continue") }}
-					</p>
+					<p>{{ __("Your password has expired. Please reset your password to continue") }}</p>
 				</template>
 				<template #actions>
 					<a
-						class="inline-flex items-center justify-center gap-2 transition-colors focus:outline-none text-white bg-gray-900 hover:bg-gray-800 active:bg-gray-700 focus-visible:ring focus-visible:ring-gray-400 h-7 text-base px-2 rounded"
+						class="inline-flex items-center justify-center gap-2 transition-colors text-white bg-gradient-to-tr from-brand-primary to-brand-secondary h-10 text-sm px-4 rounded-xl font-black"
 						:href="resetPassword.link"
 						target="_blank"
 					>
@@ -74,27 +82,14 @@
 
 			<Dialog v-model="otp.showDialog">
 				<template #body-title>
-					<h2 class="text-lg font-bold">{{ __("OTP Verification") }}</h2>
+					<h2 class="text-lg font-black">{{ __("OTP Verification") }}</h2>
 				</template>
 				<template #body-content>
-					<p class="mb-4" v-if="otp.verification.prompt">
-						{{ otp.verification.prompt }}
-					</p>
-
+					<p class="mb-4" v-if="otp.verification.prompt">{{ otp.verification.prompt }}</p>
 					<form class="flex flex-col space-y-4" @submit.prevent="submit">
-						<Input
-							:label="__('OTP Code')"
-							type="text"
-							placeholder="000000"
-							v-model="otp.code"
-							autocomplete="one-time-code"
-						/>
+						<Input :label="__('OTP Code')" type="text" placeholder="000000" v-model="otp.code" autocomplete="one-time-code" />
 						<ErrorMessage :message="errorMessage" />
-						<Button
-							:loading="session.otp.loading"
-							variant="solid"
-							class="disabled:bg-gray-700 disabled:text-white !mt-6"
-						>
+						<Button :loading="session.otp.loading" variant="solid" class="disabled:bg-gray-700 disabled:text-white !mt-6 !rounded-[1.2rem] !h-14 !font-black">
 							{{ __("Verify") }}
 						</Button>
 					</form>
@@ -108,62 +103,29 @@
 import { IonPage, IonContent } from "@ionic/vue"
 import { inject, reactive, ref } from "vue"
 import { Input, Button, ErrorMessage, Dialog, createResource } from "frappe-ui"
-
 import DoctoverseOfficeLogo from "@/components/icons/DoctoverseOfficeLogo.vue"
 
 const email = ref(null)
 const password = ref(null)
 const errorMessage = ref("")
-
-const resetPassword = reactive({
-	showDialog: false,
-	link: "",
-})
-const otp = reactive({
-	showDialog: false,
-	tmp_id: "",
-	code: "",
-	verification: {},
-})
-
+const resetPassword = reactive({ showDialog: false, link: "" })
+const otp = reactive({ showDialog: false, tmp_id: "", code: "", verification: {} })
 const session = inject("$session")
 const __ = inject("$translate")
 
 async function submit(e) {
 	try {
 		let response
-		if (otp.showDialog) {
-			response = await session.otp(otp.tmp_id, otp.code)
-		} else {
-			response = await session.login(email.value, password.value)
-		}
-
-		if (response.message === "Password Reset") {
-			resetPassword.showDialog = true
-			resetPassword.link = response.redirect_to
-		} else {
-			resetPassword.showDialog = false
-			resetPassword.link = ""
-		}
-
-		// OTP verification
+		if (otp.showDialog) { response = await session.otp(otp.tmp_id, otp.code) }
+		else { response = await session.login(email.value, password.value) }
+		if (response.message === "Password Reset") { resetPassword.showDialog = true; resetPassword.link = response.redirect_to }
+		else { resetPassword.showDialog = false; resetPassword.link = "" }
 		if (response.verification) {
-			if (response.verification.setup) {
-				otp.showDialog = true
-				otp.tmp_id = response.tmp_id
-				otp.verification = response.verification
-			} else {
-				// Don't bother handling impossible OTP setup (e.g. no phone number).
-				window.open("/login?redirect-to=" + encodeURIComponent(window.location.pathname), "_blank")
-			}
+			if (response.verification.setup) { otp.showDialog = true; otp.tmp_id = response.tmp_id; otp.verification = response.verification }
+			else { window.open("/login?redirect-to=" + encodeURIComponent(window.location.pathname), "_blank") }
 		}
-	} catch (error) {
-		errorMessage.value = error.messages.join("\n")
-	}
+	} catch (error) { errorMessage.value = error.messages.join("\n") }
 }
 
-const authProviders = createResource({
-	url: "hrms.api.oauth.oauth_providers",
-	auto: true,
-})
+const authProviders = createResource({ url: "hrms.api.oauth.oauth_providers", auto: true })
 </script>
