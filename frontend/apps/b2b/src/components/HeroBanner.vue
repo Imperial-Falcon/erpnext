@@ -1,113 +1,179 @@
 <template>
-	<div class="relative overflow-hidden px-5">
+	<div class="relative w-full overflow-hidden">
 		<!-- Carousel Container -->
 		<div
 			ref="carouselRef"
-			class="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth"
+			class="flex gap-4 overflow-x-auto snap-x snap-mandatory px-5 pb-4 hide-scrollbar"
 			@scroll="onCarouselScroll"
 			@touchstart="pauseAutoScroll"
 			@touchend="resumeAutoScroll"
+			style="scroll-behavior: smooth;"
 		>
-			<div
-				v-for="(banner, index) in banners"
-				:key="index"
-				class="min-w-full snap-center relative h-[190px] rounded-[1.75rem] overflow-hidden group cursor-pointer"
-				@click="handleBannerClick(banner)"
-			>
-				<!-- Mesh Gradient Background -->
-				<div class="absolute inset-0" :class="banner.bgGradient"></div>
-				<div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(255,255,255,0.15)_0%,transparent_60%)]"></div>
-				<div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.1)_0%,transparent_50%)]"></div>
-
-				<!-- Animated Orbs -->
-				<div class="absolute -top-12 -right-12 w-44 h-44 bg-white/10 rounded-full blur-3xl group-hover:scale-[1.4] transition-transform duration-700"></div>
-				<div class="absolute -bottom-12 -left-12 w-36 h-36 bg-white/10 rounded-full blur-3xl animate-pulse-subtle"></div>
-
-				<!-- Content -->
-				<div class="relative h-full flex items-center p-7 text-white z-10">
-					<div class="flex-1 pr-4">
-						<span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-[0.15em] mb-3 border border-white/20 shadow-sm">
-							{{ banner.tag }}
-						</span>
-						<h2
-							class="text-[1.6rem] font-black leading-[1.15] mb-4 drop-shadow-sm"
-							v-html="banner.title"
-						></h2>
-						<button class="px-5 py-2 bg-white/95 backdrop-blur-sm text-gray-900 text-[11px] font-black rounded-full hover:shadow-lg active:scale-95 transition-all tracking-wide uppercase shadow-md">
-							{{ banner.cta }}
-						</button>
-					</div>
-
-					<!-- Featured Image -->
-					<div class="w-[120px] h-[120px] relative flex items-center justify-center flex-shrink-0">
-						<div class="absolute inset-0 bg-white/10 rounded-full blur-2xl scale-125"></div>
-						<img
-							:src="banner.image"
-							:alt="banner.tag"
-							class="w-full h-full object-contain relative z-10 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 drop-shadow-2xl"
-						/>
+			<template v-if="bannerResource.list.loading || !banners.length && bannerResource.list.loading">
+				<div class="min-w-full sm:min-w-[calc(100%-2rem)] snap-center relative h-[210px] rounded-[28px] overflow-hidden shadow-md animate-pulse bg-gray-200 dark:bg-gray-800">
+					<div class="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900"></div>
+					<div class="relative w-full h-full p-6 flex flex-row items-center justify-between">
+						<div class="flex flex-col items-start justify-center flex-1 h-full pr-4 space-y-3">
+							<div class="w-16 h-5 bg-white/30 rounded-full"></div>
+							<div class="w-3/4 h-6 bg-white/30 rounded-lg"></div>
+							<div class="w-1/2 h-6 bg-white/30 rounded-lg mb-2"></div>
+							<div class="mt-auto w-24 h-10 bg-white/50 rounded-full"></div>
+						</div>
+						<div class="w-28 h-28 bg-white/30 rounded-[2rem]"></div>
 					</div>
 				</div>
-			</div>
+			</template>
+
+			<template v-else>
+				<div
+					v-for="(banner, index) in banners"
+					:key="banner.name"
+					class="min-w-full sm:min-w-[calc(100%-2rem)] snap-center relative h-[210px] rounded-[28px] overflow-hidden group cursor-pointer shadow-md"
+					@click="handleBannerClick(banner)"
+				>
+					<!-- Material Design 3 Style Background Gradients -->
+					<div 
+						class="absolute inset-0 bg-gradient-to-br" 
+						:style="{
+							'--tw-gradient-from': banner.background_gradient_from || '#8b5cf6',
+							'--tw-gradient-to': banner.background_gradient_to || '#c084fc',
+							'--tw-gradient-stops': 'var(--tw-gradient-from), var(--tw-gradient-to)'
+						}"
+					></div>
+					<!-- Soft glowing element in the corner -->
+					<div class="absolute -top-10 -right-10 w-48 h-48 bg-white/10 rounded-full blur-2xl group-hover:scale-110 transition-transform duration-700 ease-out"></div>
+					<div class="absolute -bottom-8 -left-8 w-32 h-32 bg-black/5 rounded-full blur-2xl"></div>
+
+					<!-- Content Container -->
+					<div class="relative w-full h-full p-6 flex flex-row items-center justify-between z-10">
+						<!-- Text Section -->
+						<div class="flex flex-col items-start justify-center flex-1 h-full pr-4">
+							<!-- Tag / Label -->
+							<div 
+								v-if="banner.tag_text"
+								class="inline-flex items-center px-3 py-1 backdrop-blur-sm rounded-full text-[10px] font-bold uppercase tracking-widest mb-3 border border-white/30"
+								:style="{ backgroundColor: banner.tag_bg_color || 'rgba(255,255,255,0.2)', color: banner.tag_text_color || '#ffffff' }"
+							>
+								{{ banner.tag_text }}
+							</div>
+							
+							<!-- Headline -->
+							<h2 
+								class="text-[22px] font-black leading-[1.2] drop-shadow-sm mb-4"
+								:style="{ color: banner.title_text_color || '#ffffff' }"
+								v-html="banner.title_html"
+							></h2>
+							
+							<!-- MD3 Filled Button -->
+							<button 
+								v-if="banner.cta_text"
+								class="mt-auto inline-flex items-center justify-center px-6 py-2.5 text-xs font-bold rounded-full shadow-lg hover:opacity-90 active:scale-95 transition-all duration-200"
+								:style="{ backgroundColor: banner.cta_bg_color || '#ffffff', color: banner.cta_text_color || '#111827' }"
+							>
+								{{ banner.cta_text }}
+							</button>
+						</div>
+
+						<!-- Image Section -->
+						<div class="relative w-28 h-28 flex-shrink-0 flex items-center justify-center group-hover:-translate-y-1 group-hover:scale-105 transition-all duration-500 ease-out">
+							<!-- Soft drop shadow under image instead of bright orb -->
+							<div class="absolute inset-x-0 -bottom-4 h-8 bg-black/20 blur-xl rounded-full scale-75"></div>
+							<img
+								v-if="banner.banner_image"
+								:src="banner.banner_image"
+								:alt="banner.tag_text || 'Banner'"
+								class="w-full h-full object-contain relative z-10"
+								loading="lazy"
+							/>
+						</div>
+					</div>
+				</div>
+			</template>
 		</div>
 
-		<!-- Pagination Dots -->
-		<div class="flex justify-center gap-2 mt-4">
+		<!-- Pagination Indicators (MD3 styling) -->
+		<div class="flex justify-center items-center gap-2 mt-1">
 			<button
 				v-for="(_, i) in banners"
 				:key="i"
 				@click="scrollToSlide(i)"
-				class="h-[5px] rounded-full transition-all duration-500 ease-out"
+				class="h-2 rounded-full transition-all duration-300 ease-out"
 				:class="currentSlide === i
-					? 'w-7 bg-gradient-to-r from-brand-primary to-brand-secondary shadow-neon'
-					: 'w-[5px] bg-gray-300 dark:bg-gray-600 hover:bg-gray-400'"
+					? 'w-6 bg-brand-primary'
+					: 'w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400'"
+				:aria-label="`Go to slide ${i + 1}`"
 			></button>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { createListResource } from 'frappe-ui'
+import dayjs from 'dayjs'
 
+const router = useRouter()
 const carouselRef = ref(null)
 const currentSlide = ref(0)
 let autoScrollInterval = null
 
-const banners = [
-	{
-		tag: "Summer Offer",
-		title: "25% OFF<br/>on All Vitamins",
-		cta: "Shop Now",
-		bgGradient: "bg-gradient-to-br from-violet-600 via-brand-primary to-indigo-700",
-		image: "https://via.placeholder.com/200?text=Vitamins"
+// Real-world dynamic content fetching
+const bannerResource = createListResource({
+	doctype: 'Hero Banner',
+	fields: ['*'],
+	filters: {
+		is_published: 1,
+		app_name: 'B2B'
 	},
-	{
-		tag: "New Arrival",
-		title: "Pure Organic<br/>Honey Series",
-		cta: "Explore",
-		bgGradient: "bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700",
-		image: "https://via.placeholder.com/200?text=Honey"
-	},
-	{
-		tag: "Special Deal",
-		title: "Premium<br/>Personal Care",
-		cta: "Get Deals",
-		bgGradient: "bg-gradient-to-br from-orange-500 via-rose-500 to-pink-600",
-		image: "https://via.placeholder.com/200?text=Care"
-	}
-]
+	orderBy: 'sort_order asc',
+	auto: true
+})
+
+const banners = computed(() => {
+	if (!bannerResource.data) return []
+	
+	const now = dayjs()
+	return bannerResource.data.filter(b => {
+		const started = !b.start_date || now.isAfter(dayjs(b.start_date))
+		const ended = b.end_date && now.isAfter(dayjs(b.end_date))
+		return started && !ended
+	})
+})
 
 const onCarouselScroll = () => {
 	if (!carouselRef.value) return
 	const scrollLeft = carouselRef.value.scrollLeft
+	// Account for the padding-left (20px or 1.25rem from px-5) when calculating active slide
+	// A simpler robust way for snap carousels:
 	const width = carouselRef.value.offsetWidth
-	currentSlide.value = Math.round(scrollLeft / width)
+	const center = scrollLeft + (width / 2)
+	const cards = Array.from(carouselRef.value.children)
+	
+	let closestIndex = 0
+	let minDistance = Infinity
+	
+	cards.forEach((card, index) => {
+		const cardCenter = card.offsetLeft + (card.offsetWidth / 2)
+		const distance = Math.abs(center - cardCenter)
+		if (distance < minDistance) {
+			minDistance = distance
+			closestIndex = index
+		}
+	})
+	
+	currentSlide.value = closestIndex
 }
 
 const scrollToSlide = (index) => {
 	if (!carouselRef.value) return
-	const width = carouselRef.value.offsetWidth
-	carouselRef.value.scrollTo({ left: width * index, behavior: 'smooth' })
+	const cards = Array.from(carouselRef.value.children)
+	if (cards[index]) {
+		// Calculate precise scroll position
+		const card = cards[index]
+		const scrollTarget = card.offsetLeft - 20 // 20px corresponds to px-5
+		carouselRef.value.scrollTo({ left: scrollTarget, behavior: 'smooth' })
+	}
 	currentSlide.value = index
 }
 
@@ -128,7 +194,9 @@ const resumeAutoScroll = () => {
 }
 
 const handleBannerClick = (banner) => {
-	// Navigate to offer/category
+	if (banner.target_route) {
+		router.push(banner.target_route)
+	}
 }
 
 onMounted(() => {
@@ -139,3 +207,13 @@ onUnmounted(() => {
 	pauseAutoScroll()
 })
 </script>
+
+<style scoped>
+.hide-scrollbar {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+	display: none; /* Chrome, Safari and Opera */
+}
+</style>
