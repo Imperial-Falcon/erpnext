@@ -54,7 +54,7 @@
 				</AppHeader>
 
 				<!-- Products Content -->
-				<ion-content>
+				<ion-content ref="contentRef" :scroll-events="true">
 					<!-- Categories Horizontal Scroll -->
 					<div class="p-4 overflow-x-auto flex gap-3 no-scrollbar animate-fade-in-up" style="animation-delay: 0.1s">
 						<button
@@ -90,16 +90,45 @@
 					</div>
 
 					<!-- Products Display -->
-					<div 
-						class="px-4 pb-24"
-						:class="viewMode === 'grid' ? 'grid grid-cols-2 gap-4' : 'flex flex-col gap-3'"
-					>
-						<ProductThumb
-							v-for="product in filteredProducts"
-							:key="product.id"
-							:product="product"
-							:variant="viewMode === 'grid' ? 'vertical' : 'horizontal'"
-						/>
+					<div class="px-4 pb-24 relative">
+						<template v-for="(group, letter) in groupedProducts" :key="letter">
+							<div :id="'letter-' + letter" class="mb-6 scroll-mt-32">
+								<div class="sticky top-0 z-10 backdrop-blur-xl bg-white/70 dark:bg-black/70 py-1 mb-3 rounded-lg flex items-center shadow-[0_4px_30px_rgba(0,0,0,0.05)] border border-white/40 dark:border-gray-800/80">
+									<span class="w-7 h-7 flex items-center justify-center rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary text-white font-bold shadow-neon text-xs ml-2">{{ letter }}</span>
+								</div>
+								<div :class="viewMode === 'grid' ? 'grid grid-cols-2 gap-4' : 'flex flex-col gap-3'">
+									<ProductThumb
+										v-for="product in group"
+										:key="product.id"
+										:product="product"
+										:variant="viewMode === 'grid' ? 'vertical' : 'horizontal'"
+									/>
+								</div>
+							</div>
+						</template>
+						
+						<!-- Alphabetical Bar -->
+						<div class="fixed right-2 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center justify-center py-2 px-1 rounded-full bg-white/30 dark:bg-black/30 backdrop-blur-xl border border-white/40 dark:border-gray-700/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] opacity-40 hover:opacity-100 hover:bg-white/70 dark:hover:bg-black/70 transition-all duration-300 touch-none"
+							@touchmove.prevent="handleAlphaScroll"
+							@mousemove="handleAlphaScroll"
+							@mouseleave="activeLetter = null"
+							@touchend="activeLetter = null"
+							ref="alphaBarRef"
+						>
+							<button 
+								v-for="char in alphabet" 
+								:key="char"
+								@click="scrollToLetter(char)"
+								class="text-[10px] sm:text-xs font-bold w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-full transition-all duration-200"
+								:class="[
+									availableLetters.includes(char) ? 'text-gray-800 dark:text-gray-100' : 'text-gray-400/40 cursor-not-allowed',
+									activeLetter === char ? 'scale-150 -translate-x-3 bg-brand-primary text-white shadow-neon' : '',
+									availableLetters.includes(char) && activeLetter !== char ? 'hover:scale-125 hover:-translate-x-2 hover:bg-brand-primary/20 hover:text-brand-primary' : ''
+								]"
+							>
+								{{ char }}
+							</button>
+						</div>
 					</div>
 
 					<!-- No Results -->
@@ -152,22 +181,80 @@ const recentSearches = ref(["Napa Extra", "Vitamin C", "Omega 3"])
 
 const categories = ["All", "Medicines", "Wellness", "Personal Care", "Baby Care", "Nutrition"]
 
+const alphabet = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))
+const contentRef = ref(null)
+const alphaBarRef = ref(null)
+const activeLetter = ref(null)
+
+const handleAlphaScroll = (e) => {
+	if (e.type === 'mousemove' && e.buttons !== 1) return;
+	
+	const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+	const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+	
+	const el = document.elementFromPoint(clientX, clientY);
+	if (el && el.tagName === 'BUTTON' && el.parentElement === alphaBarRef.value) {
+		const letter = el.innerText.trim();
+		if (letter && availableLetters.value.includes(letter) && activeLetter.value !== letter) {
+			activeLetter.value = letter;
+			scrollToLetter(letter, 'auto');
+		}
+	}
+}
+
+const scrollToLetter = (letter, behavior = 'smooth') => {
+	if (!availableLetters.value.includes(letter)) return;
+	
+	activeLetter.value = letter;
+	setTimeout(() => {
+		if (activeLetter.value === letter && behavior === 'smooth') {
+			activeLetter.value = null;
+		}
+	}, 1000);
+
+	const el = document.getElementById('letter-' + letter);
+	if (el) {
+		el.scrollIntoView({ behavior: behavior, block: 'start' });
+	}
+}
+
 const products = ref([
-	{ id: 1, name: "Napa Extra (Paracetamol)", manufacturer: "Beximco Pharma", price: 25.0, category: "Medicines", image: "https://via.placeholder.com/150?text=Napa", oldPrice: 30 },
-	{ id: 2, name: "Vitamin C 500mg", manufacturer: "Square Pharma", price: 150.0, category: "Wellness", image: "https://via.placeholder.com/150?text=VitC" },
-	{ id: 3, name: "Hand Sanitizer 250ml", manufacturer: "ACI Limited", price: 220.0, category: "Personal Care", image: "https://via.placeholder.com/150?text=Sanitizer" },
-	{ id: 4, name: "Baby Lotion 200ml", manufacturer: "Johnson's", price: 450.0, category: "Baby Care", image: "https://via.placeholder.com/150?text=Lotion", oldPrice: 500 },
-	{ id: 5, name: "Horlicks Chocolate 500g", manufacturer: "Unilever", price: 580.0, category: "Nutrition", image: "https://via.placeholder.com/150?text=Horlicks" },
-	{ id: 6, name: "Sergel 20mg", manufacturer: "Healthcare Pharma", price: 70.0, category: "Medicines", image: "https://via.placeholder.com/150?text=Sergel" },
+	{ id: 1, item_name: "Napa Extra (Paracetamol)", manufacturer: "Beximco Pharma", price: 25.0, category: "Medicines", image: "https://via.placeholder.com/150?text=Napa", oldPrice: 30 },
+	{ id: 2, item_name: "Vitamin C 500mg", manufacturer: "Square Pharma", price: 150.0, category: "Wellness", image: "https://via.placeholder.com/150?text=VitC" },
+	{ id: 3, item_name: "Hand Sanitizer 250ml", manufacturer: "ACI Limited", price: 220.0, category: "Personal Care", image: "https://via.placeholder.com/150?text=Sanitizer" },
+	{ id: 4, item_name: "Baby Lotion 200ml", manufacturer: "Johnson's", price: 450.0, category: "Baby Care", image: "https://via.placeholder.com/150?text=Lotion", oldPrice: 500 },
+	{ id: 5, item_name: "Horlicks Chocolate 500g", manufacturer: "Unilever", price: 580.0, category: "Nutrition", image: "https://via.placeholder.com/150?text=Horlicks" },
+	{ id: 6, item_name: "Sergel 20mg", manufacturer: "Healthcare Pharma", price: 70.0, category: "Medicines", image: "https://via.placeholder.com/150?text=Sergel" },
 ])
 
 const filteredProducts = computed(() => {
 	return products.value.filter(p => {
-		const matchesSearch = p.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+		const matchesSearch = p.item_name.toLowerCase().includes(searchQuery.value.toLowerCase())
 		const matchesCategory = selectedCategory.value === "All" || p.category === selectedCategory.value
 		return matchesSearch && matchesCategory
 	})
 })
+
+const sortedFilteredProducts = computed(() => {
+	return [...filteredProducts.value].sort((a, b) => a.item_name.localeCompare(b.item_name))
+})
+
+const groupedProducts = computed(() => {
+	const groups = {}
+	sortedFilteredProducts.value.forEach(p => {
+		const firstLetter = p.item_name.charAt(0).toUpperCase()
+		const letter = /[A-Z]/.test(firstLetter) ? firstLetter : '#'
+		if (!groups[letter]) groups[letter] = []
+		groups[letter].push(p)
+	})
+	
+	return Object.keys(groups).sort().reduce((res, key) => {
+		res[key] = groups[key]
+		return res
+	}, {})
+})
+
+const availableLetters = computed(() => Object.keys(groupedProducts.value))
 
 const handleSearch = () => {
 	if (searchQuery.value && !recentSearches.value.includes(searchQuery.value)) {
