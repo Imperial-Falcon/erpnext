@@ -1,7 +1,7 @@
 <template>
 	<BaseLayout :pageTitle="__('Order History')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden relative">
+			<div class="flex flex-col h-full overflow-hidden relative" style="background: var(--app-bg);">
 				<AppHeader :title="__('Order History')" :showBack="true" :isScrolled="true" />
 
 				<!-- Ambient Backdrops -->

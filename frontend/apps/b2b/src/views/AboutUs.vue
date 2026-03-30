@@ -1,7 +1,7 @@
 <template>
 	<BaseLayout :pageTitle="__('About Us')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden relative">
+			<div class="flex flex-col h-full overflow-hidden relative" style="background: var(--app-bg);">
 				<AppHeader :title="__('About Us')" :showBack="true" :isScrolled="true" />
 
 				<div class="absolute inset-0 overflow-hidden pointer-events-none z-0">

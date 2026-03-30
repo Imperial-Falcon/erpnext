@@ -1,7 +1,7 @@
 <template>
 	<BaseLayout :pageTitle="__('Notifications')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden relative">
+			<div class="flex flex-col h-full overflow-hidden relative" style="background: var(--app-bg);">
 				<AppHeader :title="__('Notifications')" :showBack="true" :isScrolled="true">
 					<template #actions>
 						<button @click="markAllRead" class="text-[10px] font-black text-brand-primary bg-brand-primary/10 px-3 py-1.5 rounded-full uppercase tracking-widest active:scale-95 transition-all">

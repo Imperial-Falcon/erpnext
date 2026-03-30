@@ -1,7 +1,7 @@
 <template>
 	<BaseLayout :pageTitle="__('Wishlist')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden relative">
+			<div class="flex flex-col h-full overflow-hidden relative" style="background: var(--app-bg);">
 				<AppHeader :title="__('Wishlist')" :showBack="true" :isScrolled="true">
 					<template #actions>
 						<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ wishlistItems.length }} items</span>

@@ -1,7 +1,7 @@
 <template>
 	<BaseLayout :pageTitle="__('Order Success')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden relative">
+			<div class="flex flex-col h-full overflow-hidden relative" style="background: var(--app-bg);">
 				<!-- Ambient Backdrops -->
 				<div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
 					<div class="absolute top-[10%] left-[-50px] w-[320px] h-[320px] bg-emerald-500/15 blur-[100px] rounded-full"></div>

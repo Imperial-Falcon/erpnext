@@ -1,13 +1,13 @@
 <template>
 	<BaseLayout :pageTitle="__('Shopping Cart')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden relative">
-				<AppHeader :title="__('Shopping Cart')" :showBack="true" :isScrolled="false" customClass="bg-white/70 dark:bg-black/70 backdrop-blur-xl shadow-glass z-50 animate-fade-in-up border-b border-white/20" />
+			<div class="flex flex-col h-full overflow-hidden relative" style="background: var(--app-bg);">
+				<AppHeader :title="__('Shopping Cart')" :showBack="true" :isScrolled="false" customClass="bg-white/70 dark:bg-gray-950/70 backdrop-blur-2xl shadow-glass z-50 animate-fade-in-up border-b border-brand-primary/5" />
 
 				<!-- Ambient Backdrops -->
 				<div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
-					<div class="absolute top-[20%] left-[-50px] w-[300px] h-[300px] bg-brand-primary/10 blur-[80px] rounded-full"></div>
-					<div class="absolute bottom-[20%] right-[-50px] w-[250px] h-[250px] bg-brand-secondary/15 blur-[80px] rounded-full"></div>
+					<div class="ambient-orb top-[20%] left-[-50px] w-[300px] h-[300px] bg-brand-primary/8"></div>
+					<div class="ambient-orb bottom-[20%] right-[-50px] w-[250px] h-[250px] bg-brand-secondary/10"></div>
 				</div>
 
 				<!-- Cart Items List (Scrollable Area) -->
@@ -43,8 +43,8 @@
 										<span v-if="item.oldPrice" class="text-[10px] font-bold text-gray-500 line-through">
 											{{ formatCurrency(item.oldPrice, "BDT") }}
 										</span>
-										<span class="text-sm font-black bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-brand-secondary">
-											{{ formatCurrency(item.price, "BDT") }}
+										<span class="text-sm font-black price-text">
+											৳{{ formatCurrency(item.price, "BDT") }}
 										</span>
 									</div>
 
@@ -82,7 +82,7 @@
 						<h3 class="text-xl font-black text-gray-900 dark:text-gray-100 mb-2">Your cart is empty</h3>
 						<p class="text-gray-500 text-sm mb-8 px-8 font-medium">Looks like you haven't added anything to your cart yet.</p>
 						<button
-							class="px-10 py-3.5 bg-gradient-to-tr from-brand-primary to-brand-secondary text-white font-black rounded-[1.2rem] shadow-neon active:scale-95 transition-all outline-none border-none tracking-wide"
+							class="btn-primary !px-10"
 							@click="$router.push('/home')"
 						>
 							Start Shopping
@@ -91,7 +91,7 @@
 				</ion-content>
 
 				<!-- Fixed Bottom Summary & Checkout -->
-				<div v-if="cartItems.length > 0" class="fixed bottom-0 left-0 right-0 app-card rounded-t-[2rem] border-t border-white/40 p-5 pb-8 space-y-4 shadow-[0_-15px_40px_rgba(0,0,0,0.05)] z-50 backdrop-blur-3xl standalone:pb-12 animate-slide-up">
+				<div v-if="cartItems.length > 0" class="fixed bottom-0 left-0 right-0 app-card-strong !rounded-t-[2rem] border-t border-brand-primary/5 p-5 pb-8 space-y-4 shadow-float z-50 standalone:pb-12 animate-slide-up">
 					<div class="space-y-2.5">
 						<div class="flex justify-between text-sm text-gray-500 dark:text-gray-400 font-bold">
 							<span>Subtotal</span>
@@ -103,15 +103,15 @@
 						</div>
 						<div class="flex justify-between items-center pt-3 border-t border-gray-100 dark:border-gray-800 mt-1">
 							<span class="text-sm font-black text-gray-900 dark:text-gray-100 uppercase tracking-widest">Total</span>
-							<span class="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-brand-secondary">{{ formatCurrency(total, "BDT") }}</span>
+							<span class="text-2xl font-black price-text">৳{{ formatCurrency(total, "BDT") }}</span>
 						</div>
 					</div>
 
 					<button
-						class="w-full flex items-center justify-center gap-2 h-14 bg-gradient-to-tr from-brand-primary to-brand-secondary text-white rounded-[1.2rem] shadow-neon active:scale-95 transition-all mt-2"
+						class="w-full btn-primary flex items-center justify-center gap-2 !h-14 !rounded-2xl mt-2"
 						@click="handleCheckout"
 					>
-						<span class="font-black text-sm tracking-wide">Proceed to Checkout</span>
+						<span class="font-bold text-sm tracking-wide">Proceed to Checkout</span>
 						<ArrowRight class="w-5 h-5 ml-1" />
 					</button>
 				</div>

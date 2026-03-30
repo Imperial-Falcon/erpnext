@@ -2,7 +2,7 @@
 	<BaseLayout :pageTitle="__('Special Offers')" :showHeader="false">
 		<template #body>
 			<div class="flex flex-col h-full bg-transparent overflow-hidden relative">
-				<AppHeader :title="__('Special Offers')" :showBack="true" customClass="z-50 bg-white/70 dark:bg-black/70 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.05)] border-b border-white/20" />
+				<AppHeader :title="__('Special Offers')" :showBack="true" customClass="z-50 bg-white/70 dark:bg-gray-950/70 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.05)] border-b border-brand-primary/5" />
 				
 				<!-- Ambient backdrops -->
 				<div class="absolute inset-0 overflow-hidden pointer-events-none -z-10">

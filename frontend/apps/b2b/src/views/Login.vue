@@ -1,22 +1,26 @@
 <template>
 	<ion-page>
 		<ion-content class="ion-padding">
-			<div class="flex h-screen w-screen flex-col justify-center bg-gray-50 dark:bg-black relative overflow-hidden">
+			<div class="flex h-screen w-screen flex-col justify-center overflow-hidden relative" style="background: var(--app-bg);">
 				<!-- Ambient Backdrops -->
 				<div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
-					<div class="absolute top-[-100px] left-[-80px] w-[350px] h-[350px] bg-brand-primary/20 blur-[100px] rounded-full animate-pulse-subtle"></div>
-					<div class="absolute bottom-[-50px] right-[-50px] w-[300px] h-[300px] bg-brand-secondary/20 blur-[100px] rounded-full"></div>
-					<div class="absolute top-[40%] right-[20%] w-[200px] h-[200px] bg-brand-accent/10 blur-[80px] rounded-full animate-float"></div>
+					<div class="ambient-orb top-[-100px] left-[-80px] w-[350px] h-[350px] bg-brand-primary/15 animate-pulse-subtle"></div>
+					<div class="ambient-orb bottom-[-50px] right-[-50px] w-[300px] h-[300px] bg-brand-secondary/15"></div>
+					<div class="ambient-orb top-[40%] right-[20%] w-[200px] h-[200px] bg-brand-primary-light/8 animate-float"></div>
 				</div>
 
 				<div class="relative z-10 flex flex-col mx-auto gap-4 items-center animate-fade-in-up">
-					<div class="w-16 h-16 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-[1.5rem] flex items-center justify-center shadow-neon">
-						<DoctoverseOfficeLogo class="h-8 w-8 text-white" />
+					<div class="w-20 h-20 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-[1.5rem] flex items-center justify-center shadow-neon animate-glow-pulse">
+						<!-- Medicine Cross Icon -->
+						<svg class="w-10 h-10 text-white drop-shadow-lg" viewBox="0 0 48 48" fill="none">
+							<rect x="16" y="4" width="16" height="40" rx="4" fill="currentColor" opacity="0.9"/>
+							<rect x="4" y="16" width="40" height="16" rx="4" fill="currentColor" opacity="0.9"/>
+						</svg>
 					</div>
-					<div class="text-2xl font-black text-gray-900 dark:text-gray-100 text-center leading-tight">
-						{{ __("Login to Doctoverse B2B") }}
+					<div class="text-2xl font-extrabold text-gray-900 dark:text-gray-100 text-center leading-tight">
+						{{ __("Login to MediMart") }}
 					</div>
-					<p class="text-xs font-bold text-gray-400 uppercase tracking-widest">{{ __("Your Health, Our Priority") }}</p>
+					<p class="text-xs font-medium text-gray-400 tracking-widest uppercase">{{ __("Your Trusted Medicine Partner") }}</p>
 				</div>
 
 				<div class="relative z-10 mx-auto mt-10 w-full px-8 sm:w-96 animate-fade-in-up" style="animation-delay: 0.1s">

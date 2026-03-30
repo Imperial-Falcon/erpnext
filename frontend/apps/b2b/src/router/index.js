@@ -5,7 +5,12 @@ import TabbedViewHome from "../views/TabbedViewHome.vue"
 const routes = [
     {
         path: "/",
-        redirect: "/home",
+        redirect: "/splash",
+    },
+    {
+        path: "/splash",
+        name: "Splash",
+        component: () => import("@/views/SplashScreen.vue"),
     },
     {
         path: "/",

@@ -35,8 +35,8 @@
 					<div 
 						class="absolute inset-0 bg-gradient-to-br" 
 						:style="{
-							'--tw-gradient-from': banner.background_gradient_from || '#8b5cf6',
-							'--tw-gradient-to': banner.background_gradient_to || '#c084fc',
+							'--tw-gradient-from': banner.background_gradient_from || '#059669',
+							'--tw-gradient-to': banner.background_gradient_to || '#0891b2',
 							'--tw-gradient-stops': 'var(--tw-gradient-from), var(--tw-gradient-to)'
 						}"
 					></div>

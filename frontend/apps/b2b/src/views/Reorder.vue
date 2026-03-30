@@ -1,7 +1,7 @@
 <template>
 	<BaseLayout :pageTitle="__('Reorder')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden relative">
+			<div class="flex flex-col h-full overflow-hidden relative" style="background: var(--app-bg);">
 				<AppHeader :title="__('Reorder')" :subtitle="`Order #${orderId}`" :showBack="true" :isScrolled="true" />
 
 				<!-- Ambient Backdrops -->

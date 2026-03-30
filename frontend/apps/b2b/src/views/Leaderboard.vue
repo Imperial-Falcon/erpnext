@@ -1,8 +1,8 @@
 <template>
 	<BaseLayout :pageTitle="__('Leaderboard')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden relative">
-				<AppHeader :title="__('Leaderboard')" :showBack="true" :isScrolled="false" customClass="bg-white/70 dark:bg-black/70 backdrop-blur-xl shadow-glass z-50 animate-fade-in-up border-b border-white/20" />
+			<div class="flex flex-col h-full overflow-hidden relative" style="background: var(--app-bg);">
+				<AppHeader :title="__('Leaderboard')" :showBack="true" :isScrolled="false" customClass="bg-white/70 dark:bg-gray-950/70 backdrop-blur-2xl shadow-glass z-50 animate-fade-in-up border-b border-brand-primary/5" />
 
 				<!-- Ambient Backdrops -->
 				<div class="absolute inset-0 overflow-hidden pointer-events-none z-0">

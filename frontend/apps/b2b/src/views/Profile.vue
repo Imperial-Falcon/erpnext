@@ -4,8 +4,8 @@
 			<div class="flex flex-col h-full bg-transparent overflow-hidden relative">
 				<!-- Ambient Backdrop Effects Wrapper -->
 				<div class="absolute inset-0 overflow-hidden pointer-events-none z-[-1]">
-					<div class="absolute top-[-50px] right-[-100px] w-[300px] h-[300px] bg-brand-primary/20 blur-[80px] rounded-full"></div>
-					<div class="absolute bottom-[20%] left-[-100px] w-[250px] h-[250px] bg-brand-secondary/20 blur-[80px] rounded-full"></div>
+					<div class="ambient-orb top-[-50px] right-[-100px] w-[300px] h-[300px] bg-brand-primary/12"></div>
+					<div class="ambient-orb bottom-[20%] left-[-100px] w-[250px] h-[250px] bg-brand-secondary/12"></div>
 				</div>
 
 				<AppHeader title="Profile" :showBack="true">
@@ -25,8 +25,8 @@
 						<div class="px-5 pt-8 pb-4">
 							<div class="app-card rounded-[32px] p-6 border-none shadow-glass flex flex-col items-center text-center relative overflow-hidden">
 							<!-- Background Decoration -->
-							<div class="absolute -top-10 -right-10 w-32 h-32 bg-indigo-50 dark:bg-indigo-900/20 rounded-full blur-3xl"></div>
-							<div class="absolute -bottom-10 -left-10 w-32 h-32 bg-pink-50 dark:bg-pink-900/20 rounded-full blur-3xl"></div>
+							<div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-50 dark:bg-emerald-900/20 rounded-full blur-3xl"></div>
+							<div class="absolute -bottom-10 -left-10 w-32 h-32 bg-teal-50 dark:bg-teal-900/20 rounded-full blur-3xl"></div>
 
 							<div class="relative mb-4">
 								<img
@@ -37,7 +37,7 @@
 								/>
 								<div
 									v-else
-									class="flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-3xl font-black h-24 w-24 rounded-3xl shadow-lg border-4 border-white dark:border-gray-800 uppercase"
+									class="flex items-center justify-center bg-gradient-to-br from-brand-primary to-brand-secondary text-white text-3xl font-extrabold h-24 w-24 rounded-3xl shadow-lg border-4 border-white dark:border-gray-800 uppercase"
 								>
 									{{ user.data.first_name[0] }}
 								</div>

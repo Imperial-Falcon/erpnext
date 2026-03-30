@@ -1,86 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 @import "frappe-ui/src/style.css";
 
-/* Design Tokens & Reusable Styles */
+/* ═══════════════════════════════════════════════════════
+   🏥 GLASSMORPHIC MEDICINE — Design System
+   B2B Healthcare App for Bangladesh
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── Design Tokens ─── */
 :root {
-  --app-bg: #f8fafc;
+  --app-bg: #f0fdf4;
+  --app-bg-secondary: #ecfdf5;
   --app-surface: #ffffff;
-  --glass-border: rgba(255, 255, 255, 0.18);
-  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(5, 150, 105, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-strong: rgba(255, 255, 255, 0.85);
+  --glass-blur: 24px;
+  --color-primary: #059669;
+  --color-primary-rgb: 5, 150, 105;
+  --color-secondary: #0891b2;
+  --color-accent: #f43f5e;
+  --text-primary: #064e3b;
+  --text-secondary: #6b7280;
+  --shadow-color: rgba(5, 150, 105, 0.06);
 }
 
 .dark {
-  --app-bg: #020617; /* Slate 950 */
-  --app-surface: #0f172a; /* Slate 900 */
-  --glass-border: rgba(255, 255, 255, 0.05);
-  --glass-bg: rgba(15, 23, 42, 0.6);
+  --app-bg: #030712;
+  --app-bg-secondary: #0a0f1a;
+  --app-surface: #111827;
+  --glass-border: rgba(5, 150, 105, 0.1);
+  --glass-bg: rgba(17, 24, 39, 0.72);
+  --glass-bg-strong: rgba(17, 24, 39, 0.88);
+  --glass-blur: 24px;
+  --text-primary: #ecfdf5;
+  --text-secondary: #9ca3af;
+  --shadow-color: rgba(0, 0, 0, 0.3);
 }
 
+/* ─── Base Styles ─── */
+body {
+  -webkit-tap-highlight-color: transparent;
+  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  background-color: var(--app-bg);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Component Layer ─── */
 @layer components {
-  /* Card Style */
+  /* Glassmorphic Card */
   .app-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
-    @apply transition-all active:scale-[0.98];
-    border-radius: 1.5rem; /* Equivalent to 24px / 3xl */
+    box-shadow: 0 8px 32px 0 var(--shadow-color);
+    border-radius: 1.25rem;
+    @apply transition-all duration-300;
   }
 
-  /* Section Container */
-  .section-container {
-    @apply px-4 py-5;
+  .app-card-strong {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 12px 48px 0 var(--shadow-color);
+    border-radius: 1.5rem;
+    @apply transition-all duration-300;
+  }
+
+  /* Gradient Backgrounds */
+  .bg-medicine-gradient {
+    background: linear-gradient(135deg, #059669 0%, #0891b2 50%, #059669 100%);
+  }
+
+  .bg-medicine-gradient-soft {
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(8, 145, 178, 0.08) 100%);
+  }
+
+  .bg-medicine-radial {
+    background: radial-gradient(ellipse at top right, rgba(5, 150, 105, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(8, 145, 178, 0.08) 0%, transparent 50%);
+  }
+
+  /* Button Styles */
+  .btn-primary {
+    @apply px-6 py-3 text-white text-sm font-bold rounded-2xl shadow-neon transition-all duration-300;
+    background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
+  }
+  .btn-primary:hover {
+    @apply shadow-glass-strong;
+    transform: translateY(-1px);
+  }
+  .btn-primary:active {
+    @apply scale-95;
+  }
+
+  .btn-accent {
+    @apply px-6 py-3 text-white text-sm font-bold rounded-2xl shadow-neon-accent transition-all duration-300;
+    background: linear-gradient(135deg, #f43f5e 0%, #f97316 100%);
   }
 
   /* Typography */
   .section-title {
-    @apply text-lg font-black text-gray-900 dark:text-gray-100 leading-none;
+    @apply text-lg font-extrabold text-gray-900 dark:text-gray-100 leading-none tracking-tight;
+  }
+
+  .section-subtitle {
+    @apply text-xs font-medium text-gray-400 dark:text-gray-500 tracking-wide;
   }
 
   .see-all-btn {
-    @apply text-xs font-bold text-blue-600 active:opacity-60;
+    @apply text-xs font-bold text-brand-primary active:opacity-60 transition-opacity;
   }
 
-  /* Badge Style */
+  .price-text {
+    @apply font-black bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #059669, #0891b2);
+  }
+
+  /* Badge Styles */
+  .badge-discount {
+    @apply text-white text-[10px] font-black px-2.5 py-1 rounded-xl shadow-md;
+    background: linear-gradient(135deg, #f43f5e 0%, #f97316 100%);
+  }
+
+  .badge-status {
+    @apply text-[10px] font-black px-3 py-1 rounded-full;
+  }
+
+  .badge-green {
+    @apply bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400;
+  }
+
+  .badge-amber {
+    @apply bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400;
+  }
+
   .badge-red {
-    @apply bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full;
+    @apply bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400;
+  }
+
+  /* Input */
+  .input-glass {
+    @apply w-full px-4 py-3 text-sm font-medium rounded-2xl border transition-all duration-300;
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    backdrop-filter: blur(12px);
+  }
+  .input-glass:focus {
+    @apply ring-2 ring-brand-primary/30 border-brand-primary/40 outline-none;
+  }
+
+  /* Drawer / Bottom Sheet Backdrop */
+  .drawer-backdrop {
+    @apply fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300;
+  }
+
+  .drawer-content {
+    @apply fixed bottom-0 left-0 right-0 z-50 rounded-t-4xl overflow-hidden;
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border-top: 1px solid var(--glass-border);
+    box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.1);
   }
 }
 
-/* Global Utilities */
+/* ─── Global Utilities ─── */
 .center {
-	@apply flex justify-center items-center;
+  @apply flex justify-center items-center;
 }
 
 .no-scrollbar::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 .no-scrollbar {
-	-ms-overflow-style: none;
-	scrollbar-width: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Ionic Overrides */
+/* Ambient background orbs */
+.ambient-orb {
+  @apply absolute rounded-full pointer-events-none;
+  filter: blur(80px);
+}
+
+/* ─── Ionic Overrides ─── */
 ion-content {
   --background: var(--app-bg);
 }
 
 ion-modal {
-	--height: auto;
-  --border-radius: 24px 24px 0 0;
+  --height: auto;
+  --border-radius: 1.5rem 1.5rem 0 0;
+  --background: var(--glass-bg-strong);
+  --backdrop-opacity: 0.4;
 }
 
+ion-modal::part(backdrop) {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* ─── Lucide Icon Defaults ─── */
 .lucide {
-	@apply text-gray-500;
-  stroke-width: 2;
+  @apply text-gray-500;
+  stroke-width: 1.8;
 }
 
 .tab-selected .lucide {
-	@apply text-blue-600;
+  @apply text-brand-primary;
 }
 
-body {
-	-webkit-tap-highlight-color: transparent;
-	font-family: 'Inter', sans-serif;
-	background-color: var(--app-bg);
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* ─── Safe Area Helpers ─── */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 16px);
+}
+
+/* ─── Animation Utilities ─── */
+.stagger-1 { animation-delay: 50ms; }
+.stagger-2 { animation-delay: 100ms; }
+.stagger-3 { animation-delay: 150ms; }
+.stagger-4 { animation-delay: 200ms; }
+.stagger-5 { animation-delay: 250ms; }
+.stagger-6 { animation-delay: 300ms; }
+.stagger-7 { animation-delay: 350ms; }
+.stagger-8 { animation-delay: 400ms; }
+
+/* ─── Skeleton Loading ─── */
+.skeleton {
+  @apply bg-gray-200 dark:bg-gray-800 rounded-2xl animate-shimmer;
+  background-size: 200% 100%;
+  background-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.04) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }

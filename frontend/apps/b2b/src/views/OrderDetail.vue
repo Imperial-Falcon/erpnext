@@ -1,7 +1,7 @@
 <template>
 	<BaseLayout :pageTitle="__('Order Details')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden relative">
+			<div class="flex flex-col h-full overflow-hidden relative" style="background: var(--app-bg);">
 				<AppHeader :title="__('Order Details')" :showBack="true" :isScrolled="true">
 					<template #actions>
 						<button class="p-2.5 app-card active:scale-90 transition-all hover:shadow-neon">

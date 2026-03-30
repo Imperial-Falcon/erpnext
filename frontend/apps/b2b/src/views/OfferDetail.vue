@@ -1,7 +1,7 @@
 <template>
 	<BaseLayout :pageTitle="__('Offer Detail')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden relative">
+			<div class="flex flex-col h-full overflow-hidden relative" style="background: var(--app-bg);">
 				<!-- Navigation Bar -->
 				<AppHeader :title="offer.title" :showBack="true" customClass="absolute w-full z-50 bg-black/20 dark:bg-black/50 backdrop-blur-md pb-4 pt-12 border-b border-white/10" titleClass="text-white drop-shadow-md text-lg truncate max-w-[200px]">
 					<template #actions>

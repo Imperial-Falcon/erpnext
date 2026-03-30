@@ -1,13 +1,13 @@
 <template>
 	<BaseLayout :pageTitle="__('Checkout')" :showHeader="false">
 		<template #body>
-			<div class="flex flex-col h-full bg-gray-50 dark:bg-black overflow-hidden relative">
-				<AppHeader :title="__('Checkout')" :showBack="true" :isScrolled="false" customClass="bg-white/70 dark:bg-black/70 backdrop-blur-xl shadow-glass z-50 animate-fade-in-up border-b border-white/20" />
+			<div class="flex flex-col h-full overflow-hidden relative" style="background: var(--app-bg);">
+				<AppHeader :title="__('Checkout')" :showBack="true" :isScrolled="false" customClass="bg-white/70 dark:bg-gray-950/70 backdrop-blur-2xl shadow-glass z-50 animate-fade-in-up border-b border-brand-primary/5" />
 
 				<!-- Ambient Backdrops -->
 				<div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
-					<div class="absolute top-[30%] left-[-50px] w-[300px] h-[300px] bg-brand-primary/10 blur-[80px] rounded-full"></div>
-					<div class="absolute bottom-[20%] right-[-50px] w-[250px] h-[250px] bg-brand-secondary/15 blur-[80px] rounded-full"></div>
+					<div class="ambient-orb top-[30%] left-[-50px] w-[300px] h-[300px] bg-brand-primary/8"></div>
+					<div class="ambient-orb bottom-[20%] right-[-50px] w-[250px] h-[250px] bg-brand-secondary/10"></div>
 				</div>
 
 				<ion-content class="transparent-content pb-[160px]">
@@ -122,13 +122,13 @@
 			</ion-content>
 
 			<!-- Bottom Fixed Button -->
-			<div class="fixed bottom-0 left-0 right-0 app-card rounded-t-[2rem] border-t border-white/40 p-5 pb-8 shadow-[0_-15px_40px_rgba(0,0,0,0.05)] z-50 backdrop-blur-3xl standalone:pb-12 animate-slide-up">
+			<div class="fixed bottom-0 left-0 right-0 app-card-strong !rounded-t-[2rem] border-t border-brand-primary/5 p-5 pb-8 shadow-float z-50 standalone:pb-12 animate-slide-up">
 				<button
-					class="w-full flex items-center justify-center gap-2 h-14 bg-gradient-to-tr from-brand-primary to-brand-secondary text-white rounded-[1.2rem] shadow-neon active:scale-95 transition-all outline-none"
+					class="w-full btn-primary flex items-center justify-center gap-2 !h-14 !rounded-2xl"
 					@click="handlePlaceOrder"
 				>
 					<Truck class="w-5 h-5 -ml-2" />
-					<span class="font-black text-sm tracking-wide">Place Order (COD)</span>
+					<span class="font-bold text-sm tracking-wide">Place Order (COD)</span>
 				</button>
 			</div>
 		</div>
