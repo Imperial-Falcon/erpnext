@@ -68,6 +68,22 @@
 						</button>
 					</div>
 
+					<!-- Recently Viewed Section -->
+					<div v-if="!searchQuery && recentProducts.length > 0 && selectedCategory === 'All'" class="mb-4 px-4 animate-fade-in-up stagger-2">
+						<div class="flex items-center justify-between mb-3 mt-2">
+							<h3 class="text-sm font-extrabold text-gray-900 dark:text-gray-100">Recently Viewed</h3>
+						</div>
+						<div class="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4">
+							<ProductThumb
+								v-for="prod in recentProducts"
+								:key="prod.name"
+								:product="prod"
+								variant="minimal"
+								@open-quick-add="openQuickAdd"
+							/>
+						</div>
+					</div>
+
 					<!-- Products Grid/List Toggle -->
 					<div class="px-4 mb-3 flex justify-between items-center animate-fade-in-up stagger-2">
 						<span class="text-xs font-bold text-gray-400 uppercase tracking-widest">{{ filteredProducts.length }} Products</span>
@@ -138,6 +154,10 @@
 						<h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">No products found</h3>
 						<p class="text-sm text-gray-400">Try adjusting your filters or search terms.</p>
 					</div>
+					<!-- Infinite Scroll -->
+					<ion-infinite-scroll @ionInfinite="loadMore">
+						<ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more products..."></ion-infinite-scroll-content>
+					</ion-infinite-scroll>
 				</ion-content>
 
 				<!-- Filter Modal -->
@@ -172,8 +192,9 @@
 </template>
 
 <script setup>
-import { ref, computed, inject } from "vue"
-import { IonContent, IonModal } from "@ionic/vue"
+import { ref, computed, inject, watch, onMounted } from "vue"
+import { createResource } from "frappe-ui"
+import { IonContent, IonModal, IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/vue"
 import BaseLayout from "@/components/layouts/BaseLayout.vue"
 import ProductThumb from "@/components/ProductThumb.vue"
 import AppHeader from "@/components/AppHeader.vue"
@@ -241,22 +262,70 @@ const scrollToLetter = (letter, behavior = 'smooth') => {
 	}
 }
 
-const products = ref([
-	{ id: 1, name: 1, item_name: "Napa Extra (Paracetamol)", manufacturer: "Beximco Pharma", price: 25.0, category: "Medicines", image: "https://via.placeholder.com/150?text=Napa", oldPrice: 30 },
-	{ id: 2, name: 2, item_name: "Vitamin C 500mg", manufacturer: "Square Pharma", price: 150.0, category: "Wellness", image: "https://via.placeholder.com/150?text=VitC" },
-	{ id: 3, name: 3, item_name: "Hand Sanitizer 250ml", manufacturer: "ACI Limited", price: 220.0, category: "Personal Care", image: "https://via.placeholder.com/150?text=Sanitizer" },
-	{ id: 4, name: 4, item_name: "Baby Lotion 200ml", manufacturer: "Johnson's", price: 450.0, category: "Baby Care", image: "https://via.placeholder.com/150?text=Lotion", oldPrice: 500 },
-	{ id: 5, name: 5, item_name: "Horlicks Chocolate 500g", manufacturer: "Unilever", price: 580.0, category: "Nutrition", image: "https://via.placeholder.com/150?text=Horlicks" },
-	{ id: 6, name: 6, item_name: "Sergel 20mg", manufacturer: "Healthcare Pharma", price: 70.0, category: "Medicines", image: "https://via.placeholder.com/150?text=Sergel" },
-])
+const products = ref([])
+const page = ref(1)
+const infiniteScrollDisabled = ref(false)
 
-const filteredProducts = computed(() => {
-	return products.value.filter(p => {
-		const matchesSearch = p.item_name.toLowerCase().includes(searchQuery.value.toLowerCase())
-		const matchesCategory = selectedCategory.value === "All" || p.category === selectedCategory.value
-		return matchesSearch && matchesCategory
-	})
+const productsResource = createResource({
+	url: "erpnext.api.item_api.get_items",
+	makeParams() {
+		return {
+			page: page.value,
+			page_size: 20,
+			search: searchQuery.value || null,
+			item_group: selectedCategory.value === "All" ? null : selectedCategory.value,
+		}
+	},
+	onSuccess(data) {
+		if (!data || data.length < 20) {
+			infiniteScrollDisabled.value = true
+		} else {
+			infiniteScrollDisabled.value = false
+		}
+		if (page.value === 1) {
+			products.value = data || []
+		} else if (data) {
+			products.value = [...products.value, ...data]
+		}
+	}
 })
+
+const recentProducts = ref([])
+const recentResource = createResource({
+    url: "erpnext.api.item_api.get_recently_viewed_items",
+    makeParams: () => ({ limit: 5 }),
+    onSuccess(data) {
+        if (data) recentProducts.value = data
+    }
+})
+
+onMounted(() => {
+	productsResource.fetch()
+	recentResource.fetch()
+})
+
+const loadMore = async (ev) => {
+	if (infiniteScrollDisabled.value) {
+		ev.target.complete()
+		ev.target.disabled = true
+		return
+	}
+	page.value++
+	await productsResource.fetch()
+	ev.target.complete()
+}
+
+// Debounce search
+let searchTimeout;
+watch([searchQuery, selectedCategory], () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        page.value = 1
+        productsResource.fetch()
+    }, 400);
+})
+
+const filteredProducts = computed(() => products.value)
 
 const sortedFilteredProducts = computed(() => {
 	return [...filteredProducts.value].sort((a, b) => a.item_name.localeCompare(b.item_name))

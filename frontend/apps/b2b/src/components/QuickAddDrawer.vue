@@ -40,47 +40,17 @@
 						</div>
 					</div>
 
-					<!-- Quantity Breaks Pricing Table -->
-					<div v-if="pricingTiers.length > 0" class="mb-5">
-						<h4 class="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2.5">
-							Quantity Pricing
-						</h4>
-						<div class="app-card !rounded-2xl overflow-hidden !border-brand-primary/10">
-							<div
-								v-for="(tier, idx) in pricingTiers"
-								:key="idx"
-								class="flex items-center justify-between px-4 py-2.5 transition-colors duration-200"
-								:class="[
-									idx !== pricingTiers.length - 1 ? 'border-b border-gray-100 dark:border-gray-800' : '',
-									isActiveTier(tier) ? 'bg-brand-primary/5 dark:bg-brand-primary/10' : '',
-								]"
-							>
-								<div class="flex items-center gap-2">
-									<div
-										class="w-2 h-2 rounded-full transition-all duration-300"
-										:class="isActiveTier(tier) ? 'bg-brand-primary scale-125' : 'bg-gray-300 dark:bg-gray-600'"
-									></div>
-									<span class="text-sm font-semibold text-gray-700 dark:text-gray-300">
-										{{ tier.min_qty }}–{{ tier.max_qty || '∞' }} {{ product?.uom || 'Box' }}
-									</span>
-								</div>
-								<span
-									class="text-sm font-extrabold"
-									:class="isActiveTier(tier) ? 'text-brand-primary' : 'text-gray-500 dark:text-gray-400'"
-								>
-									৳{{ tier.price.toFixed(2) }}
-								</span>
-							</div>
-						</div>
-					</div>
-
 					<!-- Single Price (fallback) -->
-					<div v-else class="mb-5 flex items-baseline gap-2">
-						<span class="text-2xl font-black price-text">
-							৳{{ currentPrice.toFixed(2) }}
+					<div class="mb-5 flex items-baseline gap-2">
+						<span class="text-2xl font-black price-text py-1 inline-block" :class="{'opacity-50 blur-[2px]': isPriceLoading}">
+							৳{{ Number(currentPrice || 0).toFixed(2) }}
 						</span>
-						<span v-if="product?.oldPrice || product?.mrp" class="text-sm text-gray-400 line-through font-medium">
-							৳{{ (product?.oldPrice || product?.mrp)?.toFixed(2) }}
+						<span v-if="(customOldPrice || product?.oldPrice || product?.mrp) && (customOldPrice || product?.oldPrice || product?.mrp) > currentPrice" class="text-sm text-gray-400 line-through font-medium">
+							৳{{ Number(customOldPrice || product?.oldPrice || product?.mrp).toFixed(2) }}
+						</span>
+						
+						<span v-if="discountPercent" class="badge-discount !relative !ml-2 text-[10px] !px-2 !py-0.5 shadow-sm">
+							{{ discountPercent }}% OFF
 						</span>
 					</div>
 
@@ -134,8 +104,9 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { call } from 'frappe-ui'
 import { Plus, Minus, ShoppingCart, ExternalLink } from 'lucide-vue-next'
 
 const props = defineProps({
@@ -154,43 +125,49 @@ const emit = defineEmits(['close', 'add-to-cart'])
 const router = useRouter()
 const qty = ref(1)
 
-// Reset qty when product changes
+const currentPrice = ref(0)
+const customOldPrice = ref(0)
+const discountPercent = ref(0)
+const isPriceLoading = ref(false)
+
+const loadDynamicPrice = async () => {
+	if (!props.product?.name) return
+	
+	isPriceLoading.value = true
+	try {
+        const res = await call('erpnext.api.item_api.calculate_price', {
+            item_code: props.product.name,
+            qty: qty.value
+        })
+        if (res) {
+            currentPrice.value = res.final_price || res.price || 0
+            customOldPrice.value = res.price || 0
+            discountPercent.value = res.discount_percent || 0
+        }
+    } catch (err) {
+        console.error("Failed to load dynamic price", err)
+        currentPrice.value = props.product.final_price || props.product.price || 0
+    } finally {
+        isPriceLoading.value = false
+    }
+}
+
+// Reset qty when product changes and load price
+let priceTimeout;
 watch(() => props.product, () => {
 	qty.value = 1
-})
+	currentPrice.value = props.product?.final_price || props.product?.price || 0
+	customOldPrice.value = props.product?.price || 0
+	discountPercent.value = props.product?.discount_percent || 0
+	loadDynamicPrice()
+}, { immediate: true })
 
-// Pricing tiers — can come from product.pricing_tiers or mock
-const pricingTiers = computed(() => {
-	if (props.product?.pricing_tiers && props.product.pricing_tiers.length > 0) {
-		return props.product.pricing_tiers
-	}
-	// Fallback: generate mock tiers from product price
-	if (props.product?.price) {
-		const base = props.product.price
-		return [
-			{ min_qty: 1, max_qty: 5, price: base },
-			{ min_qty: 6, max_qty: 10, price: Math.round(base * 0.95 * 100) / 100 },
-			{ min_qty: 11, max_qty: null, price: Math.round(base * 0.9 * 100) / 100 },
-		]
-	}
-	return []
+watch(qty, () => {
+    clearTimeout(priceTimeout)
+    priceTimeout = setTimeout(() => {
+        loadDynamicPrice()
+    }, 400)
 })
-
-const currentPrice = computed(() => {
-	if (pricingTiers.value.length === 0) return props.product?.price || 0
-	for (const tier of pricingTiers.value) {
-		const max = tier.max_qty || Infinity
-		if (qty.value >= tier.min_qty && qty.value <= max) {
-			return tier.price
-		}
-	}
-	return props.product?.price || 0
-})
-
-const isActiveTier = (tier) => {
-	const max = tier.max_qty || Infinity
-	return qty.value >= tier.min_qty && qty.value <= max
-}
 
 const close = () => {
 	emit('close')

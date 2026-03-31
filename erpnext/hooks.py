@@ -362,6 +362,10 @@ doc_events = {
 		"validate": "erpnext.setup.doctype.employee.employee.validate_employee_role",
 		"on_update": "erpnext.portal.utils.set_default_role",
 	},
+	"Item": {
+		"on_update": "erpnext.api.services.es_service.sync_item_on_update",
+		"on_trash": "erpnext.api.services.es_service.sync_item_on_trash"
+	},
 	"Communication": {
 		"on_update": [
 			"erpnext.support.doctype.service_level_agreement.service_level_agreement.on_communication_update",

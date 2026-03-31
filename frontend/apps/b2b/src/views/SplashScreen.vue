@@ -31,7 +31,7 @@
 					<!-- App Name -->
 					<div class="text-center animate-fade-in-up stagger-2">
 						<h1 class="text-4xl font-black text-white tracking-tight mb-2 drop-shadow-lg">
-							MediMart
+							Pharmoxy
 						</h1>
 						<p class="text-sm font-medium text-white/60 tracking-widest uppercase">
 							Your Trusted Medicine Partner

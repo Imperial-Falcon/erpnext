@@ -51,50 +51,24 @@
 
 							<!-- Pricing -->
 							<div class="flex items-end gap-3 pb-5 border-b border-gray-100 dark:border-gray-800">
-								<span class="text-3xl font-black price-text tracking-tighter">৳{{ currentPrice.toFixed(2) }}</span>
-								<div v-if="product.oldPrice" class="flex flex-col mb-1.5">
-									<span class="text-xs text-gray-400 line-through font-medium">৳{{ product.oldPrice.toFixed(2) }}</span>
-									<span class="text-[9px] font-bold text-emerald-600 leading-none bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-md">Save ৳{{ (product.oldPrice - currentPrice).toFixed(2) }}</span>
+								<span class="text-3xl font-black price-text tracking-tighter py-1" :class="{'opacity-50 blur-[2px]': isPriceLoading}">৳{{ Number(currentPrice || 0).toFixed(2) }}</span>
+								<div v-if="(customOldPrice || product.oldPrice) && (customOldPrice || product.oldPrice) > currentPrice" class="flex flex-col mb-1.5">
+									<span class="text-xs text-gray-400 line-through font-medium">৳{{ Number(customOldPrice || product.oldPrice).toFixed(2) }}</span>
+									<span v-if="discountPercent" class="text-[9px] font-bold text-emerald-600 leading-none bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-md">{{ discountPercent }}% OFF</span>
 								</div>
 							</div>
 
-							<!-- Quantity Breaks Pricing Table -->
-							<div class="py-5 border-b border-gray-100 dark:border-gray-800">
-								<h3 class="text-xs font-bold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wider flex items-center gap-2">
-									<Tags class="w-4 h-4 text-brand-primary" />
-									Quantity Pricing
-								</h3>
-								<div class="app-card !rounded-2xl overflow-hidden !border-brand-primary/10">
-									<div
-										v-for="(tier, idx) in pricingTiers"
-										:key="idx"
-										class="flex items-center justify-between px-4 py-3 transition-all duration-300"
-										:class="[
-											idx !== pricingTiers.length - 1 ? 'border-b border-gray-100 dark:border-gray-800' : '',
-											isActiveTier(tier) ? 'bg-brand-primary/5 dark:bg-brand-primary/10' : '',
-										]"
-									>
-										<div class="flex items-center gap-3">
-											<div
-												class="w-2.5 h-2.5 rounded-full transition-all duration-300"
-												:class="isActiveTier(tier) ? 'bg-brand-primary scale-125 shadow-neon' : 'bg-gray-300 dark:bg-gray-600'"
-											></div>
-											<span class="text-sm font-semibold text-gray-700 dark:text-gray-300">
-												{{ tier.min_qty }}–{{ tier.max_qty || '∞' }} {{ product.uom || 'Box' }}
-											</span>
-										</div>
-										<div class="flex items-center gap-2">
-											<span
-												class="text-sm font-extrabold"
-												:class="isActiveTier(tier) ? 'price-text' : 'text-gray-500 dark:text-gray-400'"
-											>
-												৳{{ tier.price.toFixed(2) }}
-											</span>
-											<span v-if="isActiveTier(tier)" class="text-[9px] font-bold text-brand-primary bg-brand-primary/10 px-2 py-0.5 rounded-full">Active</span>
-										</div>
-									</div>
-								</div>
-							</div>
+							<!-- Out of stock indicator or Badge -->
+							<div v-if="product.stock_qty <= 0" class="py-5 border-b border-gray-100 dark:border-gray-800">
+                                <div class="w-full bg-rose-50 dark:bg-rose-900/20 text-rose-600 border border-rose-100 dark:border-rose-900/50 p-4 rounded-2xl flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-900/50 flex items-center justify-center font-bold">!</div>
+                                    <div>
+                                        <h4 class="text-sm font-bold">Temporarily Out of Stock</h4>
+                                        <p class="text-xs mt-0.5 opacity-80">Check back later or view substitutes below.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Removed Mock Pricing Tiers UI since ERPNext handles dynamic pricing transparently -->
 
 							<!-- Pack Size Selection -->
 							<div class="py-5 border-b border-gray-100 dark:border-gray-800">
@@ -138,14 +112,14 @@
 						</div>
 					</div>
 
-					<!-- Related Products -->
-					<div class="mb-10 px-5 animate-fade-in-up stagger-2">
-						<SectionHeader title="Frequently Bought Together" :showSeeAll="false" />
+					<!-- Substitute Products -->
+					<div v-if="product.substitutes && product.substitutes.length > 0" class="mb-10 px-5 animate-fade-in-up stagger-2">
+						<SectionHeader title="Substitute Products" :showSeeAll="false" />
 						<div class="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-5 px-5 mt-2">
 							<ProductThumb
-								v-for="i in 3"
-								:key="i"
-								:product="mockRelated[i-1]"
+								v-for="sub in product.substitutes"
+								:key="sub.name"
+								:product="sub"
 								variant="minimal"
 								@open-quick-add="() => {}"
 							/>
@@ -184,8 +158,9 @@
 </template>
 
 <script setup>
-import { ref, computed, inject, watch } from "vue"
+import { ref, computed, inject, watch, onMounted } from "vue"
 import { useRoute } from "vue-router"
+import { createResource, call } from "frappe-ui"
 import { IonContent } from "@ionic/vue"
 import BaseLayout from "@/components/layouts/BaseLayout.vue"
 import AppHeader from "@/components/AppHeader.vue"
@@ -200,57 +175,67 @@ const qty = ref(1)
 const selectedPack = ref(1)
 const packSizes = ['10 Tablets', '30 Tablets', '50 Tablets']
 
-// Mock current product
-const product = ref({
-	id: route.params.id || 1,
-	name: "Premium Multivitamin Complex",
-	manufacturer: "BioLife Pharmaceuticals",
-	category: "Wellness & Nutrition",
-	price: 1250.0,
-	oldPrice: 1500.0,
-	uom: "Box",
-	image: "https://via.placeholder.com/300?text=Multivitamin",
-	description: "BioLife Premium Multivitamin is a high-potency formula specifically engineered to support the active lifestyle of professionals. Packed with 24 essential minerals and vitamins, it provides long-lasting energy release and supports a healthy immune response throughout the day.",
-	pricing_tiers: [
-		{ min_qty: 1, max_qty: 5, price: 1250 },
-		{ min_qty: 6, max_qty: 10, price: 1180 },
-		{ min_qty: 11, max_qty: 15, price: 1100 },
-		{ min_qty: 16, max_qty: null, price: 1020 },
-	]
+const product = ref({})
+const currentPrice = ref(0)
+const customOldPrice = ref(0)
+const discountPercent = ref(0)
+const isPriceLoading = ref(false)
+
+const productResource = createResource({
+    url: 'erpnext.api.item_api.get_item_details',
+    makeParams() {
+        return { item_code: route.params.id }
+    },
+    onSuccess(data) {
+        if (data) {
+            product.value = data
+            currentPrice.value = data.final_price || data.price || 0
+            customOldPrice.value = data.price || 0
+            discountPercent.value = data.discount_percent || 0
+            
+            // Log view
+            call('erpnext.api.item_api.log_item_view', { item_code: route.params.id })
+        }
+    }
 })
 
-const mockRelated = [
-	{ id: 101, name: 101, item_name: "Omega 3 Ultra", price: 850, image: "https://via.placeholder.com/150?text=Omega" },
-	{ id: 102, name: 102, item_name: "Vitamin C Serum", price: 450, image: "https://via.placeholder.com/150?text=Serum" },
-	{ id: 103, name: 103, item_name: "Protein Shake", price: 3200, image: "https://via.placeholder.com/150?text=Protein" },
-]
-
-const pricingTiers = computed(() => {
-	return product.value.pricing_tiers || [
-		{ min_qty: 1, max_qty: 5, price: product.value.price },
-		{ min_qty: 6, max_qty: 10, price: Math.round(product.value.price * 0.95) },
-		{ min_qty: 11, max_qty: null, price: Math.round(product.value.price * 0.9) },
-	]
+onMounted(() => {
+    productResource.fetch()
 })
 
-const currentPrice = computed(() => {
-	for (const tier of pricingTiers.value) {
-		const max = tier.max_qty || Infinity
-		if (qty.value >= tier.min_qty && qty.value <= max) {
-			return tier.price
-		}
-	}
-	return product.value.price
-})
-
-const isActiveTier = (tier) => {
-	const max = tier.max_qty || Infinity
-	return qty.value >= tier.min_qty && qty.value <= max
+const loadDynamicPrice = async () => {
+    if (!product.value.name) return
+    isPriceLoading.value = true
+    try {
+        const res = await call('erpnext.api.item_api.calculate_price', {
+            item_code: product.value.name,
+            qty: qty.value
+        })
+        if (res) {
+            currentPrice.value = res.final_price || res.price || 0
+            customOldPrice.value = res.price || 0
+            discountPercent.value = res.discount_percent || 0
+        }
+    } catch (err) {
+        currentPrice.value = product.value.final_price || product.value.price || 0
+    } finally {
+        isPriceLoading.value = false
+    }
 }
 
+let priceTimeout;
+watch(qty, () => {
+    clearTimeout(priceTimeout)
+    priceTimeout = setTimeout(() => {
+        loadDynamicPrice()
+    }, 400)
+})
+
 const discount = computed(() => {
-	if (product.value.oldPrice && product.value.oldPrice > product.value.price) {
-		const diff = product.value.oldPrice - product.value.price
+    if (discountPercent.value > 0) {
+        return discountPercent.value + "%"
+    } else if (product.value.oldPrice && product.value.oldPrice > currentPrice.value) {
+		const diff = product.value.oldPrice - currentPrice.value
 		return Math.round((diff / product.value.oldPrice) * 100) + "%"
 	}
 	return null

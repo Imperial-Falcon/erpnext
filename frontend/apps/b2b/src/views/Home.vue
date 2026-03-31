@@ -14,7 +14,7 @@
 					<AppHeader
 						:isScrolled="isScrolled"
 						subtitle="Welcome back"
-						title="MediMart"
+						title="Pharmoxy"
 						:showBack="false"
 					>
 						<template #actions>

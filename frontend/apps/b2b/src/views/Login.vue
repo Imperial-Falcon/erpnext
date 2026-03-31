@@ -18,7 +18,7 @@
 						</svg>
 					</div>
 					<div class="text-2xl font-extrabold text-gray-900 dark:text-gray-100 text-center leading-tight">
-						{{ __("Login to MediMart") }}
+						{{ __("Login to Pharmoxy") }}
 					</div>
 					<p class="text-xs font-medium text-gray-400 tracking-widest uppercase">{{ __("Your Trusted Medicine Partner") }}</p>
 				</div>

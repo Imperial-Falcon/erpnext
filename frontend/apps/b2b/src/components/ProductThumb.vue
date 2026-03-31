@@ -11,13 +11,18 @@
 		<!-- Image -->
 		<div class="aspect-square bg-white/60 dark:bg-gray-800/40 rounded-2xl mb-3 overflow-hidden p-3 flex items-center justify-center relative shadow-inner-glow">
 			<img :src="product.image" :alt="product.item_name" class="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out" />
-			<!-- Discount Badge -->
 			<div v-if="discount" class="badge-discount absolute top-0 left-0 !rounded-tl-2xl !rounded-br-2xl !rounded-tr-none !rounded-bl-none">
 				{{ discount }}
 			</div>
+			<!-- Out of Stock Badge -->
+			<div v-if="product.stock_qty <= 0" class="absolute inset-0 bg-white/70 dark:bg-gray-950/70 z-[5] flex items-center justify-center backdrop-blur-[1px]">
+				<span class="px-3 py-1.5 bg-rose-500/10 text-rose-600 dark:text-rose-400 font-extrabold text-xs tracking-wider rounded-xl border border-rose-500/20 uppercase shadow-sm">
+					Out of Stock
+				</span>
+			</div>
 			<button
 				@click.stop
-				class="absolute top-2 right-2 p-1.5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-full text-gray-400 hover:text-rose-500 transition-all duration-300 border border-white/30"
+				class="absolute top-2 right-2 p-1.5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-full text-gray-400 hover:text-rose-500 transition-all duration-300 border border-white/30 z-[6]"
 			>
 				<Heart class="w-3.5 h-3.5" />
 			</button>
@@ -40,6 +45,7 @@
 				</span>
 			</div>
 			<button
+                v-if="product.stock_qty > 0"
 				@click.stop="$emit('open-quick-add', product)"
 				class="p-2.5 bg-gradient-to-tr from-brand-primary to-brand-secondary text-white rounded-xl shadow-neon hover:shadow-glass-strong transition-all duration-300 active:scale-90"
 			>
